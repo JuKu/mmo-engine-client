@@ -18,6 +18,8 @@ temp
 *temp
 !temp/ReadMe.txt
 
+tools/runnable-hiero.jar
+
 
 # Created by https://www.gitignore.io/api/git,lua,java,linux,macos,maven,gradle,windows,eclipse,netbeans,intellij,tortoisegit
 

@@ -33,13 +33,13 @@
 		</fileSet>
 
 		<!-- docs directory -->
-		<fileSet>
+		<!-- <fileSet>
 			<directory>../docs</directory>
 			<outputDirectory>docs</outputDirectory>
 			<excludes>
 				<exclude>*.cfg</exclude>
 			</excludes>
-		</fileSet>
+		</fileSet> -->
 
 		<!-- mods directory -->
 		<fileSet>
