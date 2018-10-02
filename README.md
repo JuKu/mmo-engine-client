@@ -20,6 +20,8 @@ Another try to build a mmo game client.
   - **Game Logic Layer**
   - **Game View Layer**
   
+All this maven modules are dependencies from **main module** which are called from desktop module.
+  
 Additional modules:
 
   - Shared Commons Library (shared with proxy & gameserver, includes network protocol)
