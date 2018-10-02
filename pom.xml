@@ -12,6 +12,7 @@
 		<module>application-layer</module>
 		<module>game-logic-layer</module>
 		<module>game-view-layer</module>
+		<module>main</module>
 		<module>desktop</module>
 	</modules>
 

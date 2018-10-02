@@ -12,6 +12,13 @@
 	<artifactId>mmo-engine-client-desktop</artifactId>
 
 	<dependencies>
+		<!-- main -->
+		<dependency>
+			<groupId>com.jukusoft</groupId>
+			<artifactId>mmo-engine-client-main</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<!-- libGDX LWJGL Backend -->
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
