@@ -1,0 +1,213 @@
+package com.jukusoft.mmo.engine.applayer.logger;
+
+import com.jukusoft.mmo.engine.applayer.config.Config;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+public class Log {
+
+    /**
+    * logging levels:
+     *
+     * - VERBOSE
+     * - DEBUG
+     * - INFO
+     * - WARN (exception was caught, but application can still continue)
+     * - ERROR (application crashed)
+    */
+    public enum LEVEL {
+        VERBOSE(1, 'V'),
+        DEBUG(2, 'D'),
+        INFO(3, 'I'),
+        WARN(4, 'W'),
+        ERROR(5, 'E');
+
+        private final int value;
+        private final char shortcut;
+
+        LEVEL (final int value, final char shortcut) {
+            this.value = value;
+            this.shortcut = shortcut;
+        }
+
+        public final int getValue() {
+            return value;
+        }
+
+        public final char getShortcut () {
+            return this.shortcut;
+        }
+    }
+
+    //instances
+    protected static final ConcurrentLinkedQueue<String> loggingQueue = new ConcurrentLinkedQueue<>();
+    protected static LogWriter logWriter = null;
+    protected static Thread logWriterThread = null;
+
+    //config
+    protected static boolean printToConsole = false;
+    protected static boolean enabled = false;
+    protected static LEVEL level = LEVEL.WARN;
+
+    protected static SimpleDateFormat format = null;
+
+    public static void init () {
+        //first check, if logging is enabled
+
+        Log.enabled = Config.getBool("Logger", "enabled");
+        Log.printToConsole = Config.getBool("Logger", "printToConsole");
+        Log.level = LEVEL.valueOf(Config.get("Logger", "level"));
+
+        //get format
+        format = new SimpleDateFormat(Config.get("Logger", "timeFormat"));
+
+        if (Config.getBool("Logger", "writeToFile")) {
+            //TODO: get file path
+            String filePath = Config.get("Logger", "file");
+
+            File file = new File(filePath);
+
+            logWriter = new LogWriter(file, loggingQueue);
+            logWriterThread = new Thread(logWriter);
+            logWriterThread.setPriority(Thread.MIN_PRIORITY);
+
+            //start thread
+            logWriterThread.start();
+        }
+    }
+
+    /**
+    * Send a VERBOSE log message
+     *
+     * @param tag log tag
+     * @param message log message
+    */
+    public static void v (String tag, String message) {
+        v(tag, message, null);
+    }
+
+    /**
+     * Send a VERBOSE log message with exception
+     *
+     * @param tag log tag
+     * @param message log message
+     */
+    public static void v (String tag, String message, Throwable e) {
+        log(LEVEL.VERBOSE, tag, message, e);
+    }
+
+    /**
+     * Send a DEBUG log message
+     *
+     * @param tag log tag
+     * @param message log message
+     */
+    public static void d (String tag, String message) {
+        d(tag, message, null);
+    }
+
+    /**
+     * Send a DEBUG log message with exception
+     *
+     * @param tag log tag
+     * @param message log message
+     */
+    public static void d (String tag, String message, Throwable e) {
+        log(LEVEL.DEBUG, tag, message, e);
+    }
+
+    /**
+     * Send a INFO log message
+     *
+     * @param tag log tag
+     * @param message log message
+     */
+    public static void i (String tag, String message) {
+        i(tag, message, null);
+    }
+
+    /**
+     * Send a INFO log message with exception
+     *
+     * @param tag log tag
+     * @param message log message
+     */
+    public static void i (String tag, String message, Throwable e) {
+        log(LEVEL.INFO, tag, message, e);
+    }
+
+    /**
+     * Send a WARN log message
+     *
+     * @param tag log tag
+     * @param message log message
+     */
+    public static void w (String tag, String message) {
+        w(tag, message, null);
+    }
+
+    /**
+     * Send a WARN log message with exception
+     *
+     * @param tag log tag
+     * @param message log message
+     */
+    public static void w (String tag, String message, Throwable e) {
+        log(LEVEL.WARN, tag, message, e);
+    }
+
+    /**
+     * Send a ERROR log message
+     *
+     * @param tag log tag
+     * @param message log message
+     */
+    public static void e (String tag, String message) {
+        e(tag, message, null);
+    }
+
+    /**
+     * Send a ERROR log message with exception
+     *
+     * @param tag log tag
+     * @param message log message
+     */
+    public static void e (String tag, String message, Throwable e) {
+        log(LEVEL.ERROR, tag, message, e);
+    }
+
+    protected static void log (LEVEL level, String tag, String message, Throwable e) {
+        if (!enabled) {
+            //logging isn't enabled
+            return;
+        }
+
+        //check for level
+        if (level.getValue() < Log.level.getValue()) {
+            //we dont need to log this level
+            return;
+        }
+
+        String timestampStr = format.format(new Date(System.currentTimeMillis()));
+        loggingQueue.add("[" + timestampStr + "] " + level.getShortcut() + "/" + tag + ": " + message);
+
+        if (e != null) {
+            //print exception in extra line
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            loggingQueue.add(sw.toString());
+        }
+    }
+
+    public static void shutdown () {
+        //TODO: add code here
+
+        logWriterThread.interrupt();
+    }
+
+}

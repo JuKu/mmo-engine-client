@@ -1,5 +1,7 @@
 package com.jukusoft.mmo.engine.applayer.utils;
 
+import com.jukusoft.mmo.engine.applayer.logger.Log;
+
 public class Utils {
 
     protected Utils() {
@@ -28,9 +30,7 @@ public class Utils {
 
     public static void printSection (final String section) {
         String s = getSection(section);
-
-        //TODO: replace this with logger, e.q. LocalLogger.print("\n" + s);
-        System.out.println("\n" + s);
+        Log.i("-", s);
     }
 
 }

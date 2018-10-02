@@ -36,6 +36,9 @@ public class DesktopLauncher {
 
         // start game
         new Lwjgl3Application(new BaseApp(), config);
+
+        //shutdown logger and write all remaining logs to file
+        Log.shutdown();
     }
 
 }
