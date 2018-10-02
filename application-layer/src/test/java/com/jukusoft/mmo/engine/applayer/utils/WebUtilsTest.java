@@ -27,9 +27,15 @@ public class WebUtilsTest {
         byte[] array = new byte[8];
         InputStream inputStream = new ByteArrayInputStream(array);
 
-
-
         WebUtils.createString(inputStream, null);
+    }
+
+    @Test
+    public void testEncoding () throws IOException {
+        byte[] array = new byte[8];
+        InputStream inputStream = new ByteArrayInputStream(array);
+
+        WebUtils.createString(inputStream, "ASCII");
     }
 
 }
