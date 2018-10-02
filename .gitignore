@@ -352,3 +352,4 @@ gradle-app.setting
 
 
 # End of https://www.gitignore.io/api/git,lua,java,linux,macos,maven,gradle,windows,eclipse,netbeans,intellij,tortoisegit
+!/pom.xml
