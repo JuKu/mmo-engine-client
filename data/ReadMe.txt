@@ -1,0 +1,1 @@
+All game specific data belongs in this directory.

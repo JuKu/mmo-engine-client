@@ -1,0 +1,1 @@
+This is a directory for temporary files. Applications requires write access to this directory.
