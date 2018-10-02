@@ -34,6 +34,11 @@ public class WebUtils {
 
         InputStream in = conn.getInputStream();
         String encoding = conn.getContentEncoding();  // ** WRONG: should use "con.getContentType()" instead but it returns something like "text/html; charset=UTF-8" so this value must be parsed to extract the actual encoding
+
+        return createString(in, encoding);
+    }
+
+    protected static String createString (InputStream in, String encoding) throws IOException {
         encoding = encoding == null ? "UTF-8" : encoding;
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
