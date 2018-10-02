@@ -26,3 +26,9 @@ Additional modules:
 
   - Shared Commons Library (shared with proxy & gameserver, includes network protocol)
   - desktop (contains natives for different platforms, belongs indirect to application layer)
+  
+## Game Directories
+
+  - data (all game specific data)
+  - temp (temporary files, write access required)
+  - docs (Documentation, will not be copied into zip archiv)
