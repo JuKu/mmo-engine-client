@@ -11,6 +11,53 @@
 
 	<artifactId>mmo-engine-client-desktop</artifactId>
 
+	<dependencies>
+		<!-- libGDX LWJGL Backend -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-backend-lwjgl3</artifactId>
+			<version>${libgdx.version}</version>
+		</dependency>
+
+		<!-- libGDX platform natives -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-platform</artifactId>
+			<version>${libgdx.version}</version>
+			<classifier>natives-desktop</classifier>
+		</dependency>
+
+		<!-- libGDX tools -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-tools</artifactId>
+			<version>${libgdx.version}</version>
+		</dependency>
+
+		<!-- libGDX controller support -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-controllers-desktop</artifactId>
+			<version>${libgdx.version}</version>
+		</dependency>
+
+		<!-- libGDX controller support -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-controllers-platform</artifactId>
+			<version>${libgdx.version}</version>
+			<classifier>natives-desktop</classifier>
+		</dependency>
+
+		<!-- libGDX fonts -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-freetype-platform</artifactId>
+			<version>${libgdx.version}</version>
+			<classifier>natives-desktop</classifier>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>

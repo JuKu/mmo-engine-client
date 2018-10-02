@@ -18,6 +18,73 @@
 			<artifactId>hppc</artifactId>
 			<version>${hppc.version}</version>
 		</dependency>
+
+		<!-- libGDX -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx</artifactId>
+			<version>${libgdx.version}</version>
+		</dependency>
+
+		<!-- libGDX platform for JUnit tests -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-platform</artifactId>
+			<version>${libgdx.version}</version>
+			<classifier>natives-desktop</classifier>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- for libGDX JUnit tests -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- libGDX for junit tests -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-backend-headless</artifactId>
+			<version>${libgdx.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- libGDX tools -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-tools</artifactId>
+			<version>${libgdx.version}</version>
+		</dependency>
+
+		<!-- VisUI -->
+		<dependency>
+			<groupId>com.kotcrab.vis</groupId>
+			<artifactId>vis-ui</artifactId>
+			<version>${vis.ui.version}</version>
+		</dependency>
+
+		<!-- libGDX markup language, https://github.com/czyzby/gdx-lml/tree/master/lml -->
+		<dependency>
+			<groupId>com.github.czyzby</groupId>
+			<artifactId>gdx-lml</artifactId>
+			<version>${gdx-lml.version}</version>
+		</dependency>
+
+		<!-- libGDX controller support -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-controllers</artifactId>
+			<version>${libgdx.version}</version>
+		</dependency>
+
+		<!-- libGDX fonts -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-freetype</artifactId>
+			<version>${libgdx.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -13,7 +13,6 @@
 		<module>game-logic-layer</module>
 		<module>game-view-layer</module>
 		<module>desktop</module>
-		<module>desktop</module>
 	</modules>
 
 	<name>MMO Game Engine - Client</name>
@@ -65,6 +64,18 @@
 
 		<!-- library for high performance Real-Time and Embedded Systems, 5.4.1 -->
 		<javolution.version>6.0.0</javolution.version>
+
+		<!-- libGDX version -->
+		<libgdx.version>1.9.8</libgdx.version>
+
+		<!-- VisUI - ui library for libGDX -->
+		<vis.ui.version>1.4.0</vis.ui.version>
+
+		<!-- libGDX markup language -->
+		<gdx-lml.version>1.9.1.9.6</gdx-lml.version>
+
+		<!-- ini4j parser -->
+		<ini4j.version>0.5.4</ini4j.version>
 
 		<!-- Sonar properties-->
 		<sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
