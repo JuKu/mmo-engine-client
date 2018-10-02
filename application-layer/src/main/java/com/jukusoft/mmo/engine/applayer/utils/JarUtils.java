@@ -15,6 +15,8 @@ public class JarUtils {
      *
      * NOTE: If class is not loaded from a jar file (e.q. if you execute JUnit tests) null is returned
      *
+     * @param cls class
+     *
      * @return instance of jar file or null, if class wasnt loaded from a jar file
     */
     public static File getJarFileOfClass (Class<?> cls) {
@@ -67,6 +69,12 @@ public class JarUtils {
     * get file path to jar file of class
      *
      * NOTE: If this is executed from JUnit tests, there isnt a jar file available yet
+     *
+     * @throws URISyntaxException if uri isn't correct
+     *
+     * @param cls class for searched path
+     *
+     * @return path to jar file which contains class
     */
     public static String getJarPath (Class<?> cls) throws URISyntaxException {
         return new File(cls.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();

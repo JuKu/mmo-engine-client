@@ -20,7 +20,9 @@ public class WebUtils {
      *
      * @param websiteURL url to website
      *
-     * @link https://stackoverflow.com/questions/5867975/reading-websites-contents-into-string
+     * @see <a href="https://stackoverflow.com/questions/5867975/reading-websites-contents-into-string">Stackoverflow</a>
+     *
+     * @throws IOException if java cannot read content from website
      *
      * @return content of website
     */

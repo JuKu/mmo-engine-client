@@ -21,6 +21,8 @@ public class Version {
 
     /**
     * default constructor
+     *
+     * @param cls class of which version is searched
     */
     public Version(Class<?> cls) {
         this.loadInfo(cls);
