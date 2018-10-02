@@ -15,6 +15,10 @@ temp
 !data
 !*data
 
+temp
+*temp
+!temp/ReadMe.txt
+
 
 # Created by https://www.gitignore.io/api/git,lua,java,linux,macos,maven,gradle,windows,eclipse,netbeans,intellij,tortoisegit
 
