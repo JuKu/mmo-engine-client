@@ -1,9 +1,14 @@
 package com.jukusoft.mmo.engine.desktop;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.jukusoft.mmo.engine.applayer.base.BaseApp;
+import com.jukusoft.mmo.engine.applayer.config.Config;
+import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.desktop.config.WindowConfig;
+
+import java.io.File;
 
 public class DesktopLauncher {
 
@@ -18,7 +23,10 @@ public class DesktopLauncher {
     }
 
     protected static void start () throws Exception {
-        System.out.println("start game.");
+        //check working directory
+        if (!(new File("./config/").exists())) {
+            throw new IllegalStateException("Working directory isn't correct, couldn't found config directory! Current working dir: " + (new File(".").getAbsolutePath()));
+        }
 
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 
