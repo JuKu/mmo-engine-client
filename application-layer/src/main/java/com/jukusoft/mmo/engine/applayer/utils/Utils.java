@@ -28,7 +28,9 @@ public class Utils {
 
     public static void printSection (final String section) {
         String s = getSection(section);
-        //LocalLogger.print("\n" + s);
+
+        //TODO: replace this with logger, e.q. LocalLogger.print("\n" + s);
+        System.out.println("\n" + s);
     }
 
 }
