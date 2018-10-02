@@ -39,6 +39,9 @@ public class DesktopLauncher {
 
         //shutdown logger and write all remaining logs to file
         Log.shutdown();
+
+        System.err.println("shutdown JVM now.");
+        System.exit(0);
     }
 
 }
