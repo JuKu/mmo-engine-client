@@ -23,6 +23,13 @@
 			<version>${project.version}</version>
 		</dependency>
 
+		<!-- application layer -->
+		<dependency>
+			<groupId>com.jukusoft</groupId>
+			<artifactId>mmo-engine-client-application-layer</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<!-- libGDX LWJGL Backend -->
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>

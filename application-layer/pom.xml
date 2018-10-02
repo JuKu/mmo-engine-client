@@ -18,6 +18,37 @@
 			<artifactId>hppc</artifactId>
 			<version>${hppc.version}</version>
 		</dependency>
+
+		<!-- ini4j -->
+		<dependency>
+			<groupId>org.ini4j</groupId>
+			<artifactId>ini4j</artifactId>
+			<version>${ini4j.version}</version>
+		</dependency>
+
+		<!-- libGDX -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx</artifactId>
+			<version>${libgdx.version}</version>
+		</dependency>
+
+		<!-- libGDX platform for JUnit tests -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-platform</artifactId>
+			<version>${libgdx.version}</version>
+			<classifier>natives-desktop</classifier>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- libGDX for junit tests -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-backend-headless</artifactId>
+			<version>${libgdx.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
