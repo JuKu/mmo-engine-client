@@ -11,7 +11,6 @@
 	<modules>
 		<module>application-layer</module>
 		<module>game-logic-layer</module>
-		<module>mmo-engine-client-game-view-layer</module>
 		<module>game-view-layer</module>
 		<module>desktop</module>
 		<module>desktop</module>
