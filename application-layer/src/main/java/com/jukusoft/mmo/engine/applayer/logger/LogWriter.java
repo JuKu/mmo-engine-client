@@ -46,7 +46,7 @@ public class LogWriter implements Runnable {
                         fop.flush();
                         Thread.sleep(200);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        //dont do anything
                     }
                 } else {
                     fop.write(str.getBytes());
