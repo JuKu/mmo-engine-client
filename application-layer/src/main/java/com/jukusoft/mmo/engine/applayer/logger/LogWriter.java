@@ -48,12 +48,12 @@ public class LogWriter implements Runnable {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                }
+                } else {
+                    fop.write(str.getBytes());
 
-                fop.write(str.getBytes());
-
-                if (printToConsole) {
-                    System.out.println(str);
+                    if (printToConsole) {
+                        System.out.println(str);
+                    }
                 }
             }
 
