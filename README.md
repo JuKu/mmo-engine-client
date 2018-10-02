@@ -32,3 +32,4 @@ Additional modules:
   - data (all game specific data)
   - temp (temporary files, write access required)
   - docs (Documentation, will not be copied into zip archiv)
+  - assets (Work in Progress directory for artists, will not be copied into zip archiv)
