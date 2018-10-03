@@ -289,12 +289,9 @@ public class FileUtils {
             f.mkdirs();
         }
 
-        //check, if directory is writable
-        if (!f.canWrite()) {
-            //try to set directory writable
-            if (!f.setWritable(true)) {
-                throw new IllegalStateException("directory '" + dirPath + "' is not writable and user dont have permissions to change file permissions.");
-            }
+        //check, if directory is writable or try to set directory writable
+        if (!f.canWrite() && !f.setWritable(true)) {
+            throw new IllegalStateException("directory '" + dirPath + "' is not writable and user dont have permissions to change file permissions.");
         }
     }
 

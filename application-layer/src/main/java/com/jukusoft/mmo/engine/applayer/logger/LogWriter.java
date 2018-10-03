@@ -45,9 +45,10 @@ public class LogWriter implements Runnable {
                 String str = loggingQueue.poll();
 
                 if (str == null) {
+                    fop.flush();
+
                     //sleep
                     try {
-                        fop.flush();
                         Thread.sleep(200);
                     } catch (InterruptedException e) {
                         //dont do anything
