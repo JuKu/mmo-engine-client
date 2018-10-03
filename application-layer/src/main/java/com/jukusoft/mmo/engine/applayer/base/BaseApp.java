@@ -66,7 +66,7 @@ public class BaseApp implements ApplicationListener {
             }
 
             String dataDir = FilePath.parse(Config.get("Paths", "dataDir"));
-            String configDir = FilePath.parse(Config.get("Paths", "configDir"));
+            String configDir = Config.get("Paths", "configDir");
             String tempDir = FilePath.parse(Config.get("Paths", "tempDir"));
 
             //check, if data directory exists
@@ -75,10 +75,18 @@ public class BaseApp implements ApplicationListener {
                 throw new FileNotFoundException("data directory '" + dataDir + "' doesn't exists!");
             }
 
-            //check, if config directory exists
-            if (!new File(configDir).exists()) {
-                Log.e("Config", "config directory '" + configDir + "' doesn't exists!");
-                throw new FileNotFoundException("config directory '" + configDir + "' doesn't exists!");
+            FilePath.setDataDir(dataDir);
+
+            //check, if config directories exists
+            String[] dirs = configDir.split(";");
+
+            for (String dir : dirs) {
+                dir = FilePath.parse(dir);
+
+                if (!new File(dir).exists()) {
+                    Log.e("Config", "config directory '" + dir + "' doesn't exists!");
+                    throw new FileNotFoundException("config directory '" + dir + "' doesn't exists!");
+                }
             }
 
             //check, if temp directory exists, else create temp directory
@@ -86,11 +94,20 @@ public class BaseApp implements ApplicationListener {
                 new File(tempDir).mkdirs();
             }
 
-            Log.d("Config", "data directory: " + dataDir);
             Log.d("Config", "config directory: " + configDir);
             Log.d("Config", "temp directory: " + tempDir);
 
-            FilePath.setDataDir(dataDir);
+            FilePath.setConfigDirs(configDir);
+            FilePath.setTempDir(tempDir);
+
+            //load config directories
+            Log.i("Config", "load config directories with static data");
+
+            for (String dir : dirs) {
+                dir = FilePath.parse(dir);
+                Log.d("Config", "load config directory '" + dir + "'");
+                Config.loadDir(new File(dir));
+            }
         } catch (Exception e) {
             Log.e("Exception", "Exception while starting up game engine: ", e);
             Log.shutdown();
@@ -99,7 +116,7 @@ public class BaseApp implements ApplicationListener {
                 JavaFXUtils.startJavaFX();
 
                 //show exception in exception window
-                JavaFXUtils.showExceptionDialog(Config.get("Error", "windowTitle"), "Exception while starting up game engine: ", e);
+                JavaFXUtils.showExceptionDialog(Config.get("Error", "windowTitle"), Config.get("Error", "headerText"), "Exception while starting up game engine: ", e);
             } catch (Exception e1) {
                 e1.printStackTrace();
             }

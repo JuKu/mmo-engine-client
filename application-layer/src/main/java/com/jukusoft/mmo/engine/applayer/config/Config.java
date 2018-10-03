@@ -32,7 +32,7 @@ public class Config {
     public static void load (File file) throws IOException {
         Objects.requireNonNull(file, "config file cannot be null.");
 
-        Log.i("Config", "Load Config: " + file.getAbsolutePath());
+        Log.i("Config", "Load Config: " + file.getAbsolutePath().replace("\\", "/"));
 
         if (!file.exists()) {
             throw new IllegalStateException("config file '" + file.getAbsolutePath() + "' doesn't exists!");
