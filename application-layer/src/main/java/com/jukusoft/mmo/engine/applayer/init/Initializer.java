@@ -61,6 +61,8 @@ public class Initializer implements Runnable {
                     continue;
                 }
 
+                Log.d("OpenGL", "check OpenGL extension: " + extension);
+
                 if (!Gdx.graphics.supportsExtension(extension)) {
                     error("Required OpenGL extension is not available: " + extension);
                 }
