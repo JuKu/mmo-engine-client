@@ -165,9 +165,7 @@ public class BaseApp implements ApplicationListener {
 
         Log.v("BaseApp", "initFinished() called.");
 
-        Platform.runOnUIThread(() -> {
-            this.initialized = true;
-        });
+        Platform.runOnUIThread(() -> this.initialized = true);
     }
 
     @Override

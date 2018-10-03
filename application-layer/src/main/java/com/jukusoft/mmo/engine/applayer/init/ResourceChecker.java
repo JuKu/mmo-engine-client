@@ -4,11 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.utils.*;
-import org.jutils.jhardware.HardwareInfo;
-import org.jutils.jhardware.model.MemoryInfo;
 
 import java.io.File;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ResourceChecker {
 

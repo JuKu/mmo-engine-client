@@ -15,6 +15,8 @@ public class Initializer implements Runnable {
 
     protected final BaseApp app;
 
+    protected final String OPENGL_TAG = "OpenGL";
+
     public Initializer (BaseApp app) {
         this.app = app;
     }
@@ -28,18 +30,16 @@ public class Initializer implements Runnable {
         AtomicReference<GLVersion> vA = new AtomicReference<>();
 
         //this operation has to be executed in ui thread
-        ThreadUtils.executeOnUIThreadAndWait(() -> {
-            vA.set(Gdx.graphics.getGLVersion());
-        });
+        ThreadUtils.executeOnUIThreadAndWait(() -> vA.set(Gdx.graphics.getGLVersion()));
 
         GLVersion glVersion = vA.get();
 
-        Utils.printSection("OpenGL");
-        Log.i("OpenGL", "version: " + glVersion.getMajorVersion() + "." + glVersion.getMajorVersion());
-        Log.i("OpenGL", "release version: " + glVersion.getReleaseVersion());
-        Log.i("OpenGL", "vendor: " + glVersion.getVendorString());
-        Log.i("OpenGL", "graphics card: " + glVersion.getRendererString());
-        Log.i("OpenGL", "type: " + glVersion.getType().name());
+        Utils.printSection(OPENGL_TAG);
+        Log.i(OPENGL_TAG, "version: " + glVersion.getMajorVersion() + "." + glVersion.getMajorVersion());
+        Log.i(OPENGL_TAG, "release version: " + glVersion.getReleaseVersion());
+        Log.i(OPENGL_TAG, "vendor: " + glVersion.getVendorString());
+        Log.i(OPENGL_TAG, "graphics card: " + glVersion.getRendererString());
+        Log.i(OPENGL_TAG, "type: " + glVersion.getType().name());
 
         int requiredMajor = Config.getInt("SystemRequirements", "openGLMajor");
         int requiredMinor = Config.getInt("SystemRequirements", "openGLMinor");
@@ -61,7 +61,7 @@ public class Initializer implements Runnable {
                     continue;
                 }
 
-                Log.d("OpenGL", "check OpenGL extension: " + extension);
+                Log.d(OPENGL_TAG, "check OpenGL extension: " + extension);
 
                 if (!Gdx.graphics.supportsExtension(extension)) {
                     error("Required OpenGL extension is not available: " + extension);
