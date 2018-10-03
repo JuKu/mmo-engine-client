@@ -56,4 +56,11 @@ public class ConfigTest {
         Config.loadDir(new File("../config/"));
     }
 
+    @Test
+    public void testLoadDir1 () throws IOException {
+        new File("../data/junit/config/test/").mkdirs();
+
+        Config.loadDir(new File("../data/junit/config/"));
+    }
+
 }
