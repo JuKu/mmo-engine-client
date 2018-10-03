@@ -2,8 +2,10 @@ package com.jukusoft.mmo.engine.applayer.base;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.applayer.splashscreen.SplashScreen;
 import com.jukusoft.mmo.engine.applayer.utils.FilePath;
 import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
 import com.jukusoft.mmo.engine.applayer.utils.Utils;
@@ -20,6 +22,9 @@ public class BaseApp implements ApplicationListener {
     protected static final String VERSION_TAG = "Version";
     protected static final String CONFIG_TAG = "Config";
     protected static final String SECTION_PATHS = "Paths";
+
+    protected boolean initialized = false;
+    protected SplashScreen splashScreen = null;
 
     @Override
     public void create() {
@@ -110,6 +115,12 @@ public class BaseApp implements ApplicationListener {
                 Log.d(CONFIG_TAG, "load config directory '" + dir + "'");
                 Config.loadDir(new File(dir));
             }
+
+            Log.d("Splashscreen", "load splash screen");
+
+            //load splash screen
+            this.splashScreen = new SplashScreen();
+            this.splashScreen.load();
         } catch (Exception e) {
             Log.e("Exception", "Exception while starting up game engine: ", e);
             Log.shutdown();
@@ -134,7 +145,9 @@ public class BaseApp implements ApplicationListener {
 
     @Override
     public void render() {
-
+        if (!this.initialized) {
+            splashScreen.render();
+        }
     }
 
     @Override
