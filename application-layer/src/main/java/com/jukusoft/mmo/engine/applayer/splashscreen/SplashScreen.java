@@ -16,6 +16,8 @@ public class SplashScreen {
     protected Texture logoTexture = null;
     protected Texture animationTexture = null;
 
+    protected float logoOffsetX = 0;
+    protected float logoOffsetY = 0;
     protected float animX = 0;
     protected float animY = 0;
     protected float animWidth = 0;
@@ -42,6 +44,9 @@ public class SplashScreen {
         this.logoTexture = new Texture(Gdx.files.absolute(FilePath.parse(Config.get("Splashscreen", "logoImage"))));
         this.animationTexture = new Texture(Gdx.files.absolute(FilePath.parse(Config.get("Splashscreen", "animationImage"))));
 
+        this.logoOffsetX = Config.getInt("Splashscreen", "logoOffsetX");
+        this.logoOffsetY = Config.getInt("Splashscreen", "logoOffsetY");
+
         this.animX = Config.getInt("Splashscreen", "animX");
         this.animY = Config.getInt("Splashscreen", "animY");
         this.animWidth = Config.getInt("Splashscreen", "animWidth");
@@ -61,15 +66,15 @@ public class SplashScreen {
         //render background
         batch.draw(this.bgTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        float x = (Gdx.graphics.getWidth() - this.logoTexture.getWidth()) / 2;
-        float y = (Gdx.graphics.getHeight() - this.logoTexture.getHeight()) / 2;
+        float x = (Gdx.graphics.getWidth() - this.logoTexture.getWidth()) / 2 + this.logoOffsetX;
+        float y = (Gdx.graphics.getHeight() - this.logoTexture.getHeight()) / 2 + this.logoOffsetY;
 
         //draw logo in center
         batch.draw(this.logoTexture, x, y, this.logoTexture.getWidth(), this.logoTexture.getHeight());
 
-        this.degree = (this.degree + Gdx.graphics.getDeltaTime() * this.rotationSpeed) % 360;
-
         if (this.animEnabled) {
+            this.degree = (this.degree + Gdx.graphics.getDeltaTime() * this.rotationSpeed) % 360;
+
             //draw rotating wheel
             batch.draw(this.anim, this.animX, this.animY, (this.animWidth / 2), (this.animHeight / 2), this.animWidth, this.animHeight, 1, 1, this.degree);
         }
