@@ -54,6 +54,10 @@ public class JavaFXUtils {
 
         Optional<ButtonType> result = alert.showAndWait();
 
+        if (!result.isPresent()) {
+            return false;
+        }
+
         return result.get() == ButtonType.OK;
     }
 
