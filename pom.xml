@@ -78,6 +78,10 @@
 		<!-- ini4j parser -->
 		<ini4j.version>0.5.4</ini4j.version>
 
+		<!-- format maven build timestamp to add to manifest -->
+		<timestamp>${maven.build.timestamp}</timestamp>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+
 		<!-- Sonar properties-->
 		<sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
 		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>

@@ -97,6 +97,37 @@
 					<shortRevisionLength>7</shortRevisionLength>
 				</configuration>
 			</plugin>
+
+			<!-- create jar artifact, add classpath and set main class -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+
+							<!-- update dependencie versions in MANIFEST.MF -->
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<!-- https://www.youtube.com/watch?v=Rnmq_Jv-pe4 -->
+							<!-- http://www.javacreed.com/how-to-add-splash-screen-using-maven/ -->
+							<!-- <SplashScreen-Image>splash_screen.png</SplashScreen-Image> -->
+
+							<!-- http://maven.apache.org/shared/maven-archiver/index.html -->
+
+							<!-- <key>value</key> -->
+							<Implementation-Time>${maven.build.timestamp}</Implementation-Time>
+
+							<Implementation-Build>${buildNumber}-${scmBranch}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
