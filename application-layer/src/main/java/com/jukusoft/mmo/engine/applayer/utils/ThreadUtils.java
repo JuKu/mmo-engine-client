@@ -16,6 +16,7 @@ public class ThreadUtils {
         Platform.runLater(() -> {
             runnable.run();
 
+            //runnable was executed, so we don't need to block main thread any longer
             b.set(true);
         });
 

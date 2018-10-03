@@ -22,4 +22,16 @@ public class FilePathTest {
         assertEquals(true, FilePath.parse("{user.home}test").endsWith("/test"));
     }
 
+    @Test
+    public void testGetterAndSetter () {
+        FilePath.setDataDir("./data/");
+        assertEquals("./data/", FilePath.getDataDir());
+
+        FilePath.setConfigDirs("./config/");
+        assertEquals("./config/", FilePath.getConfigDirs());
+
+        FilePath.setTempDir("./temp/");
+        assertEquals("./temp/", FilePath.getTempDir());
+    }
+
 }
