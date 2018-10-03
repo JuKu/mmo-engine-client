@@ -26,6 +26,13 @@
 			<version>${ini4j.version}</version>
 		</dependency>
 
+		<!-- get hardware information -->
+		<dependency>
+			<groupId>org.jhardware</groupId>
+			<artifactId>jHardware</artifactId>
+			<version>${jhardware.version}</version>
+		</dependency>
+
 		<!-- libGDX -->
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>

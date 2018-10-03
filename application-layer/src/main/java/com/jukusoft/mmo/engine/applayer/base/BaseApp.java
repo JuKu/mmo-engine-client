@@ -178,7 +178,6 @@ public class BaseApp implements ApplicationListener {
         if (!this.initialized) {
             splashScreen.render();
             this.elapsed += Gdx.graphics.getDeltaTime() * 1000;
-            System.err.println("elapsed: " + elapsed + ", delta: " + (Gdx.graphics.getDeltaTime() * 1000));
         } else {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

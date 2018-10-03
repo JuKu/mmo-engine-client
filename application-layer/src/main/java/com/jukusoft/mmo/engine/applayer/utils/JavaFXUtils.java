@@ -1,5 +1,6 @@
 package com.jukusoft.mmo.engine.applayer.utils;
 
+import com.jukusoft.mmo.engine.applayer.config.Config;
 import javafx.application.Application;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.Alert;
@@ -36,6 +37,19 @@ public class JavaFXUtils {
     }
 
     public static void showErrorDialog (String title, String content) {
+        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(content);
+
+            alert.showAndWait();
+        });
+    }
+
+    public static void showErrorDialog (String content) {
+        String title = Config.get("Error", "windowTitle");
+
         ThreadUtils.executeInJavaFXThreadAndWait(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(title);
