@@ -198,7 +198,7 @@ public class Log {
             return;
         }
 
-        StringBuffer sb = new StringBuffer(tag);
+        StringBuilder sb = new StringBuilder(tag);
 
         while (sb.length() < 10) {
             sb.append(" ");
