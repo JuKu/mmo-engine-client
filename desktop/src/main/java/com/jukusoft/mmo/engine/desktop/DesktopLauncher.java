@@ -7,6 +7,7 @@ import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.desktop.config.WindowConfig;
 
 import java.io.File;
+import java.util.Set;
 
 public class DesktopLauncher {
 
@@ -35,10 +36,27 @@ public class DesktopLauncher {
         // start game
         new Lwjgl3Application(new BaseApp(), config);
 
+        //list currently active threads
+        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+
         //shutdown logger and write all remaining logs to file
         Log.shutdown();
 
+        //check, if there are other active threads, except the main thread
+        if (threadSet.size() > 1) {
+            System.err.println("Shutdown: waiting for active threads:");
+
+            for (Thread thread : threadSet) {
+                System.err.println(" - " + thread.getName());
+            }
+
+            //wait 3 seconds, then force shutdown
+            Thread.sleep(2000);
+        }
+
         System.err.println("shutdown JVM now.");
+
+        //force JVM shutdown
         System.exit(0);
     }
 
