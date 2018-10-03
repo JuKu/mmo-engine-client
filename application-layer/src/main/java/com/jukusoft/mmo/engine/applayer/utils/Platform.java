@@ -16,7 +16,7 @@ public class Platform {
     }
 
     public static void executeQueue () {
-        while (!queue.isEmpty()) {
+        while (true) {
             Runnable runnable = queue.poll();
 
             if (runnable != null) {
