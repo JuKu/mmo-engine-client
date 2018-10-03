@@ -16,6 +16,7 @@ public class Initializer implements Runnable {
     protected final BaseApp app;
 
     protected final String OPENGL_TAG = "OpenGL";
+    protected final String SR_SECTION = "SystemRequirements";
 
     public Initializer (BaseApp app) {
         this.app = app;
@@ -41,8 +42,8 @@ public class Initializer implements Runnable {
         Log.i(OPENGL_TAG, "graphics card: " + glVersion.getRendererString());
         Log.i(OPENGL_TAG, "type: " + glVersion.getType().name());
 
-        int requiredMajor = Config.getInt("SystemRequirements", "openGLMajor");
-        int requiredMinor = Config.getInt("SystemRequirements", "openGLMinor");
+        int requiredMajor = Config.getInt(SR_SECTION, "openGLMajor");
+        int requiredMinor = Config.getInt(SR_SECTION, "openGLMinor");
 
         //check OpenGL version
         if (!glVersion.isVersionEqualToOrHigher(requiredMajor, requiredMinor)) {
@@ -51,7 +52,7 @@ public class Initializer implements Runnable {
         }
 
         //check OpenGL extensions
-        String requiredExtensions = Config.get("SystemRequirements", "openGLExtensions");
+        String requiredExtensions = Config.get(SR_SECTION, "openGLExtensions");
         final String[] extensions = requiredExtensions.split(";");
 
         //check, if required extensions are available
@@ -68,9 +69,6 @@ public class Initializer implements Runnable {
                 }
             }
         });
-
-        //run GC to cleanup initialization process
-        System.gc();
     }
 
     protected void error (String content) {

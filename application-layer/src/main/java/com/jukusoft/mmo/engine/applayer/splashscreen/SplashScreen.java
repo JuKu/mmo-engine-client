@@ -29,7 +29,7 @@ public class SplashScreen {
     protected float degree = 0;
     protected float rotationSpeed = 10;
 
-    protected final String SPLASHSCREEN_STR = "Splashscreen";
+    protected static final String SPLASHSCREEN_STR = "Splashscreen";
 
     public SplashScreen () {
         //

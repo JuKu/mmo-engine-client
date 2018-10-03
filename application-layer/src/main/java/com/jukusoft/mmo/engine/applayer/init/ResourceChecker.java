@@ -9,6 +9,13 @@ import java.io.File;
 
 public class ResourceChecker {
 
+    protected static final String HARD_DRIVE_TAG = "Hard Drive";
+    protected static final String SR_SECTION = "SystemRequirements";
+
+    protected ResourceChecker () {
+        //
+    }
+
     public static void check () {
         Utils.printSection("Check system resources");
 
@@ -17,18 +24,18 @@ public class ResourceChecker {
         long freeSpace = dir.getFreeSpace();
         long usableSpace = dir.getUsableSpace();
 
-        Log.i("Hard Drive", "total space: " + (totalSpace / 1024 / 1024 / 1024) + "GB");
-        Log.i("Hard Drive", "free space: " + (freeSpace / 1024 / 1024 / 1024) + "GB");
-        Log.i("Hard Drive", "usable space: " + (usableSpace / 1024 / 1024 / 1024) + "GB");
+        Log.i(HARD_DRIVE_TAG, "total space: " + (totalSpace / 1024 / 1024 / 1024) + "GB");
+        Log.i(HARD_DRIVE_TAG, "free space: " + (freeSpace / 1024 / 1024 / 1024) + "GB");
+        Log.i(HARD_DRIVE_TAG, "usable space: " + (usableSpace / 1024 / 1024 / 1024) + "GB");
 
         //check required hard drive space
         long freeSpaceMB = usableSpace / 1024 / 1024;
-        long requiredSpace = Config.getInt("SystemRequirements", "freeHardDriveSpace");
+        long requiredSpace = Config.getInt(SR_SECTION, "freeHardDriveSpace");
 
-        if (freeSpaceMB < Config.getInt("SystemRequirements", "freeHardDriveSpace")) {
+        if (freeSpaceMB < Config.getInt(SR_SECTION, "freeHardDriveSpace")) {
             //not enough hard drive space to start the game
-            Log.w("Hard Drive", "Not enough hard drive space to start the game!");
-            Log.w("Hard Drive", requiredSpace + "MB required, but only " + freeSpaceMB + "MB free hard drive space.");
+            Log.w(HARD_DRIVE_TAG, "Not enough hard drive space to start the game!");
+            Log.w(HARD_DRIVE_TAG, requiredSpace + "MB required, but only " + freeSpaceMB + "MB free hard drive space.");
 
             //show error dialog
             JavaFXUtils.startJavaFX();
@@ -39,7 +46,7 @@ public class ResourceChecker {
 
         //check CPU
         int cores = Runtime.getRuntime().availableProcessors();
-        int requiredCores = Config.getInt("SystemRequirements", "minCores");
+        int requiredCores = Config.getInt(SR_SECTION, "minCores");
 
         Log.i("CPU", "cores: " + cores);
 

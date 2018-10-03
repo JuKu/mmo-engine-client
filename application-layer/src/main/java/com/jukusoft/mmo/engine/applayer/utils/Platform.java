@@ -7,6 +7,10 @@ public class Platform {
 
     protected static Queue<Runnable> queue = new ConcurrentLinkedQueue<>();
 
+    protected Platform () {
+        //
+    }
+
     public static void runOnUIThread (Runnable runnable) {
         queue.add(runnable);
     }

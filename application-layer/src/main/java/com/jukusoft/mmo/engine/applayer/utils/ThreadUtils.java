@@ -41,7 +41,7 @@ public class ThreadUtils {
 
         while (!b.get()) {
             try {
-                Thread.currentThread().sleep(5);
+                Thread.sleep(5);
             } catch (InterruptedException e) {
                 Log.w("ThreadUtils", "InterruptedException in method executeOnUIThreadAndWait(): ", e);
             }
