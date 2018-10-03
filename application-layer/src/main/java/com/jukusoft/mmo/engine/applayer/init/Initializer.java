@@ -38,7 +38,7 @@ public class Initializer implements Runnable {
         Log.i("OpenGL", "version: " + glVersion.getMajorVersion() + "." + glVersion.getMajorVersion());
         Log.i("OpenGL", "release version: " + glVersion.getReleaseVersion());
         Log.i("OpenGL", "vendor: " + glVersion.getVendorString());
-        Log.i("OpenGL", "renderer string: " + glVersion.getRendererString());
+        Log.i("OpenGL", "graphics card: " + glVersion.getRendererString());
         Log.i("OpenGL", "type: " + glVersion.getType().name());
 
         int requiredMajor = Config.getInt("SystemRequirements", "openGLMajor");
