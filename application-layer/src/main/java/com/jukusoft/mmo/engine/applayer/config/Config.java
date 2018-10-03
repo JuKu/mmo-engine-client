@@ -3,6 +3,7 @@ package com.jukusoft.mmo.engine.applayer.config;
 import com.badlogic.gdx.files.FileHandle;
 import com.carrotsearch.hppc.ObjectObjectHashMap;
 import com.carrotsearch.hppc.ObjectObjectMap;
+import com.jukusoft.mmo.engine.applayer.logger.Log;
 import org.ini4j.Ini;
 import org.ini4j.Profile;
 
@@ -29,10 +30,14 @@ public class Config {
     public static void load (File file) throws IOException {
         Objects.requireNonNull(file, "config file cannot be null.");
 
-        Logger.getAnonymousLogger().log(Level.INFO, "Load Config: " + file.getAbsolutePath());
+        Log.i("Config", "Load Config: " + file.getAbsolutePath());
 
         if (!file.exists()) {
             throw new IllegalStateException("config file '" + file.getAbsolutePath() + "' doesn't exists!");
+        }
+
+        if (!file.isFile()) {
+            throw new IllegalStateException("config file '" + file.getAbsolutePath() + "' isn't a file!");
         }
 
         Ini ini = new Ini(file);
@@ -45,6 +50,31 @@ public class Config {
             for (Map.Entry<String, String> option : section.entrySet()) {
                 values.put(key + "." + option.getKey(),option.getValue());
             }
+        }
+    }
+
+    public static void loadDir (File dir) throws IOException {
+        if (!dir.isDirectory()) {
+            throw new IllegalArgumentException("dir isn't a directory!");
+        }
+
+        File[] files = dir.listFiles();
+
+        for (File file : files) {
+            //check, if file is a file
+            if (!file.isFile()) {
+                //its a directory, so skip this file instance
+                continue;
+            }
+
+            //check file ending
+            if (!file.getName().endsWith(".cfg") && !file.getName().endsWith(".ini")) {
+                //its not a config file, so skip this file instance
+                Log.v("Config", "skip file: " + file.getAbsolutePath());
+                continue;
+            }
+
+            Config.load(file);
         }
     }
 

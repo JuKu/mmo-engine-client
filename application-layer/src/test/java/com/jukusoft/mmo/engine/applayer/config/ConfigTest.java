@@ -37,8 +37,23 @@ public class ConfigTest {
     }
 
     @Test (expected = IllegalStateException.class)
+    public void testLoadFileWithDir () throws IOException {
+        Config.load(new FileHandle("./"));
+    }
+
+    @Test (expected = IllegalStateException.class)
     public void testGetNotExistentOption () {
         Config.get("test", "not-existent-key");
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testLoadDirWithFile () throws IOException {
+        Config.loadDir(new File("./config/game.cfg"));
+    }
+
+    @Test
+    public void testLoadDir () throws IOException {
+        Config.loadDir(new File("../config/"));
     }
 
 }
