@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.jukusoft.mmo.engine.applayer.config.Config;
+import com.jukusoft.mmo.engine.applayer.init.Initializer;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.splashscreen.SplashScreen;
 import com.jukusoft.mmo.engine.applayer.utils.FilePath;
@@ -23,8 +24,11 @@ public class BaseApp implements ApplicationListener {
     protected static final String CONFIG_TAG = "Config";
     protected static final String SECTION_PATHS = "Paths";
 
-    protected boolean initialized = false;
+    protected Boolean initialized = false;
     protected SplashScreen splashScreen = null;
+
+    protected float elapsed = 0;
+    protected float minInitTime = 1500;
 
     @Override
     public void create() {
@@ -136,6 +140,32 @@ public class BaseApp implements ApplicationListener {
 
             System.exit(1);
         }
+
+        //start new initialize thread
+        Thread initThread = new Thread(() -> {
+            Initializer init = new Initializer(BaseApp.this);
+            init.run();
+
+            BaseApp.this.initFinished();
+        });
+        initThread.setName("game-init");
+        initThread.start();
+    }
+
+    public void initFinished () {
+        synchronized (this.initialized) {
+            while (this.elapsed < this.minInitTime) {
+                //wait
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            this.initialized = true;
+            Log.v("BaseApp", "initFinished() called.");
+        }
     }
 
     @Override
@@ -147,6 +177,11 @@ public class BaseApp implements ApplicationListener {
     public void render() {
         if (!this.initialized) {
             splashScreen.render();
+            this.elapsed += Gdx.graphics.getDeltaTime() * 1000;
+            System.err.println("elapsed: " + elapsed + ", delta: " + (Gdx.graphics.getDeltaTime() * 1000));
+        } else {
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         }
     }
 

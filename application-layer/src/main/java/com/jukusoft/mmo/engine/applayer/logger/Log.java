@@ -92,7 +92,7 @@ public class Log {
      * @param tag log tag
      * @param message log message
     */
-    public static void v (String tag, String message) {
+    public static final void v (String tag, String message) {
         v(tag, message, null);
     }
 
@@ -102,7 +102,7 @@ public class Log {
      * @param tag log tag
      * @param message log message
      */
-    public static void v (String tag, String message, Throwable e) {
+    public static final void v (String tag, String message, Throwable e) {
         log(LEVEL.VERBOSE, tag, message, e);
     }
 
@@ -112,7 +112,7 @@ public class Log {
      * @param tag log tag
      * @param message log message
      */
-    public static void d (String tag, String message) {
+    public static final void d (String tag, String message) {
         d(tag, message, null);
     }
 
@@ -122,7 +122,7 @@ public class Log {
      * @param tag log tag
      * @param message log message
      */
-    public static void d (String tag, String message, Throwable e) {
+    public static final void d (String tag, String message, Throwable e) {
         log(LEVEL.DEBUG, tag, message, e);
     }
 
@@ -132,7 +132,7 @@ public class Log {
      * @param tag log tag
      * @param message log message
      */
-    public static void i (String tag, String message) {
+    public static final void i (String tag, String message) {
         i(tag, message, null);
     }
 
@@ -142,7 +142,7 @@ public class Log {
      * @param tag log tag
      * @param message log message
      */
-    public static void i (String tag, String message, Throwable e) {
+    public static final void i (String tag, String message, Throwable e) {
         log(LEVEL.INFO, tag, message, e);
     }
 
@@ -152,7 +152,7 @@ public class Log {
      * @param tag log tag
      * @param message log message
      */
-    public static void w (String tag, String message) {
+    public static final void w (String tag, String message) {
         w(tag, message, null);
     }
 
@@ -162,7 +162,7 @@ public class Log {
      * @param tag log tag
      * @param message log message
      */
-    public static void w (String tag, String message, Throwable e) {
+    public static final void w (String tag, String message, Throwable e) {
         log(LEVEL.WARN, tag, message, e);
     }
 
@@ -172,7 +172,7 @@ public class Log {
      * @param tag log tag
      * @param message log message
      */
-    public static void e (String tag, String message) {
+    public static final void e (String tag, String message) {
         e(tag, message, null);
     }
 
@@ -182,11 +182,11 @@ public class Log {
      * @param tag log tag
      * @param message log message
      */
-    public static void e (String tag, String message, Throwable e) {
+    public static final void e (String tag, String message, Throwable e) {
         log(LEVEL.ERROR, tag, message, e);
     }
 
-    protected static void log (LEVEL level, String tag, String message, Throwable e) {
+    protected static final void log (LEVEL level, String tag, String message, Throwable e) {
         if (!enabled) {
             //logging isn't enabled
             return;
