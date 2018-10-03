@@ -21,6 +21,8 @@ public class Platform {
 
             if (runnable != null) {
                 runnable.run();
+            } else {
+                break;
             }
         }
     }
