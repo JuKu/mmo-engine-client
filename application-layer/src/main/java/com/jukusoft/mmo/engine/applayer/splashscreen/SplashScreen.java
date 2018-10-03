@@ -29,6 +29,8 @@ public class SplashScreen {
     protected float degree = 0;
     protected float rotationSpeed = 10;
 
+    protected final String SPLASHSCREEN_STR = "Splashscreen";
+
     public SplashScreen () {
         //
     }
@@ -37,22 +39,22 @@ public class SplashScreen {
         this.batch = new SpriteBatch();
 
         //set width & height
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, Config.getInt("Splashscreen", "width"), Config.getInt("Splashscreen", "height"));
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, Config.getInt(SPLASHSCREEN_STR, "width"), Config.getInt(SPLASHSCREEN_STR, "height"));
 
         //load images
-        this.bgTexture = new Texture(Gdx.files.absolute(FilePath.parse(Config.get("Splashscreen", "bgImage"))));
-        this.logoTexture = new Texture(Gdx.files.absolute(FilePath.parse(Config.get("Splashscreen", "logoImage"))));
-        this.animationTexture = new Texture(Gdx.files.absolute(FilePath.parse(Config.get("Splashscreen", "animationImage"))));
+        this.bgTexture = new Texture(Gdx.files.absolute(FilePath.parse(Config.get(SPLASHSCREEN_STR, "bgImage"))));
+        this.logoTexture = new Texture(Gdx.files.absolute(FilePath.parse(Config.get(SPLASHSCREEN_STR, "logoImage"))));
+        this.animationTexture = new Texture(Gdx.files.absolute(FilePath.parse(Config.get(SPLASHSCREEN_STR, "animationImage"))));
 
-        this.logoOffsetX = Config.getInt("Splashscreen", "logoOffsetX");
-        this.logoOffsetY = Config.getInt("Splashscreen", "logoOffsetY");
+        this.logoOffsetX = Config.getInt(SPLASHSCREEN_STR, "logoOffsetX");
+        this.logoOffsetY = Config.getInt(SPLASHSCREEN_STR, "logoOffsetY");
 
-        this.animX = Config.getInt("Splashscreen", "animX");
-        this.animY = Config.getInt("Splashscreen", "animY");
-        this.animWidth = Config.getInt("Splashscreen", "animWidth");
-        this.animHeight = Config.getInt("Splashscreen", "animHeight");
-        this.rotationSpeed = Config.getFloat("Splashscreen", "animSpeed");
-        this.animEnabled = Config.getBool("Splashscreen", "animEnabled");
+        this.animX = Config.getInt(SPLASHSCREEN_STR, "animX");
+        this.animY = Config.getInt(SPLASHSCREEN_STR, "animY");
+        this.animWidth = Config.getInt(SPLASHSCREEN_STR, "animWidth");
+        this.animHeight = Config.getInt(SPLASHSCREEN_STR, "animHeight");
+        this.rotationSpeed = Config.getFloat(SPLASHSCREEN_STR, "animSpeed");
+        this.animEnabled = Config.getBool(SPLASHSCREEN_STR, "animEnabled");
 
         this.anim = new TextureRegion(this.animationTexture);
     }
