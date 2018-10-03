@@ -14,6 +14,8 @@ public class LogWriter implements Runnable {
 
     protected final File file;
 
+    protected static final String LOG_WRITER_TAG = "LogWriter";
+
     //config
     protected final boolean printToConsole;
 
@@ -28,7 +30,7 @@ public class LogWriter implements Runnable {
                     throw new IllegalStateException("Cannot create new log file '" + file.getAbsolutePath() + "'! Maybe wrong file permissions?");
                 }
             } catch (IOException | IllegalStateException e) {
-                Log.w("LogWriter", "Exception while creating new log file: ", e);
+                Log.w(LOG_WRITER_TAG, "Exception while creating new log file: ", e);
             }
         }
     }
@@ -61,9 +63,9 @@ public class LogWriter implements Runnable {
 
             fop.flush();
         } catch (FileNotFoundException e) {
-            Log.w("LogWriter", "Couldn't found log file: " + file.getAbsolutePath(), e);
+            Log.w(LOG_WRITER_TAG, "Couldn't found log file: " + file.getAbsolutePath(), e);
         } catch (IOException e) {
-            Log.w("LogWriter", "IOException while write to log file: " + file.getAbsolutePath(), e);
+            Log.w(LOG_WRITER_TAG, "IOException while write to log file: " + file.getAbsolutePath(), e);
         }
     }
 

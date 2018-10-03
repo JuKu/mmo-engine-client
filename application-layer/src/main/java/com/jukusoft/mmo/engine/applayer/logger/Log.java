@@ -77,6 +77,8 @@ public class Log {
             logWriter = new LogWriter(file, loggingQueue);
             logWriterThread = new Thread(logWriter);
             logWriterThread.setPriority(Thread.MIN_PRIORITY);
+            logWriterThread.setName("log-writer");
+            logWriterThread.setDaemon(false);
 
             //start thread
             logWriterThread.start();
