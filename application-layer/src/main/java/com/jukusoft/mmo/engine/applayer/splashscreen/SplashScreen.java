@@ -21,6 +21,7 @@ public class SplashScreen {
     protected float animWidth = 0;
     protected float animHeight = 0;
 
+    protected boolean animEnabled = false;
     protected TextureRegion anim = null;
 
     protected float degree = 0;
@@ -46,6 +47,7 @@ public class SplashScreen {
         this.animWidth = Config.getInt("Splashscreen", "animWidth");
         this.animHeight = Config.getInt("Splashscreen", "animHeight");
         this.rotationSpeed = Config.getFloat("Splashscreen", "animSpeed");
+        this.animEnabled = Config.getBool("Splashscreen", "animEnabled");
 
         this.anim = new TextureRegion(this.animationTexture);
     }
@@ -67,8 +69,10 @@ public class SplashScreen {
 
         this.degree = (this.degree + Gdx.graphics.getDeltaTime() * this.rotationSpeed) % 360;
 
-        //draw rotating wheel
-        batch.draw(this.anim, this.animX, this.animY, (this.animWidth / 2), (this.animHeight / 2), this.animWidth, this.animHeight, 1, 1, this.degree);
+        if (this.animEnabled) {
+            //draw rotating wheel
+            batch.draw(this.anim, this.animX, this.animY, (this.animWidth / 2), (this.animHeight / 2), this.animWidth, this.animHeight, 1, 1, this.degree);
+        }
 
         batch.end();
     }
