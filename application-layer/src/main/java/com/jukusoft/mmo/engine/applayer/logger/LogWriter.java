@@ -61,9 +61,9 @@ public class LogWriter implements Runnable {
 
             fop.flush();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Log.w("LogWriter", "Couldn't found log file: " + file.getAbsolutePath(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.w("LogWriter", "IOException while write to log file: " + file.getAbsolutePath(), e);
         }
     }
 

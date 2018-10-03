@@ -6,8 +6,8 @@ import com.carrotsearch.hppc.ObjectObjectMap;
 import org.ini4j.Ini;
 import org.ini4j.Profile;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +16,10 @@ public class Config {
 
     //configuration values
     protected static final ObjectObjectMap<String,String> values = new ObjectObjectHashMap<>();
+
+    protected Config () {
+        //
+    }
 
     public static void load (FileHandle file) throws IOException {
         Objects.requireNonNull(file, "config file cannot be null.");
@@ -29,11 +33,12 @@ public class Config {
         Ini ini = new Ini(file.file());
 
         //import all sections
-        for (String sectionName: ini.keySet()) {
-            Profile.Section section = ini.get(sectionName);
+        for (Map.Entry<String, Profile.Section> entry: ini.entrySet()) {
+            String key = entry.getKey();
+            Profile.Section section = entry.getValue();
 
-            for (String option : section.keySet()) {
-                values.put(sectionName + "." + option, section.get(option));
+            for (Map.Entry<String, String> option : section.entrySet()) {
+                values.put(key + "." + option.getKey(),option.getValue());
             }
         }
     }
