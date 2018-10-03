@@ -54,10 +54,12 @@ public class LogWriter implements Runnable {
                         //dont do anything
                     }
                 } else {
+                    str += System.lineSeparator();
+
                     fop.write(str.getBytes());
 
                     if (printToConsole) {
-                        System.out.println(str);
+                        System.out.println(str.substring(0, str.length() - System.lineSeparator().length()));
                     }
                 }
             }

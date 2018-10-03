@@ -1,6 +1,7 @@
 package com.jukusoft.mmo.engine.applayer.logger;
 
 import com.jukusoft.mmo.engine.applayer.config.Config;
+import com.jukusoft.mmo.engine.applayer.utils.FilePath;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -59,8 +60,6 @@ public class Log {
     protected static final String LOGGER_TAG = "Logger";
 
     public static void init () {
-        //first check, if logging is enabled
-
         Log.enabled = Config.getBool(LOGGER_TAG, "enabled");
         Log.printToConsole = Config.getBool(LOGGER_TAG, "printToConsole");
         Log.level = LEVEL.valueOf(Config.get(LOGGER_TAG, "level"));
@@ -68,9 +67,9 @@ public class Log {
         //get format
         format = new SimpleDateFormat(Config.get(LOGGER_TAG, "timeFormat"));
 
-        if (Config.getBool(LOGGER_TAG, "writeToFile")) {
-            //TODO: get file path
-            String filePath = Config.get(LOGGER_TAG, "file");
+        //first check, if logging is enabled
+        if (Log.enabled && Config.getBool(LOGGER_TAG, "writeToFile")) {
+            String filePath = FilePath.parse(Config.get(LOGGER_TAG, "file"));
 
             File file = new File(filePath);
 
@@ -199,8 +198,14 @@ public class Log {
             return;
         }
 
+        StringBuffer sb = new StringBuffer(tag);
+
+        while (sb.length() < 10) {
+            sb.append(" ");
+        }
+
         String timestampStr = format.format(new Date(System.currentTimeMillis()));
-        loggingQueue.add("[" + timestampStr + "] " + level.getShortcut() + "/" + tag + ": " + message);
+        loggingQueue.add("[" + timestampStr + "] " + level.getShortcut() + "/" + sb.toString() + ": " + message);
 
         if (e != null) {
             //print exception in extra line

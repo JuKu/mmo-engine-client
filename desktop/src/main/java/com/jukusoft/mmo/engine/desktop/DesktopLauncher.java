@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.jukusoft.mmo.engine.applayer.base.BaseApp;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.applayer.utils.Utils;
 import com.jukusoft.mmo.engine.desktop.config.WindowConfig;
 
 import java.io.File;
@@ -39,8 +40,15 @@ public class DesktopLauncher {
         //list currently active threads
         Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
 
+        //print log
+        Utils.printSection("Shutdown");
+        Log.i("Shutdown", "Shutdown now.");
+
         //shutdown logger and write all remaining logs to file
         Log.shutdown();
+
+        //wait 200ms, so logs can be written to file
+        Thread.sleep(200);
 
         //check, if there are other active threads, except the main thread
         if (threadSet.size() > 1) {

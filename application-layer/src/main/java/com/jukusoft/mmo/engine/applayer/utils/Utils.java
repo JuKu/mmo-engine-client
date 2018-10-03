@@ -30,6 +30,7 @@ public class Utils {
 
     public static void printSection (final String section) {
         String s = getSection(section);
+        Log.i("-", "");
         Log.i("-", s);
     }
 
