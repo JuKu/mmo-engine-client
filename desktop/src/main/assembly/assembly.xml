@@ -32,6 +32,12 @@
 			<outputDirectory>data</outputDirectory>
 		</fileSet>
 
+		<!-- data directory -->
+		<fileSet>
+			<directory>../temp-empty</directory>
+			<outputDirectory>temp</outputDirectory>
+		</fileSet>
+
 		<!-- docs directory -->
 		<!-- <fileSet>
 			<directory>../docs</directory>
