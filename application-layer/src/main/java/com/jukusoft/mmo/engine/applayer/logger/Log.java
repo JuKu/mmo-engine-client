@@ -216,8 +216,6 @@ public class Log {
     }
 
     public static void shutdown () {
-        //TODO: add code here
-
         logWriterThread.interrupt();
     }
 
