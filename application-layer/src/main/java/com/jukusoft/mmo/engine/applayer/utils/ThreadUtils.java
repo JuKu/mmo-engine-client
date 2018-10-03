@@ -1,5 +1,6 @@
 package com.jukusoft.mmo.engine.applayer.utils;
 
+import com.jukusoft.mmo.engine.applayer.logger.Log;
 import javafx.application.Platform;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -42,7 +43,7 @@ public class ThreadUtils {
             try {
                 Thread.currentThread().sleep(5);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.w("ThreadUtils", "InterruptedException in method executeOnUIThreadAndWait(): ", e);
             }
         }
     }

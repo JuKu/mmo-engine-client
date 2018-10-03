@@ -68,8 +68,8 @@ public class SplashScreen {
         //render background
         batch.draw(this.bgTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        float x = (Gdx.graphics.getWidth() - this.logoTexture.getWidth()) / 2 + this.logoOffsetX;
-        float y = (Gdx.graphics.getHeight() - this.logoTexture.getHeight()) / 2 + this.logoOffsetY;
+        float x = (Gdx.graphics.getWidth() - this.logoTexture.getWidth()) / 2f + this.logoOffsetX;
+        float y = (Gdx.graphics.getHeight() - this.logoTexture.getHeight()) / 2f + this.logoOffsetY;
 
         //draw logo in center
         batch.draw(this.logoTexture, x, y, this.logoTexture.getWidth(), this.logoTexture.getHeight());

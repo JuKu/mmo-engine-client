@@ -159,7 +159,7 @@ public class BaseApp implements ApplicationListener {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                //dont do anything
             }
         }
 
