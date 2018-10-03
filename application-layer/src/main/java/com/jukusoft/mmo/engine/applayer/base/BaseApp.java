@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 public class BaseApp implements ApplicationListener {
 
+    protected static final String VERSION_TAG = "Version";
+
     @Override
     public void create() {
         //load logger config
@@ -31,11 +33,11 @@ public class BaseApp implements ApplicationListener {
         //print game engine version information
         Utils.printSection("Game Engine");
         Version version = new Version(BaseApp.class);
-        Log.i("Version", "Version: " + version.getVersion());
-        Log.i("Version", "Build: " + version.getRevision());
-        Log.i("Version", "Build JDK: " + version.getBuildJdk());
-        Log.i("Version", "Build Time: " + version.getBuildTime());
-        Log.i("Version", "Vendor ID: " + (!version.getVendor().equals("n/a") ? version.getVendor() : version.getVendorID()));
+        Log.i(VERSION_TAG, "Version: " + version.getVersion());
+        Log.i(VERSION_TAG, "Build: " + version.getRevision());
+        Log.i(VERSION_TAG, "Build JDK: " + version.getBuildJdk());
+        Log.i(VERSION_TAG, "Build Time: " + version.getBuildTime());
+        Log.i(VERSION_TAG, "Vendor ID: " + (!version.getVendor().equals("n/a") ? version.getVendor() : version.getVendorID()));
 
         //print libGDX version
         Utils.printSection("libGDX");
