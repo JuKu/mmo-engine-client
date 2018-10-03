@@ -48,6 +48,8 @@ public class BaseApp implements ApplicationListener {
         Log.i("Java", "Java Vendor: " + System.getProperty("java.vendor"));
         Log.i("Java", "Java Vendor URL: " + System.getProperty("java.vendor.url"));
         Log.i("Java", "Java Version: " + System.getProperty("java.version"));
+
+        //TODO: load all config files
     }
 
     @Override

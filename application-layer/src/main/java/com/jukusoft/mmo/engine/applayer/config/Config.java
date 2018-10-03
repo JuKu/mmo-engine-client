@@ -6,6 +6,7 @@ import com.carrotsearch.hppc.ObjectObjectMap;
 import org.ini4j.Ini;
 import org.ini4j.Profile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
@@ -22,15 +23,19 @@ public class Config {
     }
 
     public static void load (FileHandle file) throws IOException {
+        Config.load(file.file());
+    }
+
+    public static void load (File file) throws IOException {
         Objects.requireNonNull(file, "config file cannot be null.");
 
-        Logger.getAnonymousLogger().log(Level.INFO, "Load Config: " + file.path());
+        Logger.getAnonymousLogger().log(Level.INFO, "Load Config: " + file.getAbsolutePath());
 
         if (!file.exists()) {
-            throw new IllegalStateException("config file '" + file.path() + "' doesn't exists!");
+            throw new IllegalStateException("config file '" + file.getAbsolutePath() + "' doesn't exists!");
         }
 
-        Ini ini = new Ini(file.file());
+        Ini ini = new Ini(file);
 
         //import all sections
         for (Map.Entry<String, Profile.Section> entry: ini.entrySet()) {
@@ -60,6 +65,10 @@ public class Config {
 
     public static int getInt (String section, String key) {
         return Integer.parseInt(get(section, key));
+    }
+
+    public static float getFloat (String section, String key) {
+        return Float.parseFloat(get(section, key));
     }
 
 }
