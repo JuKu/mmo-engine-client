@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 public class BaseApp implements ApplicationListener {
 
     protected static final String VERSION_TAG = "Version";
+    protected static final String CONFIG_TAG = "Config";
+    protected static final String SECTION_PATHS = "Paths";
 
     @Override
     public void create() {
@@ -56,22 +58,22 @@ public class BaseApp implements ApplicationListener {
 
             //load all config files
             Utils.printSection("Configuration & Init");
-            Log.i("Config", "load ./config/game.cfg");
+            Log.i(CONFIG_TAG, "load ./config/game.cfg");
 
             try {
                 Config.load(new File("./config/game.cfg"));
             } catch (IOException e) {
-                Log.e("Config", "IOException while loading config file ./config/game.cfg!", e);
+                Log.e(CONFIG_TAG, "IOException while loading config file ./config/game.cfg!", e);
                 throw e;
             }
 
-            String dataDir = FilePath.parse(Config.get("Paths", "dataDir"));
-            String configDir = Config.get("Paths", "configDir");
-            String tempDir = FilePath.parse(Config.get("Paths", "tempDir"));
+            String dataDir = FilePath.parse(Config.get(SECTION_PATHS, "dataDir"));
+            String configDir = Config.get(SECTION_PATHS, "configDir");
+            String tempDir = FilePath.parse(Config.get(SECTION_PATHS, "tempDir"));
 
             //check, if data directory exists
             if (!new File(dataDir).exists()) {
-                Log.e("Config", "data directory '" + dataDir + "' doesn't exists!");
+                Log.e(CONFIG_TAG, "data directory '" + dataDir + "' doesn't exists!");
                 throw new FileNotFoundException("data directory '" + dataDir + "' doesn't exists!");
             }
 
@@ -84,7 +86,7 @@ public class BaseApp implements ApplicationListener {
                 dir = FilePath.parse(dir);
 
                 if (!new File(dir).exists()) {
-                    Log.e("Config", "config directory '" + dir + "' doesn't exists!");
+                    Log.e(CONFIG_TAG, "config directory '" + dir + "' doesn't exists!");
                     throw new FileNotFoundException("config directory '" + dir + "' doesn't exists!");
                 }
             }
@@ -94,18 +96,18 @@ public class BaseApp implements ApplicationListener {
                 new File(tempDir).mkdirs();
             }
 
-            Log.d("Config", "config directory: " + configDir);
-            Log.d("Config", "temp directory: " + tempDir);
+            Log.d(CONFIG_TAG, "config directory: " + configDir);
+            Log.d(CONFIG_TAG, "temp directory: " + tempDir);
 
             FilePath.setConfigDirs(configDir);
             FilePath.setTempDir(tempDir);
 
             //load config directories
-            Log.i("Config", "load config directories with static data");
+            Log.i(CONFIG_TAG, "load config directories with static data");
 
             for (String dir : dirs) {
                 dir = FilePath.parse(dir);
-                Log.d("Config", "load config directory '" + dir + "'");
+                Log.d(CONFIG_TAG, "load config directory '" + dir + "'");
                 Config.loadDir(new File(dir));
             }
         } catch (Exception e) {

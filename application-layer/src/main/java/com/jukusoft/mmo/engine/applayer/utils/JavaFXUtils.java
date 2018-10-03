@@ -1,7 +1,6 @@
 package com.jukusoft.mmo.engine.applayer.utils;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -20,6 +19,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Created by Justin on 30.08.2017.
  */
 public class JavaFXUtils {
+
+    protected JavaFXUtils () {
+        //
+    }
 
     public static void showErrorDialog (String title, String headerText, String content) {
         ThreadUtils.executeInJavaFXThreadAndWait(() -> {

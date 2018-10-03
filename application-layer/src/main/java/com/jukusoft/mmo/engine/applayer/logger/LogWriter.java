@@ -66,7 +66,7 @@ public class LogWriter implements Runnable {
 
             fop.flush();
 
-            if (this.loggingQueue.size() > 0) {
+            if (!this.loggingQueue.isEmpty()) {
                 System.err.println("write " + loggingQueue.size() + " remaining log entries to file...");
 
                 //copy queue, so added logs doesn't have any effect anymore
