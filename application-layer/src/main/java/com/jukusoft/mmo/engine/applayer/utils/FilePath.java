@@ -2,8 +2,14 @@ package com.jukusoft.mmo.engine.applayer.utils;
 
 public class FilePath {
 
+    protected static String dataDir = "";
+
     protected FilePath () {
         //
+    }
+
+    public static void setDataDir (String dataDir) {
+        FilePath.dataDir = dataDir;
     }
 
     public static String parse (String path) {
@@ -14,6 +20,8 @@ public class FilePath {
         //correct file / path seperators to use with libGDX
         path = path.replace("{file.seperator}", System.getProperty("file.separator"));
         path = path.replace("\\", "/");
+
+        path = path.replace("/./", "/");
 
         return path;
     }

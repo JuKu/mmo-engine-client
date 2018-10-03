@@ -19,6 +19,8 @@ public class Config {
     //configuration values
     protected static final ObjectObjectMap<String,String> values = new ObjectObjectHashMap<>();
 
+    public static boolean forceExit = true;
+
     protected Config () {
         //
     }

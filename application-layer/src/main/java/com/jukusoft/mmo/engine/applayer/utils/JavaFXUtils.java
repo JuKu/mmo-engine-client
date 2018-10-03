@@ -1,6 +1,7 @@
 package com.jukusoft.mmo.engine.applayer.utils;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -13,6 +14,7 @@ import javafx.stage.Stage;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Justin on 30.08.2017.
@@ -20,63 +22,79 @@ import java.util.Optional;
 public class JavaFXUtils {
 
     public static void showErrorDialog (String title, String headerText, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(headerText);
-        alert.setContentText(content);
+        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(headerText);
+            alert.setContentText(content);
 
-        alert.showAndWait();
+            alert.showAndWait();
+        });
     }
 
     public static void showErrorDialog (String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
+        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(content);
 
-        alert.showAndWait();
+            alert.showAndWait();
+        });
     }
 
     public static void showInfoDialog (String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
+        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(content);
 
-        alert.showAndWait();
+            alert.showAndWait();
+        });
     }
 
     public static boolean showConfirmationDialog (String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
+        AtomicBoolean b = new AtomicBoolean(false);
 
-        Optional<ButtonType> result = alert.showAndWait();
+        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(content);
 
-        if (!result.isPresent()) {
-            return false;
-        }
+            Optional<ButtonType> result = alert.showAndWait();
 
-        return result.get() == ButtonType.OK;
+            if (!result.isPresent()) {
+                return;
+            }
+
+            b.set(result.get() == ButtonType.OK);
+        });
+
+        return b.get();
     }
 
     public static void showExceptionDialog (String title, String headerText, String content, Throwable e) {
         //Source: http://code.makery.ch/blog/javafx-dialogs-official/
 
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(headerText);
-        showExceptionDlg(alert, content, e);
+        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(headerText);
+            showExceptionDlg(alert, content, e);
+        });
     }
 
     public static void showExceptionDialog (String title, String content, Throwable e) {
         //Source: http://code.makery.ch/blog/javafx-dialogs-official/
 
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        showExceptionDlg(alert, content, e);
+        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            showExceptionDlg(alert, content, e);
+        });
     }
 
     private static void showExceptionDlg (Alert alert, String content, Throwable e) {
@@ -115,11 +133,17 @@ public class JavaFXUtils {
         //Application.launch(JavaFXApplication.class);
     }
 
-    public class JavaFXApplication extends Application {
+    public static class JavaFXApplication extends Application {
+
+        public JavaFXApplication () {
+            //
+        }
+
         @Override
         public void start(Stage primaryStage) throws Exception {
             //
         }
+
     }
 
 }

@@ -3,6 +3,7 @@ package com.jukusoft.mmo.engine.desktop;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.jukusoft.mmo.engine.applayer.base.BaseApp;
+import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.utils.Utils;
 import com.jukusoft.mmo.engine.desktop.config.WindowConfig;
@@ -65,7 +66,9 @@ public class DesktopLauncher {
         System.err.println("shutdown JVM now.");
 
         //force JVM shutdown
-        System.exit(0);
+        if (Config.forceExit) {
+            System.exit(0);
+        }
     }
 
 }

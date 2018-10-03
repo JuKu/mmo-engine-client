@@ -65,6 +65,35 @@ public class LogWriter implements Runnable {
             }
 
             fop.flush();
+
+            if (this.loggingQueue.size() > 0) {
+                System.err.println("write " + loggingQueue.size() + " remaining log entries to file...");
+
+                //copy queue, so added logs doesn't have any effect anymore
+                ConcurrentLinkedQueue<String> queueCopy = new ConcurrentLinkedQueue<>(this.loggingQueue);
+
+                //write remaining logs
+                for (int i = 0; i < queueCopy.size(); i++) {
+                    //get and remove element from queue
+                    String str = loggingQueue.poll();
+
+                    if (str == null) {
+                        fop.flush();
+                        break;
+                    } else {
+                        str += System.lineSeparator();
+
+                        fop.write(str.getBytes());
+
+                        if (printToConsole) {
+                            System.out.println(str.substring(0, str.length() - System.lineSeparator().length()));
+                        }
+                    }
+                }
+
+                fop.flush();
+                System.err.println("logs are written successfully! Shutdown LogWriter thread now.");
+            }
         } catch (FileNotFoundException e) {
             Log.w(LOG_WRITER_TAG, "Couldn't found log file: " + file.getAbsolutePath(), e);
         } catch (IOException e) {
