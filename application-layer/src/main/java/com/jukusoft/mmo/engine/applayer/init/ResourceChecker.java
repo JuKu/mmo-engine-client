@@ -1,20 +1,19 @@
-package com.jukusoft.mmo.engine.applayer.resources;
+package com.jukusoft.mmo.engine.applayer.init;
 
 import com.badlogic.gdx.Gdx;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
-import com.jukusoft.mmo.engine.applayer.utils.FilePath;
-import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
-import com.jukusoft.mmo.engine.applayer.utils.Utils;
+import com.jukusoft.mmo.engine.applayer.utils.*;
 import org.jutils.jhardware.HardwareInfo;
 import org.jutils.jhardware.model.MemoryInfo;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ResourceChecker {
 
     public static void check () {
-        Utils.printSection("Resource Checker");
+        Utils.printSection("Check system resources");
 
         File dir = new File(FilePath.getTempDir());
         long totalSpace = dir.getTotalSpace();
@@ -43,16 +42,19 @@ public class ResourceChecker {
 
         //check CPU
         int cores = Runtime.getRuntime().availableProcessors();
+        int requiredCores = Config.getInt("SystemRequirements", "minCores");
 
-        //check RAM (in MB)
-        MemoryInfo memoryInfo = HardwareInfo.getMemoryInfo();
-        long freeMemory = Long.parseLong(memoryInfo.getFreeMemory()) / 1024;
-        long maxMemory = Long.parseLong(memoryInfo.getTotalMemory()) / 1024;
-        long availableMemory = Long.parseLong(memoryInfo.getAvailableMemory()) / 1024;
+        Log.i("CPU", "cores: " + cores);
 
-        Log.i("RAM", "free memory: " + freeMemory + " GB");
-        Log.i("RAM", "max memory: " + maxMemory + " GB");
-        Log.i("RAM", "available memory: " + availableMemory + " GB");
+        if (cores < requiredCores) {
+            Log.w("CPU", "Not enough cores to play the game, value: " + cores + ", required cores: " + requiredCores);
+
+            //show error dialog
+            JavaFXUtils.startJavaFX();
+            JavaFXUtils.showErrorDialog("Not enough cores to play the game, value: " + cores + ", required cores: " + requiredCores);
+
+            Gdx.app.exit();
+        }
     }
 
 }

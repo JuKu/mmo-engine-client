@@ -9,6 +9,7 @@ import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.splashscreen.SplashScreen;
 import com.jukusoft.mmo.engine.applayer.utils.FilePath;
 import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
+import com.jukusoft.mmo.engine.applayer.utils.Platform;
 import com.jukusoft.mmo.engine.applayer.utils.Utils;
 import com.jukusoft.mmo.engine.applayer.version.Version;
 
@@ -153,19 +154,20 @@ public class BaseApp implements ApplicationListener {
     }
 
     public void initFinished () {
-        synchronized (this.initialized) {
-            while (this.elapsed < this.minInitTime) {
-                //wait
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while (this.elapsed < this.minInitTime) {
+            //wait
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-            this.initialized = true;
-            Log.v("BaseApp", "initFinished() called.");
         }
+
+        Log.v("BaseApp", "initFinished() called.");
+
+        Platform.runOnUIThread(() -> {
+            this.initialized = true;
+        });
     }
 
     @Override
@@ -175,6 +177,9 @@ public class BaseApp implements ApplicationListener {
 
     @Override
     public void render() {
+        //run tasks which have to be executed in ui thread
+        Platform.executeQueue();
+
         if (!this.initialized) {
             splashScreen.render();
             this.elapsed += Gdx.graphics.getDeltaTime() * 1000;

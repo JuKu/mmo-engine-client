@@ -29,4 +29,22 @@ public class ThreadUtils {
         }
     }
 
+    public static void executeOnUIThreadAndWait (Runnable runnable) {
+        AtomicBoolean b = new AtomicBoolean(false);
+
+        com.jukusoft.mmo.engine.applayer.utils.Platform.runOnUIThread(() -> {
+            runnable.run();
+
+            b.set(true);
+        });
+
+        while (!b.get()) {
+            try {
+                Thread.currentThread().sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
