@@ -50,6 +50,23 @@ public class Initializer implements Runnable {
             error("Required OpenGL version not available, current version: " + glVersion.getMajorVersion() + "." + glVersion.getMajorVersion() + ", required version: " + requiredMajor + "." + requiredMinor);
         }
 
+        //check OpenGL extensions
+        String requiredExtensions = Config.get("SystemRequirements", "openGLExtensions");
+        final String[] extensions = requiredExtensions.split(";");
+
+        //check, if required extensions are available
+        ThreadUtils.executeOnUIThreadAndWait(() -> {
+            for (String extension : extensions) {
+                if (extension.equals("none")) {
+                    continue;
+                }
+
+                if (!Gdx.graphics.supportsExtension(extension)) {
+                    error("Required OpenGL extension is not available: " + extension);
+                }
+            }
+        });
+
         //run GC to cleanup initialization process
         System.gc();
     }
