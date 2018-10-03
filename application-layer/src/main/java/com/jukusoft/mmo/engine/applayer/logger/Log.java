@@ -56,19 +56,21 @@ public class Log {
 
     protected static SimpleDateFormat format = null;
 
+    protected static final String LOGGER_TAG = "Logger";
+
     public static void init () {
         //first check, if logging is enabled
 
-        Log.enabled = Config.getBool("Logger", "enabled");
-        Log.printToConsole = Config.getBool("Logger", "printToConsole");
-        Log.level = LEVEL.valueOf(Config.get("Logger", "level"));
+        Log.enabled = Config.getBool(LOGGER_TAG, "enabled");
+        Log.printToConsole = Config.getBool(LOGGER_TAG, "printToConsole");
+        Log.level = LEVEL.valueOf(Config.get(LOGGER_TAG, "level"));
 
         //get format
-        format = new SimpleDateFormat(Config.get("Logger", "timeFormat"));
+        format = new SimpleDateFormat(Config.get(LOGGER_TAG, "timeFormat"));
 
-        if (Config.getBool("Logger", "writeToFile")) {
+        if (Config.getBool(LOGGER_TAG, "writeToFile")) {
             //TODO: get file path
-            String filePath = Config.get("Logger", "file");
+            String filePath = Config.get(LOGGER_TAG, "file");
 
             File file = new File(filePath);
 
