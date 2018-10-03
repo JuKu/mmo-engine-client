@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class Config {
 
     //configuration values
-    public static ObjectObjectMap<String,String> values = new ObjectObjectHashMap<>();
+    protected static final ObjectObjectMap<String,String> values = new ObjectObjectHashMap<>();
 
     public static void load (FileHandle file) throws IOException {
         Objects.requireNonNull(file, "config file cannot be null.");

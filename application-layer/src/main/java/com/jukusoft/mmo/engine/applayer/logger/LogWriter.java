@@ -24,9 +24,11 @@ public class LogWriter implements Runnable {
 
         if (!this.file.exists()) {
             try {
-                this.file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
+                if (!this.file.createNewFile()) {
+                    throw new IllegalStateException("Cannot create new log file '" + file.getAbsolutePath() + "'! Maybe wrong file permissions?");
+                }
+            } catch (IOException | IllegalStateException e) {
+                Log.w("LogWriter", "Exception while creating new log file: ", e);
             }
         }
     }
