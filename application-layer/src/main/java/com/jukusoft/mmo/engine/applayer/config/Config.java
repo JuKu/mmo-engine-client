@@ -54,6 +54,10 @@ public class Config {
     }
 
     public static void loadDir (File dir) throws IOException {
+        if (!dir.exists()) {
+            throw new IllegalStateException("config directory doesn't exists: " + dir.getAbsolutePath());
+        }
+
         if (!dir.isDirectory()) {
             throw new IllegalArgumentException("dir isn't a directory!");
         }

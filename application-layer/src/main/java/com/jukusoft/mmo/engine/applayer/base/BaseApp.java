@@ -78,7 +78,7 @@ public class BaseApp implements ApplicationListener {
             }
 
             String dataDir = FilePath.parse(Config.get(SECTION_PATHS, "dataDir"));
-            String configDir = Config.get(SECTION_PATHS, "configDir");
+            String configDir = FilePath.parse(Config.get(SECTION_PATHS, "configDir"));
             String tempDir = FilePath.parse(Config.get(SECTION_PATHS, "tempDir"));
 
             //check, if data directory exists
@@ -97,12 +97,16 @@ public class BaseApp implements ApplicationListener {
 
                 if (!new File(dir).exists()) {
                     Log.e(CONFIG_TAG, "config directory '" + dir + "' doesn't exists!");
-                    throw new FileNotFoundException("config directory '" + dir + "' doesn't exists!");
+                    //throw new FileNotFoundException("config directory '" + dir + "' doesn't exists!");
+
+                    Log.i(CONFIG_TAG, "Create config directory now: " + dir);
+                    new File(dir).mkdirs();
                 }
             }
 
             //check, if temp directory exists, else create temp directory
             if (!new File(tempDir).exists()) {
+                Log.i(CONFIG_TAG, "create new temp directory: " + tempDir);
                 new File(tempDir).mkdirs();
             }
 

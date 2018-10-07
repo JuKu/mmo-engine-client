@@ -34,4 +34,11 @@ public class FilePathTest {
         assertEquals("./temp/", FilePath.getTempDir());
     }
 
+    @Test
+    public void testGetSystemProperties () {
+        for (String property : System.getProperties().stringPropertyNames()) {
+            System.out.println("system property: " + property + ", value: " + System.getProperty(property));
+        }
+    }
+
 }

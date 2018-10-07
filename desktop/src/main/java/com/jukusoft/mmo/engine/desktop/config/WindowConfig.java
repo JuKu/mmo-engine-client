@@ -20,6 +20,8 @@ public class WindowConfig {
     * default constructor
      *
      * @param filePath path to config file
+     *
+     * @throws IOException if config couldn't be loaded
     */
     public WindowConfig(String filePath) throws IOException {
         if (filePath == null) {

@@ -38,7 +38,7 @@ public class ConfigTest {
 
     @Test (expected = IllegalStateException.class)
     public void testLoadFileWithDir () throws IOException {
-        Config.load(new FileHandle("./"));
+        Config.load(new FileHandle("../"));
     }
 
     @Test (expected = IllegalStateException.class)
@@ -46,9 +46,14 @@ public class ConfigTest {
         Config.get("test", "not-existent-key");
     }
 
+    @Test (expected = IllegalStateException.class)
+    public void testLoadNotExistentDir () throws IOException {
+        Config.loadDir(new File("../not-existent-dir/"));
+    }
+
     @Test (expected = IllegalArgumentException.class)
     public void testLoadDirWithFile () throws IOException {
-        Config.loadDir(new File("./config/game.cfg"));
+        Config.loadDir(new File("../config/game.cfg"));
     }
 
     @Test
