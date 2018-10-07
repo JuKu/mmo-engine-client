@@ -78,8 +78,6 @@ public class BaseApp implements ApplicationListener {
             }
 
             String dataDir = FilePath.parse(Config.get(SECTION_PATHS, "dataDir"));
-            String configDir = FilePath.parse(Config.get(SECTION_PATHS, "configDir"));
-            String tempDir = FilePath.parse(Config.get(SECTION_PATHS, "tempDir"));
 
             //check, if data directory exists
             if (!new File(dataDir).exists()) {
@@ -88,6 +86,9 @@ public class BaseApp implements ApplicationListener {
             }
 
             FilePath.setDataDir(dataDir);
+
+            String configDir = FilePath.parse(Config.get(SECTION_PATHS, "configDir"));
+            String tempDir = FilePath.parse(Config.get(SECTION_PATHS, "tempDir"));
 
             //check, if config directories exists
             String[] dirs = configDir.split(";");
