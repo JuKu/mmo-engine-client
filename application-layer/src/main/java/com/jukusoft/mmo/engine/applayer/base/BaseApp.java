@@ -130,7 +130,7 @@ public class BaseApp implements ApplicationListener {
 
             //load internationalization system
             Log.i("i18n", "Load i18n GNU gettext...");
-            File langFolder = new File(Config.get("i18n", "langFolder"));
+            File langFolder = new File(FilePath.parse(Config.get("i18n", "langFolder")));
             I.init(langFolder, Locale.forLanguageTag(Config.getOrDefault("i18n", "lang", "en")), "messages");
             Log.i("i18n", "langFolder: " + langFolder.getAbsolutePath());
 

@@ -69,6 +69,10 @@ public class Initializer implements Runnable {
                 }
             }
         });
+
+        //TODO: check, if client is up to date
+
+        //TODO: check, which servers are available
     }
 
     protected void error (String content) {
