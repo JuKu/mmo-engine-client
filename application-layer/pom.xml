@@ -56,6 +56,13 @@
 			<version>${libgdx.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- GNU gettext internationalization -->
+		<dependency>
+			<groupId>com.jukusoft</groupId>
+			<artifactId>easy-i18n-gettext</artifactId>
+			<version>${i18n.gettext.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -93,6 +93,17 @@ public class Config {
         return values.get(option);
     }
 
+    public static String getOrDefault (String section, String key, String defaultValue) {
+        String option = section + "." + key;
+
+        //first check, if key exists
+        if (!values.containsKey(option)) {
+            return defaultValue;
+        }
+
+        return values.get(option);
+    }
+
     public static boolean getBool (String section, String key) {
         return Boolean.parseBoolean(get(section, key));
     }

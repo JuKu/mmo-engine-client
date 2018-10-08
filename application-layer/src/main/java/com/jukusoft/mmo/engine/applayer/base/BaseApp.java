@@ -3,6 +3,7 @@ package com.jukusoft.mmo.engine.applayer.base;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.init.Initializer;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
@@ -16,6 +17,7 @@ import com.jukusoft.mmo.engine.applayer.version.Version;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -125,6 +127,12 @@ public class BaseApp implements ApplicationListener {
                 Log.d(CONFIG_TAG, "load config directory '" + dir + "'");
                 Config.loadDir(new File(dir));
             }
+
+            //load internationalization system
+            Log.i("i18n", "Load i18n GNU gettext...");
+            File langFolder = new File(Config.get("i18n", "langFolder"));
+            I.init(langFolder, Locale.forLanguageTag(Config.getOrDefault("i18n", "lang", "en")), "messages");
+            Log.i("i18n", "langFolder: " + langFolder.getAbsolutePath());
 
             Log.d("Splashscreen", "load splash screen");
 

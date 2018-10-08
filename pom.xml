@@ -81,6 +81,9 @@
 		<!-- jhardware to get hardware information -->
 		<jhardware.version>0.8.5</jhardware.version>
 
+		<!-- GNU gettext internationalization -->
+		<i18n.gettext.version>1.0.0</i18n.gettext.version>
+
 		<!-- format maven build timestamp to add to manifest -->
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
