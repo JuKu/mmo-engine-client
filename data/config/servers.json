@@ -1,0 +1,16 @@
+{
+	"servers": [
+		{
+			"ip": "127.0.0.1",
+			"port": 2222,
+			"title": "Local server",
+			"description": "local self-hosted server"
+		},
+		{
+			"ip": "127.0.0.1",
+			"port": 2223,
+			"title": "Test Server",
+			"description": "Test Server"
+		}
+	]
+}

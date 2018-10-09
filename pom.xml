@@ -14,6 +14,7 @@
 		<module>game-view-layer</module>
 		<module>main</module>
 		<module>desktop</module>
+		<module>shared-library</module>
 	</modules>
 
 	<name>MMO Game Engine - Client</name>
@@ -85,6 +86,9 @@
 
 		<!-- GNU gettext internationalization -->
 		<i18n.gettext.version>1.0.1</i18n.gettext.version>
+
+		<!-- don't deploy all modules to maven central, only shared-commons-library -->
+		<maven.deploy.skip>true</maven.deploy.skip>
 
 		<!-- format maven build timestamp to add to manifest -->
 		<timestamp>${maven.build.timestamp}</timestamp>

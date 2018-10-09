@@ -6,13 +6,12 @@ import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.base.BaseApp;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
-import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
-import com.jukusoft.mmo.engine.applayer.utils.ThreadUtils;
-import com.jukusoft.mmo.engine.applayer.utils.Utils;
-import com.jukusoft.mmo.engine.applayer.utils.WebUtils;
+import com.jukusoft.mmo.engine.applayer.network.ServerManager;
+import com.jukusoft.mmo.engine.applayer.utils.*;
 import com.jukusoft.mmo.engine.applayer.version.Version;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -80,7 +79,15 @@ public class Initializer implements Runnable {
         checkForUpdates("Engine", Initializer.class);
         checkForUpdates("Game", Initializer.class);
 
-        //TODO: check, which servers are available
+        //check, which servers are available
+        Log.i("Servers", "load server config");
+        try {
+            ServerManager.getInstance().loadFromConfig(new File(FilePath.parse("{data.dir}")));
+        } catch (IOException e) {
+            Log.e("Servers", "error while checking for online servers: ", e);
+            JavaFXUtils.showExceptionDialog(I.tr("Server Error!"), "IOException: ", e);
+            Gdx.app.exit();
+        }
     }
 
     protected void error (String content) {
