@@ -83,14 +83,24 @@ public class Initializer implements Runnable {
         //check, which servers are available
         Log.i(SERVERS_TAG, "load server config");
         try {
-            ServerManager.getInstance().loadFromConfig(new File(FilePath.parse("{data.dir}")));
+            ServerManager.getInstance().loadFromConfig(new File(FilePath.parse("{data.dir}config/servers.json")));
         } catch (IOException e) {
             Log.e(SERVERS_TAG, "error while checking for online servers: ", e);
             JavaFXUtils.showExceptionDialog(I.tr("Server Error!"), "IOException: ", e);
             Gdx.app.exit();
         }
 
-        Log.i(SERVERS_TAG, "" + ServerManager.getInstance().listServers().size() + " servers are currently online.");
+        Log.i(SERVERS_TAG, "" + ServerManager.getInstance().listServers().size() + " servers in configuration file found.");
+
+        int onlineServerCount = 0;
+
+        for (ServerManager.Server server : ServerManager.getInstance().listServers()) {
+            if (server.online) {
+                onlineServerCount++;
+            }
+        }
+
+        Log.i(SERVERS_TAG, "" + onlineServerCount + " servers are currently online.");
     }
 
     protected void error (String content) {
