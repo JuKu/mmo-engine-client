@@ -82,7 +82,7 @@
 		<jhardware.version>0.8.5</jhardware.version>
 
 		<!-- GNU gettext internationalization -->
-		<i18n.gettext.version>1.0.0</i18n.gettext.version>
+		<i18n.gettext.version>1.0.1</i18n.gettext.version>
 
 		<!-- format maven build timestamp to add to manifest -->
 		<timestamp>${maven.build.timestamp}</timestamp>
