@@ -1,0 +1,27 @@
+# MMO Client Engine
+#
+# Attention! Don't edit this file manually! This file is auto generated and will be overriden!
+#
+# Copyright (c) 2018 JuKuSoft.com
+# This file is distributed under the same license as the mmo-engine-client-application-layer package.
+# JuKu my-mail@example.com, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 102018-10-10 01:40:255+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Auto generated file\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: file Initializer.java line 88
+msgid "Server Error!"
+msgstr "Server Error!"
+
+#: file Initializer.java line 120
+msgid "Updater"
+msgstr "Updater"

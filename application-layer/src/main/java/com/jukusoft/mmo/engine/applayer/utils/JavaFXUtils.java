@@ -26,9 +26,9 @@ public class JavaFXUtils {
     }
 
     public static void showErrorDialog (String title, String headerText, String content) {
-        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
-            JavaFXUtils.startJavaFX();
+        JavaFXUtils.startJavaFX();
 
+        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(title);
             alert.setHeaderText(headerText);
@@ -39,9 +39,9 @@ public class JavaFXUtils {
     }
 
     public static void showErrorDialog (String title, String content) {
-        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
-            JavaFXUtils.startJavaFX();
+        JavaFXUtils.startJavaFX();
 
+        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(title);
             alert.setHeaderText(null);

@@ -85,7 +85,7 @@
 		<jhardware.version>0.8.5</jhardware.version>
 
 		<!-- GNU gettext internationalization -->
-		<i18n.gettext.version>1.0.1</i18n.gettext.version>
+		<i18n.gettext.version>1.0.2</i18n.gettext.version>
 
 		<!-- don't deploy all modules to maven central, only shared-commons-library -->
 		<maven.deploy.skip>true</maven.deploy.skip>
@@ -180,6 +180,36 @@
 					</execution>
 				</executions>
 			</plugin> -->
+
+			<plugin>
+				<groupId>com.jukusoft</groupId>
+				<artifactId>gettext-maven-plugin</artifactId>
+				<version>${i18n.gettext.version}</version>
+				<configuration>
+					<outputDir>data/i18n/</outputDir>
+					<defaultDomain>messages</defaultDomain>
+
+					<header>
+						<title>MMO Client Engine</title>
+						<copyright>Copyright (c) 2018 JuKuSoft.com</copyright>
+						<license>This file is distributed under the same license as the ${project.name} package.</license>
+						<author>JuKu my-mail@example.com, 2018.</author>
+						<version>${project.version}</version>
+					</header>
+
+					<srcDirs>
+						<dir>${project.basedir}/src</dir>
+					</srcDirs>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>generatepot</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 			<plugin>
 				<groupId>org.jacoco</groupId>
