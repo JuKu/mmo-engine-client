@@ -79,8 +79,6 @@ public class Initializer implements Runnable {
         checkForUpdates("Engine", Initializer.class);
         checkForUpdates("Game", Initializer.class);
 
-        //TODO: check, if client is up to date
-
         //TODO: check, which servers are available
     }
 
