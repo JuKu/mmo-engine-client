@@ -21,6 +21,7 @@ public class Initializer implements Runnable {
     protected final BaseApp app;
 
     protected final String OPENGL_TAG = "OpenGL";
+    protected final String UPDATE_TAG = "Update";
     protected final String SR_SECTION = "SystemRequirements";
 
     public Initializer (BaseApp app) {
@@ -91,12 +92,12 @@ public class Initializer implements Runnable {
     }
 
     protected void checkForUpdates (String name, Class<?> cls) {
-        if (Config.getBool("Update", "checkFor" + name + "Updates")) {
-            Log.i("Update", "Check for " + name.toLowerCase() + " updates now...");
-            String updateUrl = Config.get("Update", name.toLowerCase() + "UpdateUrl");
+        if (Config.getBool(UPDATE_TAG, "checkFor" + name + "Updates")) {
+            Log.i(UPDATE_TAG, "Check for " + name.toLowerCase() + " updates now...");
+            String updateUrl = Config.get(UPDATE_TAG, name.toLowerCase() + "UpdateUrl");
 
             try {
-                String content = WebUtils.readContentFromWebsite(Config.get("Update", name.toLowerCase() + "UpdateUrl"));
+                String content = WebUtils.readContentFromWebsite(Config.get(UPDATE_TAG, name.toLowerCase() + "UpdateUrl"));
                 JSONObject json = new JSONObject(content);
 
                 Version version = new Version(cls);
@@ -104,11 +105,11 @@ public class Initializer implements Runnable {
 
                 //compare versions
                 if (version.getFullVersion().equals(onlineVersion)) {
-                    Log.i("Update",  name + " is up to date!");
+                    Log.i(UPDATE_TAG,  name + " is up to date!");
                 } else {
-                    Log.w("Update", name + " isn't up to date! Current version: " + version.getFullVersion() + ", available version: " + onlineVersion);
+                    Log.w(UPDATE_TAG, name + " isn't up to date! Current version: " + version.getFullVersion() + ", available version: " + onlineVersion);
 
-                    if (Config.getBool("Update", "warnOnOutdated" + name + "Version")) {
+                    if (Config.getBool(UPDATE_TAG, "warnOnOutdated" + name + "Version")) {
                         JavaFXUtils.showErrorDialog(I.tr("Updater"), name  + " version isn't up to date! Current version: " + version.getFullVersion() + ", available version: " + onlineVersion);
                     }
                 }
