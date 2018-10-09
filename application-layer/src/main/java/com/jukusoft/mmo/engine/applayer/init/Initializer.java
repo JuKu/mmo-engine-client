@@ -21,6 +21,7 @@ public class Initializer implements Runnable {
 
     protected final String OPENGL_TAG = "OpenGL";
     protected final String UPDATE_TAG = "Update";
+    protected final String SERVERS_TAG = "Servers";
     protected final String SR_SECTION = "SystemRequirements";
 
     public Initializer (BaseApp app) {
@@ -80,14 +81,16 @@ public class Initializer implements Runnable {
         checkForUpdates("Game", Initializer.class);
 
         //check, which servers are available
-        Log.i("Servers", "load server config");
+        Log.i(SERVERS_TAG, "load server config");
         try {
             ServerManager.getInstance().loadFromConfig(new File(FilePath.parse("{data.dir}")));
         } catch (IOException e) {
-            Log.e("Servers", "error while checking for online servers: ", e);
+            Log.e(SERVERS_TAG, "error while checking for online servers: ", e);
             JavaFXUtils.showExceptionDialog(I.tr("Server Error!"), "IOException: ", e);
             Gdx.app.exit();
         }
+
+        Log.i(SERVERS_TAG, "" + ServerManager.getInstance().listServers().size() + " servers are currently online.");
     }
 
     protected void error (String content) {
