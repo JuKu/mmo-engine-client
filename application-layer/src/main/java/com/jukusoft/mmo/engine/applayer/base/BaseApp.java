@@ -100,7 +100,6 @@ public class BaseApp implements ApplicationListener {
 
                 if (!new File(dir).exists()) {
                     Log.e(CONFIG_TAG, "config directory '" + dir + "' doesn't exists!");
-                    //throw new FileNotFoundException("config directory '" + dir + "' doesn't exists!");
 
                     Log.i(CONFIG_TAG, "Create config directory now: " + dir);
                     new File(dir).mkdirs();
