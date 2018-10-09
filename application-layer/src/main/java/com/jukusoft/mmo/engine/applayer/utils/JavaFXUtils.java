@@ -37,6 +37,8 @@ public class JavaFXUtils {
     }
 
     public static void showErrorDialog (String title, String content) {
+        JavaFXUtils.startJavaFX();
+
         ThreadUtils.executeInJavaFXThreadAndWait(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(title);

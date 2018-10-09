@@ -26,6 +26,13 @@
 			<version>${ini4j.version}</version>
 		</dependency>
 
+		<!-- org.json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>${org.json.version}</version>
+		</dependency>
+
 		<!-- get hardware information -->
 		<dependency>
 			<groupId>org.jhardware</groupId>

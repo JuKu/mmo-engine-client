@@ -2,13 +2,18 @@ package com.jukusoft.mmo.engine.applayer.init;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.GLVersion;
+import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.base.BaseApp;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
 import com.jukusoft.mmo.engine.applayer.utils.ThreadUtils;
 import com.jukusoft.mmo.engine.applayer.utils.Utils;
+import com.jukusoft.mmo.engine.applayer.utils.WebUtils;
+import com.jukusoft.mmo.engine.applayer.version.Version;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Initializer implements Runnable {
@@ -70,6 +75,10 @@ public class Initializer implements Runnable {
             }
         });
 
+        //check for updates
+        checkForUpdates("Engine", Initializer.class);
+        checkForUpdates("Game", Initializer.class);
+
         //TODO: check, if client is up to date
 
         //TODO: check, which servers are available
@@ -81,6 +90,34 @@ public class Initializer implements Runnable {
         JavaFXUtils.showErrorDialog(content);
 
         Gdx.app.exit();
+    }
+
+    protected void checkForUpdates (String name, Class<?> cls) {
+        if (Config.getBool("Update", "checkFor" + name + "Updates")) {
+            Log.i("Update", "Check for " + name.toLowerCase() + " updates now...");
+            String updateUrl = Config.get("Update", name.toLowerCase() + "UpdateUrl");
+
+            try {
+                String content = WebUtils.readContentFromWebsite(Config.get("Update", name.toLowerCase() + "UpdateUrl"));
+                JSONObject json = new JSONObject(content);
+
+                Version version = new Version(cls);
+                String onlineVersion = json.getString("full-version");
+
+                //compare versions
+                if (version.getFullVersion().equals(onlineVersion)) {
+                    Log.i("Update",  name + " is up to date!");
+                } else {
+                    Log.w("Update", name + " isn't up to date! Current version: " + version.getFullVersion() + ", available version: " + onlineVersion);
+
+                    if (Config.getBool("Update", "warnOnOutdated" + name + "Version")) {
+                        JavaFXUtils.showErrorDialog(I.tr("Updater"), name  + " version isn't up to date! Current version: " + version.getFullVersion() + ", available version: " + onlineVersion);
+                    }
+                }
+            } catch (IOException e) {
+                Log.w("Update", "Couldn't get update data from url: " + updateUrl, e);
+            }
+        }
     }
 
 }
