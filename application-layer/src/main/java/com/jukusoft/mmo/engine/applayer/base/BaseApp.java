@@ -235,13 +235,14 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
                             try {
                                 Thread.sleep(timePerGameLogicGameloopTick - diffTime);
                             } catch (InterruptedException e) {
-                                //don't do anything here
+                                break;
                             }
                         }
                     }
 
                     Log.i("Threads", "closing game-logic-layer thread now.");
                 });
+                this.gameLogicThread.setName("game-logic-thread");
                 this.gameLogicThread.start();
             }
 
