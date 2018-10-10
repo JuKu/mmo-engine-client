@@ -219,7 +219,7 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
                     long endTime = 0;
                     long diffTime = 0;
 
-                    while (Thread.interrupted()) {
+                    while (!Thread.interrupted()) {
                         startTime = System.currentTimeMillis();
 
                         extraThreadSubSystems.iterator().forEachRemaining(system -> {
