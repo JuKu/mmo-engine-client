@@ -94,12 +94,10 @@ public class InputLayer implements SubSystem {
         //https://github.com/MrStahlfelge/gdx-controllerutils/tree/master/core-mapping
 
         controller.addListener(new ControllerAdapter() {
-
             @Override
             public void disconnected(Controller controller) {
                 Log.i(CONTROLLER_TAG, "controller disconnected: " + controller.getName());
             }
-
         });
     }
 
