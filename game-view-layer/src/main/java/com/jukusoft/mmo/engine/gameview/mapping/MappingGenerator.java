@@ -59,6 +59,9 @@ public class MappingGenerator {
             sb.append("L_STICK_HORIZONTAL_AXIS=1" + System.lineSeparator());
             sb.append("R_STICK_VERTICAL_AXIS=2" + System.lineSeparator());
             sb.append("R_STICK_HORIZONTAL_AXIS=3" + System.lineSeparator());
+
+            //blank line
+            sb.append(System.lineSeparator());
         }
 
         FileUtils.writeFile(file.getAbsolutePath(), sb.toString(), StandardCharsets.UTF_8);
