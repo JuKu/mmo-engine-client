@@ -1,12 +1,8 @@
 package com.jukusoft.mmo.engine.gameview;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.controllers.PovDirection;
-import com.badlogic.gdx.controllers.mappings.Xbox;
-import com.badlogic.gdx.math.Vector3;
 import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
@@ -65,11 +61,6 @@ public class InputLayer implements SubSystem {
 
     protected void initController (Controller controller) {
         //search for mapping
-        String osName = PlatformUtils.getType().name();
-
-        //to lower case, except first character
-        osName = osName.substring(0, 1).toUpperCase() + osName.substring(1).toLowerCase();
-
         String name = controller.getName().replace(" ", "_");
         String mappingFile = FilePath.parse("{data.dir}input/mappings/" + name.toLowerCase() + ".ini");
 
@@ -91,6 +82,14 @@ public class InputLayer implements SubSystem {
 
                 return;
             }
+        }
+
+        //load mapping
+        try {
+            Config.load(new File(mappingFile));
+        } catch (IOException e) {
+            Log.e(CONTROLLER_TAG, "Coulnd't load mapping for controller '" + controller.getName() + "'!");
+            JavaFXUtils.showExceptionDialog(I.tr("Error!"), I.tr("Coulnd't load mapping for controller!"), e);
         }
 
         //https://github.com/MrStahlfelge/gdx-controllerutils/tree/master/core-mapping
