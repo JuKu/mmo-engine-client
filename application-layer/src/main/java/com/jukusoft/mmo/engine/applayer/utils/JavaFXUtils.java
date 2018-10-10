@@ -100,6 +100,8 @@ public class JavaFXUtils {
         //Source: http://code.makery.ch/blog/javafx-dialogs-official/
 
         ThreadUtils.executeInJavaFXThreadAndWait(() -> {
+            startJavaFX();
+
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(title);
             alert.setHeaderText(headerText);
@@ -110,9 +112,9 @@ public class JavaFXUtils {
     public static void showExceptionDialog (String title, String content, Throwable e) {
         //Source: http://code.makery.ch/blog/javafx-dialogs-official/
 
-        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
-            JavaFXUtils.startJavaFX();
+        JavaFXUtils.startJavaFX();
 
+        ThreadUtils.executeInJavaFXThreadAndWait(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(title);
             alert.setHeaderText(null);
