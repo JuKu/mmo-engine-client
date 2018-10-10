@@ -3,7 +3,6 @@ package com.jukusoft.mmo.engine.applayer.base;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.carrotsearch.hppc.ByteArrayList;
 import com.carrotsearch.hppc.ObjectArrayList;
 import com.carrotsearch.hppc.procedures.ObjectProcedure;
 import com.jukusoft.i18n.I;
@@ -230,9 +229,7 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
                     while (!Thread.interrupted()) {
                         startTime = System.currentTimeMillis();
 
-                        extraThreadSubSystems.iterator().forEachRemaining(system -> {
-                            system.value.onGameloop();
-                        });
+                        extraThreadSubSystems.iterator().forEachRemaining(system -> system.value.onGameloop());
 
                         endTime = System.currentTimeMillis();
                         diffTime = endTime - startTime;
@@ -283,9 +280,7 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
 
             //call subsystems which has to be executed in main thread
             long startTime = System.currentTimeMillis();
-            subSystems.iterator().forEachRemaining(system -> {
-                system.value.onGameloop();
-            });
+            subSystems.iterator().forEachRemaining(system -> system.value.onGameloop());
 
             long endTime = System.currentTimeMillis();
             long diffTime = endTime - startTime;
