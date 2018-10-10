@@ -67,6 +67,13 @@
 			<classifier>natives-desktop</classifier>
 		</dependency>
 
+		<!-- libGDX controller support -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-controllers-lwjgl3</artifactId>
+			<version>${libgdx.version}</version>
+		</dependency>
+
 		<!-- libGDX fonts -->
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
