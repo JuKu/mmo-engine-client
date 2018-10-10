@@ -11,6 +11,10 @@ import java.nio.charset.StandardCharsets;
 
 public class MappingGenerator {
 
+    protected MappingGenerator () {
+        //
+    }
+
     public static void generateDefaultMapping (File file, String controllerName) throws IOException {
         if (file.exists()) {
             throw new IllegalStateException("file already exists: " + file.getAbsolutePath());
@@ -19,8 +23,6 @@ public class MappingGenerator {
         Log.i("Controller", "generate new mapping for controller: " + controllerName);
 
         StringBuilder sb = new StringBuilder();
-
-        controllerName = controllerName.replace("_", "");
 
         for (PlatformUtils.OS_TYPE type : PlatformUtils.OS_TYPE.values()) {
             //to lower case, except first character
