@@ -30,9 +30,9 @@ public class ServerManager {
         list.clear();
 
         String content = FileUtils.readFile(config.getAbsolutePath(), StandardCharsets.UTF_8);
-        JSONObject JSON = new JSONObject(content);
+        JSONObject json = new JSONObject(content);
 
-        JSONArray servers = JSON.getJSONArray("servers");
+        JSONArray servers = json.getJSONArray("servers");
 
         for (int i = 0; i < servers.length(); i++) {
             JSONObject server = servers.getJSONObject(i);

@@ -38,7 +38,7 @@ public class FilePath {
         path = path.replace("{user.home}",System.getProperty("user.home") + "/");
         path = path.replace("{user.dir}", System.getProperty("user.dir") + "/");
         path = path.replace("{user.name}", System.getProperty("user.name") + "/");
-        //path = path.replace("{app.data}", PlatformUtils.isWindows() ? System.getProperty("app.data") : "./");
+        path = path.replace("{app.data}", PlatformUtils.isWindows() ? System.getenv("APPDATA") + "/" : "./");
         path = path.replace("{java.io.tmpdir}", System.getProperty("java.io.tmpdir"));
         path = path.replace("{data.dir}", getDataDir());
         path = path.replace("{temp.dir}", getTempDir());

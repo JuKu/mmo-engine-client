@@ -12,12 +12,12 @@ public class GameViewLayer implements SubSystem {
 
     @Override
     public void onGameloop() {
-
+        //
     }
 
     @Override
     public void onShutdown() {
-
+        //
     }
 
 }

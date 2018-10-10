@@ -214,9 +214,7 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
                     Log.i(THREADS_TAG, "Initialize new game-logic-layer subsystems...");
 
                     //initialize game logic layer subsystems
-                    this.extraThreadSubSystems.forEach((ObjectProcedure<? super SubSystem>) system -> {
-                        system.onInit();
-                    });
+                    this.extraThreadSubSystems.forEach((ObjectProcedure<? super SubSystem>) system -> system.onInit());
 
                     Log.i(THREADS_TAG, "game-logic-layer subsystems initialized successfully!");
 
