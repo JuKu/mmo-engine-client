@@ -12,6 +12,7 @@ import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.splashscreen.SplashScreen;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystemManager;
+import com.jukusoft.mmo.engine.applayer.time.GameTime;
 import com.jukusoft.mmo.engine.applayer.utils.FilePath;
 import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
 import com.jukusoft.mmo.engine.applayer.utils.Platform;
@@ -30,6 +31,7 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
     protected static final String VERSION_TAG = "Version";
     protected static final String CONFIG_TAG = "Config";
     protected static final String SECTION_PATHS = "Paths";
+    protected static final String THREADS_TAG = "Threads";
 
     protected Boolean initialized = false;
     protected SplashScreen splashScreen = null;
@@ -45,7 +47,7 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
     protected Thread gameLogicThread = null;
     protected long timePerGameLogicGameloopTick = 16;
 
-    protected static final String THREADS_TAG = "Threads";
+    protected final GameTime gameTime = GameTime.getInstance();
 
     @Override
     public void create() {
@@ -272,6 +274,10 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
             splashScreen.render();
             this.elapsed += Gdx.graphics.getDeltaTime() * 1000;
         } else {
+            //update timestamp and delta time for movements & animations
+            gameTime.setTime(System.currentTimeMillis());
+            gameTime.setDelta(Gdx.graphics.getDeltaTime());
+
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

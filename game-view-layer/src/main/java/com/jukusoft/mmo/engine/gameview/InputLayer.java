@@ -22,30 +22,8 @@ public class InputLayer implements SubSystem {
     public void onInit() {
         Log.i("Input", "initializing input devices");
 
-        if (Config.getBool(CONTROLLER_TAG, "enabled")) {
-            //check for connected controllers
-            int connectedControllers = 0;
-
-            for (Controller controller : Controllers.getControllers()) {
-                Log.i(CONTROLLER_TAG, "controller detected: " + controller.getName());
-                connectedControllers++;
-
-                //initialize controller
-                this.initController(controller);
-            }
-
-            Log.i(CONTROLLER_TAG, connectedControllers + " controller(s) detected.");
-
-            Controllers.addListener(new ControllerAdapter() {
-                @Override
-                public void connected(Controller controller) {
-                    Log.i(CONTROLLER_TAG, "new controller detected: " + controller.getName());
-                    initController(controller);
-                }
-            });
-        } else {
-            Log.i(CONTROLLER_TAG, "controller support is disabled.");
-        }
+        //initialize controllers
+        this.initControllers();
     }
 
     @Override
@@ -56,6 +34,33 @@ public class InputLayer implements SubSystem {
     @Override
     public void onShutdown() {
         //
+    }
+
+    protected void initControllers () {if (Config.getBool(CONTROLLER_TAG, "enabled")) {
+        //check for connected controllers
+        int connectedControllers = 0;
+
+        for (Controller controller : Controllers.getControllers()) {
+            Log.i(CONTROLLER_TAG, "controller detected: " + controller.getName());
+            connectedControllers++;
+
+            //initialize controller
+            this.initController(controller);
+        }
+
+        Log.i(CONTROLLER_TAG, connectedControllers + " controller(s) detected.");
+
+        Controllers.addListener(new ControllerAdapter() {
+            @Override
+            public void connected(Controller controller) {
+                Log.i(CONTROLLER_TAG, "new controller detected: " + controller.getName());
+                initController(controller);
+            }
+        });
+    } else {
+        Log.i(CONTROLLER_TAG, "controller support is disabled.");
+    }
+
     }
 
     protected void initController (Controller controller) {
