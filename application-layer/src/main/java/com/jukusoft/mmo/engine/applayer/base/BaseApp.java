@@ -44,6 +44,7 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
     protected boolean multiThreadingMode = false;
 
     protected Thread gameLogicThread = null;
+    protected long timePerGameLogicGameloopTick = 16;
 
     @Override
     public void create() {
@@ -228,8 +229,14 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
                         endTime = System.currentTimeMillis();
                         diffTime = endTime - startTime;
 
-                        if (diffTime > 16) {
+                        if (diffTime > timePerGameLogicGameloopTick - 1) {
                             Log.w("Threads", "game logic layer thread required " + diffTime + "ms to execute the gameloop.");
+                        } else {
+                            try {
+                                Thread.sleep(timePerGameLogicGameloopTick - diffTime);
+                            } catch (InterruptedException e) {
+                                //don't do anything here
+                            }
                         }
                     }
 
