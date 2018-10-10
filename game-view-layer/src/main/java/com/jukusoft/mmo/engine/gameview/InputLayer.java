@@ -9,7 +9,6 @@ import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
 import com.jukusoft.mmo.engine.applayer.utils.FilePath;
 import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
-import com.jukusoft.mmo.engine.applayer.utils.PlatformUtils;
 import com.jukusoft.mmo.engine.gameview.mapping.MappingGenerator;
 
 import java.io.File;

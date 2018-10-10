@@ -1,6 +1,5 @@
 package com.jukusoft.mmo.engine.gameview.mapping;
 
-import com.badlogic.gdx.controllers.mappings.Xbox;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.utils.FileUtils;
 import com.jukusoft.mmo.engine.applayer.utils.PlatformUtils;
