@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ServerManagerTest {
 
@@ -30,6 +31,11 @@ public class ServerManagerTest {
     public void testLoadFromConfig () throws IOException {
         ServerManager.getInstance().loadFromConfig(new File("../data/config/servers.json"));
         assertEquals(true, ServerManager.getInstance().listServers().size() > 0);
+    }
+
+    @Test
+    public void testCreateServer () {
+        assertNotNull(ServerManager.createServer("127.0.0.1", 1234, "test", "test", true));
     }
 
 }
