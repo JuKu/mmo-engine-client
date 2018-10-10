@@ -3,7 +3,7 @@
 # Attention! Don't edit this file manually! This file is auto generated and will be overriden!
 #
 # Copyright (c) 2018 JuKuSoft.com
-# This file is distributed under the same license as the mmo-engine-client-application-layer package.
+# This file is distributed under the same license as the MMO Game Engine - Client package.
 # JuKu my-mail@example.com, 2018.
 #
 #, fuzzy
@@ -24,3 +24,9 @@ msgstr "Server Error!"
 #: file Initializer.java line 133
 msgid "Updater"
 msgstr "Updater"
+
+#: file InputLayer.java line 80
+#: file InputLayer.java line 91
+#: file InputLayer.java line 76
+msgid "Error!"
+msgstr "Error!"

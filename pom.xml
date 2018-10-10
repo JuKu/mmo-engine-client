@@ -199,6 +199,9 @@
 
 					<srcDirs>
 						<dir>${project.basedir}/src</dir>
+						<dir>${project.basedir}/application-layer/src</dir>
+						<dir>${project.basedir}/game-logic-layer/src</dir>
+						<dir>${project.basedir}/game-view-layer/src</dir>
 						<!-- <dir>src</dir> -->
 					</srcDirs>
 				</configuration>
