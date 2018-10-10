@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.carrotsearch.hppc.ByteArrayList;
 import com.carrotsearch.hppc.ObjectArrayList;
+import com.carrotsearch.hppc.procedures.ObjectProcedure;
 import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.init.Initializer;
@@ -201,6 +202,9 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
 
         Log.v("BaseApp", "initFinished() called.");
 
+        //add subsystems
+        this.addSubSystems(this);
+
         Platform.runOnUIThread(() -> {
             this.initialized = true;
 
@@ -212,7 +216,9 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
                     Log.i(THREADS_TAG, "Initialize new game-logic-layer subsystems...");
 
                     //initialize game logic layer subsystems
-                    this.extraThreadSubSystems.iterator().forEachRemaining(system -> system.value.onInit());
+                    this.extraThreadSubSystems.forEach((ObjectProcedure<? super SubSystem>) system -> {
+                        system.onInit();
+                    });
 
                     Log.i(THREADS_TAG, "game-logic-layer subsystems initialized successfully!");
 
@@ -320,6 +326,8 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
         } else {
             this.subSystems.add(system);
         }
+
+        Log.i("SubSystem", "added subsystem " + system.getClass().getCanonicalName());
     }
 
     @Override
