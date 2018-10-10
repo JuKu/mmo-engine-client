@@ -3,7 +3,7 @@
 # Attention! Don't edit this file manually! This file is auto generated and will be overriden!
 #
 # Copyright (c) 2018 JuKuSoft.com
-# This file is distributed under the same license as the mmo-engine-client-game-view-layer package.
+# This file is distributed under the same license as the mmo-engine-client-application-layer package.
 # JuKu my-mail@example.com, 2018.
 #
 #, fuzzy
@@ -17,8 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: file InputLayer.java line 81
-#: file InputLayer.java line 92
-#: file InputLayer.java line 77
-msgid "Error!"
-msgstr "Error!"
+#: file Initializer.java line 89
+msgid "Server Error!"
+msgstr "Server Error!"
+
+#: file Initializer.java line 133
+msgid "Updater"
+msgstr "Updater"

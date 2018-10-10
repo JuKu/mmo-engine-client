@@ -75,6 +75,24 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>com.jukusoft</groupId>
+				<artifactId>gettext-maven-plugin</artifactId>
+				<version>${i18n.gettext.version}</version>
+				<configuration>
+					<!-- skip this plugin in this module -->
+					<skip>true</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>generatepot</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.19.1</version>
