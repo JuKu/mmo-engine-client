@@ -68,4 +68,14 @@ public class ConfigTest {
         Config.loadDir(new File("../data/junit/config/"));
     }
 
+    @Test
+    public void testGetOrDefault () {
+        assertEquals("defaultValue", Config.getOrDefault("section", "not-existent-key", "defaultValue"));
+
+        //set value
+        Config.values.put("section.not-existent-key", "test-value");
+
+        assertEquals("test-value", Config.getOrDefault("section", "not-existent-key", "defaultValue"));
+    }
+
 }
