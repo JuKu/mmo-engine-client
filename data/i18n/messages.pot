@@ -30,3 +30,15 @@ msgstr "Updater"
 #: file InputLayer.java line 76
 msgid "Error!"
 msgstr "Error!"
+
+#: file InputLayer.java line 76
+msgid "Couldn't generate auto mapping for controller!"
+msgstr "Couldn't generate auto mapping for controller!"
+
+#: file InputLayer.java line 80
+msgid "Controller unbekannt! Für diesen Controller existieren derzeit keine Mappings!"
+msgstr "Controller unbekannt! Für diesen Controller existieren derzeit keine Mappings!"
+
+#: file InputLayer.java line 91
+msgid "Coulnd't load mapping for controller!"
+msgstr "Coulnd't load mapping for controller!"
