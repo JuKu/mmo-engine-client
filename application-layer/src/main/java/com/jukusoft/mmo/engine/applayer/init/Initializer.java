@@ -105,7 +105,7 @@ public class Initializer implements Runnable {
 
         //initialize Cache
         try {
-            String cacheDir = Config.get("Paths", "tempDir");
+            String cacheDir = FilePath.parse(Config.get("Paths", "tempDir"));
             Log.i("Cache", "initialize cache: " + new File(cacheDir).getAbsolutePath());
             Cache.init(cacheDir);
         } catch (IOException e) {

@@ -1,5 +1,6 @@
 package com.jukusoft.mmo.engine.applayer.config;
 
+import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.utils.FileUtils;
 import org.ini4j.Ini;
 import org.ini4j.Profile;
@@ -30,6 +31,8 @@ public class Cache {
         if (!path.endsWith("/")) {
             path += "/";
         }
+
+        Log.d("Cache", "used cache directory: " + path);
 
         CACHE_PATH = path;
 
