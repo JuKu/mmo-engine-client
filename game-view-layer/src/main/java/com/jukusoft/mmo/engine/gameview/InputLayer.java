@@ -64,15 +64,6 @@ public class InputLayer implements SubSystem {
     }
 
     protected void initController (Controller controller) {
-        controller.addListener(new ControllerAdapter() {
-
-            @Override
-            public void disconnected(Controller controller) {
-                Log.i(CONTROLLER_TAG, "controller disconnected: " + controller.getName());
-            }
-
-        });
-
         //search for mapping
         String osName = PlatformUtils.getType().name();
 
@@ -97,8 +88,21 @@ public class InputLayer implements SubSystem {
             } else {
                 Log.w(CONTROLLER_TAG, "auto generating of controller mappings is disabled.");
                 JavaFXUtils.showErrorDialog(I.tr("Error!"), I.tr("Controller unbekannt! Für diesen Controller existieren derzeit keine Mappings!"));
+
+                return;
             }
         }
+
+        //https://github.com/MrStahlfelge/gdx-controllerutils/tree/master/core-mapping
+
+        controller.addListener(new ControllerAdapter() {
+
+            @Override
+            public void disconnected(Controller controller) {
+                Log.i(CONTROLLER_TAG, "controller disconnected: " + controller.getName());
+            }
+
+        });
     }
 
 }

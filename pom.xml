@@ -85,7 +85,7 @@
 		<jhardware.version>0.8.5</jhardware.version>
 
 		<!-- GNU gettext internationalization -->
-		<i18n.gettext.version>1.0.2</i18n.gettext.version>
+		<i18n.gettext.version>1.0.3</i18n.gettext.version>
 
 		<!-- don't deploy all modules to maven central, only shared-commons-library -->
 		<maven.deploy.skip>true</maven.deploy.skip>
