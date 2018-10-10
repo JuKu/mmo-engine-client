@@ -3,11 +3,15 @@ package com.jukusoft.mmo.engine.applayer.base;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.carrotsearch.hppc.ByteArrayList;
+import com.carrotsearch.hppc.ObjectArrayList;
 import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.init.Initializer;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.splashscreen.SplashScreen;
+import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
+import com.jukusoft.mmo.engine.applayer.subsystem.SubSystemManager;
 import com.jukusoft.mmo.engine.applayer.utils.FilePath;
 import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
 import com.jukusoft.mmo.engine.applayer.utils.Platform;
@@ -21,7 +25,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class BaseApp implements ApplicationListener {
+public abstract class BaseApp implements ApplicationListener, SubSystemManager {
 
     protected static final String VERSION_TAG = "Version";
     protected static final String CONFIG_TAG = "Config";
@@ -32,6 +36,14 @@ public class BaseApp implements ApplicationListener {
 
     protected float elapsed = 0;
     protected float minInitTime = 1500;
+
+    //list with subsystems
+    protected ObjectArrayList<SubSystem> subSystems = new ObjectArrayList<>();
+    protected ObjectArrayList<SubSystem> extraThreadSubSystems = new ObjectArrayList<>();
+    protected boolean subSystemsInitialized = false;
+    protected boolean multiThreadingMode = false;
+
+    protected Thread gameLogicThread = null;
 
     @Override
     public void create() {
@@ -133,6 +145,15 @@ public class BaseApp implements ApplicationListener {
             I.init(langFolder, Locale.forLanguageTag(Config.getOrDefault("i18n", "lang", "en")), "messages");
             Log.i("i18n", "langFolder: " + langFolder.getAbsolutePath());
 
+            if (Config.getBool("MultiThreading", "useMultipleThreads")) {
+                //use different threads for game logic & rendering
+                this.multiThreadingMode = true;
+
+                Log.i("Threads", "use different threads for game logic & rendering");
+            } else {
+                Log.i("Threads", "use single thread for game logic & rendering");
+            }
+
             Log.d("Splashscreen", "load splash screen");
 
             //load splash screen
@@ -177,7 +198,49 @@ public class BaseApp implements ApplicationListener {
 
         Log.v("BaseApp", "initFinished() called.");
 
-        Platform.runOnUIThread(() -> this.initialized = true);
+        Platform.runOnUIThread(() -> {
+            this.initialized = true;
+
+            if (this.multiThreadingMode) {
+                Log.i("Threads", "Create new game-logic-layer thread now.");
+
+                //start extra thread for game logic layer
+                this.gameLogicThread = new Thread(() -> {
+                    Log.i("Threads", "Initialize new game-logic-layer subsystems...");
+
+                    //initialize game logic layer subsystems
+                    this.extraThreadSubSystems.iterator().forEachRemaining(system -> system.value.onInit());
+
+                    Log.i("Threads", "game-logic-layer subsystems initialized successfully!");
+
+                    //call subsystems which has to be executed in main thread
+                    long startTime = 0;
+                    long endTime = 0;
+                    long diffTime = 0;
+
+                    while (Thread.interrupted()) {
+                        startTime = System.currentTimeMillis();
+
+                        extraThreadSubSystems.iterator().forEachRemaining(system -> {
+                            system.value.onGameloop();
+                        });
+
+                        endTime = System.currentTimeMillis();
+                        diffTime = endTime - startTime;
+
+                        if (diffTime > 16) {
+                            Log.w("Threads", "game logic layer thread required " + diffTime + "ms to execute the gameloop.");
+                        }
+                    }
+
+                    Log.i("Threads", "closing game-logic-layer thread now.");
+                });
+                this.gameLogicThread.start();
+            }
+
+            //initialize subsystems in main thread
+            this.subSystems.iterator().forEachRemaining(system -> system.value.onInit());
+        });
     }
 
     @Override
@@ -196,6 +259,19 @@ public class BaseApp implements ApplicationListener {
         } else {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+            //call subsystems which has to be executed in main thread
+            long startTime = System.currentTimeMillis();
+            subSystems.iterator().forEachRemaining(system -> {
+                system.value.onGameloop();
+            });
+
+            long endTime = System.currentTimeMillis();
+            long diffTime = endTime - startTime;
+
+            if (diffTime > 15) {
+                Log.w("Gameloop", "Rendering gameloop required more than 16ms to render!");
+            }
         }
     }
 
@@ -211,7 +287,26 @@ public class BaseApp implements ApplicationListener {
 
     @Override
     public void dispose() {
-
+        //interrupt game logic layer thread
+        if (this.multiThreadingMode && this.gameLogicThread != null) {
+            this.gameLogicThread.interrupt();
+        }
     }
+
+    @Override
+    public void addSubSystem (SubSystem system, boolean useExtraThread) {
+        if (useExtraThread && this.multiThreadingMode) {
+            this.extraThreadSubSystems.add(system);
+        } else {
+            this.subSystems.add(system);
+        }
+    }
+
+    @Override
+    public void removeSubSystem (SubSystem system) {
+        this.subSystems.remove(this.subSystems.lastIndexOf(system));
+    }
+
+    protected abstract void addSubSystems (SubSystemManager manager);
 
 }

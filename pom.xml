@@ -199,6 +199,7 @@
 
 					<srcDirs>
 						<dir>${project.basedir}/src</dir>
+						<!-- <dir>src</dir> -->
 					</srcDirs>
 				</configuration>
 				<executions>

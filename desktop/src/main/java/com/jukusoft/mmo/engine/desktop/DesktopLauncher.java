@@ -7,6 +7,7 @@ import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.utils.Utils;
 import com.jukusoft.mmo.engine.desktop.config.WindowConfig;
+import com.jukusoft.mmo.engine.main.BaseGameEngine;
 
 import java.io.File;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class DesktopLauncher {
         windowConfig.fillConfig(config);
 
         // start game
-        new Lwjgl3Application(new BaseApp(), config);
+        new Lwjgl3Application(new BaseGameEngine(), config);
 
         //list currently active threads
         Set<Thread> threadSet = Thread.getAllStackTraces().keySet();

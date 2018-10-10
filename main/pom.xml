@@ -12,6 +12,13 @@
 	<artifactId>mmo-engine-client-main</artifactId>
 
 	<dependencies>
+		<!-- application / os layers -->
+		<dependency>
+			<groupId>com.jukusoft</groupId>
+			<artifactId>mmo-engine-client-application-layer</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<!-- High Performance Primitive Collections for Java, https://github.com/carrotsearch/hppc -->
 		<dependency>
 			<groupId>com.carrotsearch</groupId>
