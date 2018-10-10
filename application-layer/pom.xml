@@ -47,6 +47,13 @@
 			<version>${libgdx.version}</version>
 		</dependency>
 
+		<!-- libGDX tools -->
+		<dependency>
+			<groupId>com.badlogicgames.gdx</groupId>
+			<artifactId>gdx-tools</artifactId>
+			<version>${libgdx.version}</version>
+		</dependency>
+
 		<!-- libGDX platform for JUnit tests -->
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>

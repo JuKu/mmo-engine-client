@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.GLVersion;
 import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.base.BaseApp;
+import com.jukusoft.mmo.engine.applayer.config.Cache;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.network.ServerManager;
@@ -101,6 +102,17 @@ public class Initializer implements Runnable {
         }
 
         Log.i(SERVERS_TAG, "" + onlineServerCount + " servers are currently online.");
+
+        //initialize Cache
+        try {
+            String cacheDir = Config.get("Paths", "tempDir");
+            Log.i("Cache", "initialize cache: " + new File(cacheDir).getAbsolutePath());
+            Cache.init(cacheDir);
+        } catch (IOException e) {
+            Log.e(SERVERS_TAG, "error while initializing cache: ", e);
+            JavaFXUtils.showExceptionDialog(I.tr("Error!"), "IOException: ", e);
+            Gdx.app.exit();
+        }
     }
 
     protected void error (String content) {

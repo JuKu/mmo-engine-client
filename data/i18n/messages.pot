@@ -17,28 +17,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: file Initializer.java line 89
+#: file Initializer.java line 90
 msgid "Server Error!"
 msgstr "Server Error!"
 
-#: file Initializer.java line 133
-msgid "Updater"
-msgstr "Updater"
-
-#: file InputLayer.java line 80
-#: file InputLayer.java line 91
-#: file InputLayer.java line 76
+#: file InputLayer.java line 81
+#: file Initializer.java line 113
+#: file InputLayer.java line 85
+#: file InputLayer.java line 96
 msgid "Error!"
 msgstr "Error!"
 
-#: file InputLayer.java line 76
+#: file Initializer.java line 145
+msgid "Updater"
+msgstr "Updater"
+
+#: file InputLayer.java line 81
 msgid "Couldn't generate auto mapping for controller!"
 msgstr "Couldn't generate auto mapping for controller!"
 
-#: file InputLayer.java line 80
+#: file InputLayer.java line 85
 msgid "Controller unbekannt! Für diesen Controller existieren derzeit keine Mappings!"
 msgstr "Controller unbekannt! Für diesen Controller existieren derzeit keine Mappings!"
 
-#: file InputLayer.java line 91
+#: file InputLayer.java line 96
 msgid "Coulnd't load mapping for controller!"
 msgstr "Coulnd't load mapping for controller!"
