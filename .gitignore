@@ -18,6 +18,9 @@ temp
 *temp
 !temp/ReadMe.txt
 
+!.keep
+!*.keep
+
 tools/runnable-hiero.jar
 
 
