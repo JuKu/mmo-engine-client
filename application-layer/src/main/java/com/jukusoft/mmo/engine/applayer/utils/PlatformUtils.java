@@ -58,4 +58,8 @@ public class PlatformUtils {
         return type == OS_TYPE.UNKNOWN;
     }
 
+    public static String getAppDataDir () {
+        return PlatformUtils.isWindows() ? System.getenv("APPDATA") + "/" : "./";
+    }
+
 }
