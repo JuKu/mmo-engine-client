@@ -46,6 +46,8 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
     protected Thread gameLogicThread = null;
     protected long timePerGameLogicGameloopTick = 16;
 
+    protected static final String THREADS_TAG = "Threads";
+
     @Override
     public void create() {
         //load logger config
@@ -150,9 +152,9 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
                 //use different threads for game logic & rendering
                 this.multiThreadingMode = true;
 
-                Log.i("Threads", "use different threads for game logic & rendering");
+                Log.i(THREADS_TAG, "use different threads for game logic & rendering");
             } else {
-                Log.i("Threads", "use single thread for game logic & rendering");
+                Log.i(THREADS_TAG, "use single thread for game logic & rendering");
             }
 
             Log.d("Splashscreen", "load splash screen");
@@ -203,16 +205,16 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
             this.initialized = true;
 
             if (this.multiThreadingMode) {
-                Log.i("Threads", "Create new game-logic-layer thread now.");
+                Log.i(THREADS_TAG, "Create new game-logic-layer thread now.");
 
                 //start extra thread for game logic layer
                 this.gameLogicThread = new Thread(() -> {
-                    Log.i("Threads", "Initialize new game-logic-layer subsystems...");
+                    Log.i(THREADS_TAG, "Initialize new game-logic-layer subsystems...");
 
                     //initialize game logic layer subsystems
                     this.extraThreadSubSystems.iterator().forEachRemaining(system -> system.value.onInit());
 
-                    Log.i("Threads", "game-logic-layer subsystems initialized successfully!");
+                    Log.i(THREADS_TAG, "game-logic-layer subsystems initialized successfully!");
 
                     //call subsystems which has to be executed in main thread
                     long startTime = 0;
@@ -230,7 +232,7 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
                         diffTime = endTime - startTime;
 
                         if (diffTime > timePerGameLogicGameloopTick - 1) {
-                            Log.w("Threads", "game logic layer thread required " + diffTime + "ms to execute the gameloop.");
+                            Log.w(THREADS_TAG, "game logic layer thread required " + diffTime + "ms to execute the gameloop.");
                         } else {
                             try {
                                 Thread.sleep(timePerGameLogicGameloopTick - diffTime);
@@ -240,7 +242,12 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
                         }
                     }
 
-                    Log.i("Threads", "closing game-logic-layer thread now.");
+                    Log.i(THREADS_TAG, "shutdown game-logic-layer subsystems now...");
+
+                    //initialize game logic layer subsystems
+                    this.extraThreadSubSystems.iterator().forEachRemaining(system -> system.value.onShutdown());
+
+                    Log.i(THREADS_TAG, "closing game-logic-layer thread now.");
                 });
                 this.gameLogicThread.setName("game-logic-thread");
                 this.gameLogicThread.start();
@@ -299,6 +306,11 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
         if (this.multiThreadingMode && this.gameLogicThread != null) {
             this.gameLogicThread.interrupt();
         }
+
+        Log.i(THREADS_TAG, "Shutdown subsystems now.");
+
+        //shutdown subsystems now
+        this.subSystems.iterator().forEachRemaining(system -> system.value.onShutdown());
     }
 
     @Override
