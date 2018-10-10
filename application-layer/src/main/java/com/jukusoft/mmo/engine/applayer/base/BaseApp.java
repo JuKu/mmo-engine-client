@@ -40,7 +40,6 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
     //list with subsystems
     protected ObjectArrayList<SubSystem> subSystems = new ObjectArrayList<>();
     protected ObjectArrayList<SubSystem> extraThreadSubSystems = new ObjectArrayList<>();
-    protected boolean subSystemsInitialized = false;
     protected boolean multiThreadingMode = false;
 
     protected Thread gameLogicThread = null;
