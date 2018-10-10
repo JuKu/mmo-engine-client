@@ -13,6 +13,8 @@ import java.nio.charset.StandardCharsets;
 
 public class TexturePackerHelper {
 
+    protected static final String TEXTURE_PACKER_TAG = "TexturePacker";
+
     protected TexturePackerHelper () {
         //
     }
@@ -39,12 +41,12 @@ public class TexturePackerHelper {
             String targetDir = Cache.getInstance().getPath() + pack.getString("target_dir");
             String packName = pack.getString("pack_name");
 
-            Log.i("TexturePacker", "pack texture '" + title + "' with name '" + packName + "'...");
+            Log.i(TEXTURE_PACKER_TAG, "pack texture '" + title + "' with name '" + packName + "'...");
 
             if (new File(targetDir + "/" + packName + ".atlas").exists()) {
-                Log.d("TexturePacker", "Dont pack '" + title + "' because texture pack already exists.");
+                Log.d(TEXTURE_PACKER_TAG, "Dont pack '" + title + "' because texture pack already exists.");
             } else {
-                Log.d("TexturePacker", "pack '" + title + "'...");
+                Log.d(TEXTURE_PACKER_TAG, "pack '" + title + "'...");
 
                 //pack textures
                 TexturePacker.process(settings, sourceDir, targetDir, packName);

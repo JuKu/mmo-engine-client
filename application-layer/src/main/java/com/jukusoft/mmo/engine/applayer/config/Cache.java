@@ -2,11 +2,8 @@ package com.jukusoft.mmo.engine.applayer.config;
 
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.utils.FileUtils;
-import org.ini4j.Ini;
-import org.ini4j.Profile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Cache {
@@ -15,7 +12,7 @@ public class Cache {
 
     protected final String CACHE_PATH;
 
-    protected Cache(String path) throws IOException {
+    protected Cache(String path) {
         if (path == null) {
             throw new NullPointerException("Couldn't found config Paths.tempDir!");
         }
