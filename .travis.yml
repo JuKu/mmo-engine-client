@@ -26,4 +26,5 @@ script:
 #  - mvn cobertura:cobertura
 
 notifications:
-email: false
+  email: false
+  webhooks: https://fathomless-fjord-24024.herokuapp.com/notify
