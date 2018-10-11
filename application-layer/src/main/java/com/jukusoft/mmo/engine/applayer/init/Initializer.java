@@ -104,15 +104,9 @@ public class Initializer implements Runnable {
         Log.i(SERVERS_TAG, "" + onlineServerCount + " servers are currently online.");
 
         //initialize Cache
-        try {
-            String cacheDir = FilePath.parse(Config.get("Paths", "tempDir"));
-            Log.i("Cache", "initialize cache: " + new File(cacheDir).getAbsolutePath());
-            Cache.init(cacheDir);
-        } catch (IOException e) {
-            Log.e(SERVERS_TAG, "error while initializing cache: ", e);
-            JavaFXUtils.showExceptionDialog(I.tr("Error!"), "IOException: ", e);
-            Gdx.app.exit();
-        }
+        String cacheDir = FilePath.parse(Config.get("Paths", "tempDir"));
+        Log.i("Cache", "initialize cache: " + new File(cacheDir).getAbsolutePath());
+        Cache.init(cacheDir);
     }
 
     protected void error (String content) {
