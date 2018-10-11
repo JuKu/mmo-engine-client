@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class ScriptEngineTest {
 
@@ -25,7 +26,10 @@ public class ScriptEngineTest {
         assertEquals(engine, engine1);
 
         //remove instance again, so that other tests work as expected
-        ScriptEngine.instance = null;
+        ScriptEngine.cleanUp();
+
+        //check, if script engine was cleaned up correctly
+        assertNull(ScriptEngine.getInstance());
     }
 
     @Test

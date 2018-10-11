@@ -41,6 +41,8 @@ public class ScriptEngine {
         if (getInstance() == null) {
             return;
         }
+
+        ScriptEngine.instance = null;
     }
 
 }
