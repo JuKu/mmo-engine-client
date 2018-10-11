@@ -2,6 +2,8 @@ package com.jukusoft.mmo.engine.applayer.logger;
 
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.utils.FilePath;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -10,7 +12,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class Log {
+public class Log extends ScriptableObject {
+
+    @Override
+    public String getClassName() {
+        return Log.class.getCanonicalName();
+    }
 
     /**
     * logging levels:

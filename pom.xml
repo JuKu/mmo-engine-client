@@ -93,6 +93,9 @@
 		<!-- Google javascript V8 engine -->
 		<js.v8.version>4.6.0</js.v8.version>
 
+		<!-- javascript rhino engine -->
+		<js.rhino.version>1.7.10</js.rhino.version>
+
 		<!-- don't deploy all modules to maven central, only shared-commons-library -->
 		<maven.deploy.skip>true</maven.deploy.skip>
 
