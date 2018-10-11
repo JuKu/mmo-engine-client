@@ -35,6 +35,8 @@ public class LuaScriptEngine implements IScriptEngine {
         //register global functions
         this.env.rawset("logd", new LogDebugFunc());
         this.env.rawset("logi", new LogInfoFunc());
+
+        this.env.rawset("now", new NowFunc());
     }
 
     /**
