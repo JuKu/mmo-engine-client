@@ -77,6 +77,27 @@
 			<artifactId>easy-i18n-gettext</artifactId>
 			<version>${i18n.gettext.version}</version>
 		</dependency>
+
+		<!-- lua runtime -->
+		<dependency>
+			<groupId>com.jukusoft</groupId>
+			<artifactId>rembulan-runtime</artifactId>
+			<version>${lua.rembulan.version}</version>
+		</dependency>
+
+		<!-- lua compiler -->
+		<dependency>
+			<groupId>com.jukusoft</groupId>
+			<artifactId>rembulan-compiler</artifactId>
+			<version>${lua.rembulan.version}</version>
+		</dependency>
+
+		<!-- lua standard library -->
+		<dependency>
+			<groupId>com.jukusoft</groupId>
+			<artifactId>rembulan-stdlib</artifactId>
+			<version>${lua.rembulan.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

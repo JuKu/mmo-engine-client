@@ -21,16 +21,15 @@ msgstr ""
 msgid "Server Error!"
 msgstr "Server Error!"
 
+#: file Initializer.java line 139
+msgid "Updater"
+msgstr "Updater"
+
 #: file InputLayer.java line 81
-#: file Initializer.java line 113
 #: file InputLayer.java line 85
 #: file InputLayer.java line 96
 msgid "Error!"
 msgstr "Error!"
-
-#: file Initializer.java line 145
-msgid "Updater"
-msgstr "Updater"
 
 #: file InputLayer.java line 81
 msgid "Couldn't generate auto mapping for controller!"

@@ -8,6 +8,7 @@ import com.jukusoft.mmo.engine.applayer.config.Cache;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.network.ServerManager;
+import com.jukusoft.mmo.engine.applayer.script.ScriptEngine;
 import com.jukusoft.mmo.engine.applayer.utils.*;
 import com.jukusoft.mmo.engine.applayer.version.Version;
 import org.json.JSONObject;
@@ -107,6 +108,10 @@ public class Initializer implements Runnable {
         String cacheDir = FilePath.parse(Config.get("Paths", "tempDir"));
         Log.i("Cache", "initialize cache: " + new File(cacheDir).getAbsolutePath());
         Cache.init(cacheDir);
+
+        //initialize scripting engine
+        Log.i("Scripts", "initialize scripting engine...");
+        ScriptEngine.init();
     }
 
     protected void error (String content) {
