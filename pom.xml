@@ -132,16 +132,16 @@
 		</dependency>
 
 		<!-- Google javascript V8 engine -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.eclipsesource.j2v8</groupId>
 			<artifactId>j2v8</artifactId>
 			<version>${js.v8.version}</version>
 			<type>aar.asc</type>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 
 	<!-- google javascript V8 engine - natives -->
-	<profiles>
+	<!-- <profiles>
 		<profile>
 			<id>platform-windows-amd64</id>
 			<activation>
@@ -155,7 +155,6 @@
 					<groupId>com.eclipsesource.j2v8</groupId>
 					<artifactId>j2v8_win32_x86_64</artifactId>
 					<version>${js.v8.version}</version>
-					<!-- <type>bundle</type> -->
 				</dependency>
 			</dependencies>
 		</profile>
@@ -208,7 +207,7 @@
 				</dependency>
 			</dependencies>
 		</profile>
-	</profiles>
+	</profiles> -->
 
 	<reporting>
 		<plugins>
