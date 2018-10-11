@@ -33,8 +33,18 @@ public class JSRhinoScriptEngine implements IScriptEngine {
     }
 
     @Override
-    public void compile(String rootClassPrefix, String funcName, String programStr) throws ScriptLoadException {
+    public void compile(String funcName, String programStr) throws ScriptLoadException {
 
+    }
+
+    @Override
+    public Object execFunc (String funcName, Object... args) {
+        return ScriptableObject.callMethod(this.cx, this.scope, funcName, args);
+    }
+
+    @Override
+    public Object execFunc(String funcName) {
+        return this.execFunc(funcName, null);
     }
 
 }

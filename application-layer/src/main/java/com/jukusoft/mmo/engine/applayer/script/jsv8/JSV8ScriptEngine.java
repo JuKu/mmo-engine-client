@@ -18,8 +18,18 @@ public class JSV8ScriptEngine implements IScriptEngine {
     }
 
     @Override
-    public void compile(String rootClassPrefix, String funcName, String programStr) throws ScriptLoadException {
+    public void compile(String funcName, String programStr) throws ScriptLoadException {
 
+    }
+
+    @Override
+    public Object execFunc(String funcName, Object... args) {
+        throw new UnsupportedOperationException("method isn't implemented yet.");
+    }
+
+    @Override
+    public Object execFunc(String funcName) {
+        throw new UnsupportedOperationException("method isn't implemented yet.");
     }
 
 }

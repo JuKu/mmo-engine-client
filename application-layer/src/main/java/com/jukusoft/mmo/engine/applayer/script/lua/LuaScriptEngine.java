@@ -42,12 +42,12 @@ public class LuaScriptEngine implements IScriptEngine {
     /**
      * compile lua script as string to function
      *
-     * @param rootClassPrefix  the class name prefix for compiled classes, must not be {@code null}
+     * //@param rootClassPrefix  the class name prefix for compiled classes, must not be {@code null}
      */
     @Override
-    public void compile (String rootClassPrefix, String funcName, String programStr) throws ScriptLoadException {
+    public void compile (String funcName, String programStr) throws ScriptLoadException {
         //compile
-        ChunkLoader loader = CompilerChunkLoader.of(rootClassPrefix);
+        ChunkLoader loader = CompilerChunkLoader.of("engine");
         LuaFunction func = null;
         try {
             func = loader.loadTextChunk(new Variable(env), funcName, programStr);
@@ -59,7 +59,8 @@ public class LuaScriptEngine implements IScriptEngine {
         this.luaFunctions.put(funcName, func);
     }
 
-    public void execGlobalFunc (String funcName) {
+    @Override
+    public Object execFunc(String funcName, Object... args) {
         LuaFunction func = this.luaFunctions.get(funcName);
 
         if (func == null) {
@@ -67,7 +68,14 @@ public class LuaScriptEngine implements IScriptEngine {
         }
 
         try {
-            DirectCallExecutor.newExecutor().call(state, func);
+            Object[] objs = DirectCallExecutor.newExecutor().call(state, func);
+
+            if (objs.length > 0) {
+                return objs[0];
+            } else {
+                //it's a void method
+                return null;
+            }
         } catch (CallException e) {
             Log.w("Scripts", "CallException: ", e);
         } catch (CallPausedException e) {
@@ -75,6 +83,13 @@ public class LuaScriptEngine implements IScriptEngine {
         } catch (InterruptedException e) {
             Log.w("Scripts", "InterruptedException: ", e);
         }
+
+        return null;
+    }
+
+    @Override
+    public Object execFunc(String funcName) {
+        return this.execFunc(funcName, new Object[0]);
     }
 
 }
