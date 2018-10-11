@@ -88,7 +88,10 @@
 		<i18n.gettext.version>1.1.0</i18n.gettext.version>
 
 		<!-- lua rembulan version -->
-		<lua.rembulan.version>1.0.0</lua.rembulan.version>
+		<lua.rembulan.version>1.0.1</lua.rembulan.version>
+
+		<!-- Google javascript V8 engine -->
+		<js.v8.version>4.6.0</js.v8.version>
 
 		<!-- don't deploy all modules to maven central, only shared-commons-library -->
 		<maven.deploy.skip>true</maven.deploy.skip>
@@ -127,7 +130,85 @@
 			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Google javascript V8 engine -->
+		<dependency>
+			<groupId>com.eclipsesource.j2v8</groupId>
+			<artifactId>j2v8</artifactId>
+			<version>${js.v8.version}</version>
+			<type>aar.asc</type>
+		</dependency>
 	</dependencies>
+
+	<!-- google javascript V8 engine - natives -->
+	<profiles>
+		<profile>
+			<id>platform-windows-amd64</id>
+			<activation>
+				<os>
+					<family>windows</family>
+					<arch>amd64</arch>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>com.eclipsesource.j2v8</groupId>
+					<artifactId>j2v8_win32_x86_64</artifactId>
+					<version>${js.v8.version}</version>
+					<!-- <type>bundle</type> -->
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<profile>
+			<id>platform-windows_x86</id>
+			<activation>
+				<os>
+					<family>windows</family>
+					<arch>x86</arch>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>com.eclipsesource.j2v8</groupId>
+					<artifactId>j2v8_win32_x86_64</artifactId>
+					<version>${js.v8.version}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<profile>
+			<id>platform-linux</id>
+			<activation>
+				<os>
+					<family>unix</family>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>com.eclipsesource.j2v8</groupId>
+					<artifactId>j2v8_linux_x86_64</artifactId>
+					<version>${js.v8.version}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<profile>
+			<id>platform-mac</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>com.eclipsesource.j2v8</groupId>
+					<artifactId>j2v8_macosx_x86_64</artifactId>
+					<version>${js.v8.version}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 
 	<reporting>
 		<plugins>
