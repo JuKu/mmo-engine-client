@@ -43,7 +43,7 @@ public class Cache {
     /**
     * initialize cache
     */
-    public static void init (String path) throws IOException {
+    public static void init (String path) {
         instance = new Cache(path);
     }
 
