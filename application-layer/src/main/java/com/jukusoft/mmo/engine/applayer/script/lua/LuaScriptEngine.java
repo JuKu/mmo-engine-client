@@ -6,6 +6,7 @@ import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.script.IScriptEngine;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptExecutionException;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
+import com.jukusoft.mmo.engine.applayer.utils.FileUtils;
 import net.sandius.rembulan.StateContext;
 import net.sandius.rembulan.Table;
 import net.sandius.rembulan.Variable;
@@ -19,6 +20,11 @@ import net.sandius.rembulan.lib.impl.StandardLibrary;
 import net.sandius.rembulan.load.ChunkLoader;
 import net.sandius.rembulan.load.LoaderException;
 import net.sandius.rembulan.runtime.LuaFunction;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public class LuaScriptEngine implements IScriptEngine {
 
@@ -62,6 +68,27 @@ public class LuaScriptEngine implements IScriptEngine {
         }
 
         this.luaFunctions.put(scriptName, func);
+    }
+
+    @Override
+    public void loadFile(File file) throws ScriptLoadException {
+        Objects.requireNonNull(file);
+
+        if (!file.exists()) {
+            throw new ScriptLoadException("lua script file doesn't exists: " + file.getAbsolutePath());
+        }
+
+        try {
+            File relFile = FileUtils.getRelativeFile(file, new File("."));
+            String scriptName = relFile.getPath().replace("\\", "/");
+
+            String content = FileUtils.readFile(file.getAbsolutePath(), StandardCharsets.UTF_8);
+            this.compile(scriptName, content);
+            this.execScript(scriptName);
+        } catch (IOException e) {
+            Log.e("Scripts", "IOException while loading lua script file: ", e);
+            throw new ScriptLoadException("Cannot read script file: " + file.getAbsolutePath() + ", IOException: " + e.getLocalizedMessage());
+        }
     }
 
     @Override

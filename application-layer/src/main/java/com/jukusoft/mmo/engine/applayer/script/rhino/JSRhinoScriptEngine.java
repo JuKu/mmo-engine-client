@@ -7,6 +7,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 public class JSRhinoScriptEngine implements IScriptEngine {
@@ -35,6 +36,11 @@ public class JSRhinoScriptEngine implements IScriptEngine {
     @Override
     public void compile(String funcName, String programStr) throws ScriptLoadException {
 
+    }
+
+    @Override
+    public void loadFile(File file) throws ScriptLoadException {
+        throw new UnsupportedOperationException("method isn't implemented yet.");
     }
 
     @Override

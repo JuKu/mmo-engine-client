@@ -22,6 +22,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.File;
+
 import static org.junit.Assert.assertEquals;
 
 public class LuaScriptEngineTest {
@@ -99,13 +101,7 @@ public class LuaScriptEngineTest {
                 "    end");
         engine.execScript("add");
 
-        engine.printEnvDebug();
-
-        Table table = new DefaultTable();
-        table.rawset(1l, new Long(1));
-        table.rawset(2l, new Long(2));
-        table.rawset(3l, new Long(3));
-        assertEquals(6l, engine.execFunc("add", table));
+        assertEquals(6l, engine.execFunc("add", LuaUtils.array(1, 2, 3)));
     }
 
     @Test
@@ -154,6 +150,18 @@ public class LuaScriptEngineTest {
         Object[] rtnValues = DirectCallExecutor.newExecutor().call(state, dummy);
         assertEquals(1, rtnValues.length);
         assertEquals(10l, rtnValues[0]);
+    }
+
+    @Test (expected = ScriptLoadException.class)
+    public void testLoadFileNotExists () throws ScriptLoadException {
+        LuaScriptEngine engine = new LuaScriptEngine();
+        engine.loadFile(new File("not-existent-file.lua"));
+    }
+
+    @Test
+    public void testLoadInitFile () throws ScriptLoadException {
+        LuaScriptEngine engine = new LuaScriptEngine();
+        engine.loadFile(new File("../data/init/scripts/init.lua"));
     }
 
 }

@@ -3,6 +3,8 @@ package com.jukusoft.mmo.engine.applayer.script.jsv8;
 import com.jukusoft.mmo.engine.applayer.script.IScriptEngine;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
 
+import java.io.File;
+
 public class JSV8ScriptEngine implements IScriptEngine {
 
     //https://github.com/eclipsesource/J2V8
@@ -20,6 +22,11 @@ public class JSV8ScriptEngine implements IScriptEngine {
     @Override
     public void compile(String funcName, String programStr) throws ScriptLoadException {
 
+    }
+
+    @Override
+    public void loadFile(File file) throws ScriptLoadException {
+        throw new UnsupportedOperationException("method isn't implemented yet.");
     }
 
     @Override
