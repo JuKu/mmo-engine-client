@@ -115,7 +115,8 @@ public class Initializer implements Runnable {
         Log.i(SCRIPTS_TAG, "initialize scripting engine...");
         ScriptEngine.init();
 
-        Log.i(SCRIPTS_TAG, "load init.lua script...");
+        Log.i(SCRIPTS_TAG, "load & execute init.lua script...");
+        long startTime = System.currentTimeMillis();
         try {
             ScriptEngine.getInstance().loadFile(new File(FilePath.parse("{data.dir}init/scripts/init.lua")));
         } catch (ScriptLoadException e) {
@@ -123,6 +124,10 @@ public class Initializer implements Runnable {
             JavaFXUtils.showExceptionDialog(I.tr("Error!"), "Exception: ", e);
             Gdx.app.exit();
         }
+
+        long endTime = System.currentTimeMillis();
+        long timeDiff = endTime - startTime;
+        Log.d(SCRIPTS_TAG, "init script execution took " + timeDiff + "ms.");
     }
 
     protected void error (String content) {
