@@ -12,6 +12,7 @@ import net.sandius.rembulan.env.RuntimeEnvironments;
 import net.sandius.rembulan.exec.CallException;
 import net.sandius.rembulan.exec.CallPausedException;
 import net.sandius.rembulan.exec.DirectCallExecutor;
+import net.sandius.rembulan.impl.DefaultTable;
 import net.sandius.rembulan.impl.StateContexts;
 import net.sandius.rembulan.lib.impl.StandardLibrary;
 import net.sandius.rembulan.load.ChunkLoader;
@@ -83,7 +84,7 @@ public class LuaScriptEngineTest {
     }
 
     @Test
-    public void testExecGlobalFunc () throws ScriptLoadException {
+    public void testExecGlobalFunc () throws ScriptLoadException, CallException {
         GameTime time = GameTime.getInstance();
         time.setTime(System.currentTimeMillis());
 
@@ -91,6 +92,7 @@ public class LuaScriptEngineTest {
         engine.compile("add", "function add (a)\n" +
                 "      local sum = 0\n" +
                 "      for i,v in ipairs(a) do\n" +
+                "        print(v);" +
                 "        sum = sum + v\n" +
                 "      end\n" +
                 "      return sum\n" +
@@ -99,11 +101,17 @@ public class LuaScriptEngineTest {
 
         engine.printEnvDebug();
 
-        assertEquals(6, engine.execFunc("add", new int[] {1, 2, 3}));
+        Table table = new DefaultTable();
+        table.rawset(1l, new Long(1));
+        table.rawset(2l, new Long(2));
+        table.rawset(3l, new Long(3));
+        assertEquals(6l, engine.execFunc("add", table));
     }
 
     @Test
     public void testLuaExample () throws LoaderException, InterruptedException, CallPausedException, CallException {
+        //https://github.com/mjanicek/rembulan/issues/22
+
         String program = "function dummy(a,b) print('a=',a,'b=',b); end";
 
         //compile the program
@@ -126,6 +134,8 @@ public class LuaScriptEngineTest {
 
     @Test
     public void testLuaExample1 () throws LoaderException, InterruptedException, CallPausedException, CallException {
+        //https://github.com/mjanicek/rembulan/issues/22
+
         String program = "function dummy() return 10; end";
 
         //compile the program

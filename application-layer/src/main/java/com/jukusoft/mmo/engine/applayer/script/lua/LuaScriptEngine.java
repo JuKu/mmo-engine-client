@@ -65,7 +65,7 @@ public class LuaScriptEngine implements IScriptEngine {
     }
 
     @Override
-    public Object execFunc(String funcName, Object... args) {
+    public Object execFunc(String funcName, Object... args) throws CallException {
         // get a reference to the function
         LuaFunction func = (LuaFunction) env.rawget(funcName);
 
@@ -84,7 +84,8 @@ public class LuaScriptEngine implements IScriptEngine {
             }
         } catch (CallException e) {
             Log.w("Scripts", "CallException: ", e);
-            throw new ScriptExecutionException("CallException: " + e.getLocalizedMessage());
+            throw e;
+            //throw new ScriptExecutionException("CallException: " + e.getLocalizedMessage());
         } catch (CallPausedException e) {
             Log.w("Scripts", "CallPausedException: ", e);
         } catch (InterruptedException e) {
@@ -95,7 +96,7 @@ public class LuaScriptEngine implements IScriptEngine {
     }
 
     @Override
-    public Object execFunc(String funcName) {
+    public Object execFunc(String funcName) throws CallException {
         return this.execFunc(funcName, new Object[0]);
     }
 
