@@ -1,1 +1,1 @@
-print("Executed init.lua");
+logi("Lua", "Executed init.lua");
