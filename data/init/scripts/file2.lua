@@ -1,0 +1,1 @@
+logi("Lua", "executed file2.lua");

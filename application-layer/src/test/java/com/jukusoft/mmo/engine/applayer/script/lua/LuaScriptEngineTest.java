@@ -50,7 +50,7 @@ public class LuaScriptEngineTest {
     }
 
     @Test (expected = IllegalStateException.class)
-    public void testExecNotExistentScript () {
+    public void testExecNotExistentScript () throws CallException {
         LuaScriptEngine engine = new LuaScriptEngine();
         engine.execScript("test");
     }
@@ -62,21 +62,21 @@ public class LuaScriptEngineTest {
     }
 
     @Test
-    public void testExec () throws ScriptLoadException {
+    public void testExec () throws ScriptLoadException, CallException {
         LuaScriptEngine engine = new LuaScriptEngine();
         engine.compile("test", "return 2");
         assertEquals(2l, engine.execScript("test"));
     }
 
     @Test
-    public void testExec1 () throws ScriptLoadException {
+    public void testExec1 () throws ScriptLoadException, CallException {
         LuaScriptEngine engine = new LuaScriptEngine();
         engine.compile("test", "return 2");
         assertEquals(2l, engine.execScript("test", "param1", "param2"));
     }
 
     @Test
-    public void testExecScript () throws ScriptLoadException {
+    public void testExecScript () throws ScriptLoadException, CallException {
         GameTime time = GameTime.getInstance();
         time.setTime(System.currentTimeMillis());
 
@@ -153,13 +153,13 @@ public class LuaScriptEngineTest {
     }
 
     @Test (expected = ScriptLoadException.class)
-    public void testLoadFileNotExists () throws ScriptLoadException {
+    public void testLoadFileNotExists () throws ScriptLoadException, CallException {
         LuaScriptEngine engine = new LuaScriptEngine();
         engine.loadFile(new File("not-existent-file.lua"));
     }
 
     @Test
-    public void testLoadInitFile () throws ScriptLoadException {
+    public void testLoadInitFile () throws ScriptLoadException, CallException {
         LuaScriptEngine engine = new LuaScriptEngine();
         engine.loadFile(new File("../data/init/scripts/init.lua"));
     }

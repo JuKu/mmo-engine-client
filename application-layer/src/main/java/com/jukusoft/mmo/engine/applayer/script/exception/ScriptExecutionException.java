@@ -6,4 +6,8 @@ public class ScriptExecutionException extends RuntimeException {
         super(message);
     }
 
+    public ScriptExecutionException (Throwable e) {
+        super(e);
+    }
+
 }

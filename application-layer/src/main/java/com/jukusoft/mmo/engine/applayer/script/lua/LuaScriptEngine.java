@@ -84,17 +84,25 @@ public class LuaScriptEngine implements IScriptEngine {
             File relFile = FileUtils.getRelativeFile(file, new File("."));
             String scriptName = relFile.getPath().replace("\\", "/");
 
-            String content = FileUtils.readFile(file.getAbsolutePath(), StandardCharsets.UTF_8);
-            this.compile(scriptName, content);
+            String scriptName1 = "script_" + scriptName;
+
+            //only compile this file, if it isn't in cache
+            if (!this.luaFunctions.containsKey(scriptName1)) {
+                String content = FileUtils.readFile(file.getAbsolutePath(), StandardCharsets.UTF_8);
+                this.compile(scriptName, content);
+            }
+
             this.execScript(scriptName);
         } catch (IOException e) {
             Log.e(SCRIPTS_TAG, "IOException while loading lua script file: ", e);
             throw new ScriptLoadException("Cannot read script file: " + file.getAbsolutePath() + ", IOException: " + e.getLocalizedMessage());
+        } catch (CallException e) {
+            throw new ScriptExecutionException(e);
         }
     }
 
     @Override
-    public Object execFunc(String funcName, Object... args) throws CallException {
+    public Object execFunc(String funcName, Object... args) {
         // get a reference to the function
         LuaFunction func = (LuaFunction) env.rawget(funcName);
 
@@ -113,8 +121,7 @@ public class LuaScriptEngine implements IScriptEngine {
             }
         } catch (CallException e) {
             Log.w(SCRIPTS_TAG, "CallException: ", e);
-            throw e;
-            //throw new ScriptExecutionException("CallException: " + e.getLocalizedMessage());
+            throw new ScriptExecutionException(e);
         } catch (CallPausedException e) {
             Log.w(SCRIPTS_TAG, "CallPausedException: ", e);
         } catch (InterruptedException e) {
@@ -130,7 +137,7 @@ public class LuaScriptEngine implements IScriptEngine {
     }
 
     @Override
-    public Object execScript(String scriptName, Object... args) {
+    public Object execScript(String scriptName, Object... args) throws CallException {
         scriptName = "script_" + scriptName;
 
         LuaFunction func = this.luaFunctions.get(scriptName);
@@ -152,6 +159,8 @@ public class LuaScriptEngine implements IScriptEngine {
             }
         } catch (CallException e) {
             Log.w(SCRIPTS_TAG, "CallException: ", e);
+            throw e;
+            //throw new ScriptExecutionException("CallException: " + e.getLocalizedMessage());
         } catch (CallPausedException e) {
             Log.w(SCRIPTS_TAG, "CallPausedException: ", e);
         } catch (InterruptedException e) {

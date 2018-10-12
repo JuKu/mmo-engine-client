@@ -1,3 +1,3 @@
 logi("Lua", "Executed init.lua");
 
-loadFile("file2.lua");
+dofile("file2.lua");
