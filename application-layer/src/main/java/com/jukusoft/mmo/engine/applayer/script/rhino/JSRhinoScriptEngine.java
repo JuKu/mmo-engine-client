@@ -35,7 +35,7 @@ public class JSRhinoScriptEngine implements IScriptEngine {
 
     @Override
     public void compile(String funcName, String programStr) throws ScriptLoadException {
-
+        //
     }
 
     @Override

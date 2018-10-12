@@ -25,6 +25,7 @@ public class Initializer implements Runnable {
     protected final String OPENGL_TAG = "OpenGL";
     protected final String UPDATE_TAG = "Update";
     protected final String SERVERS_TAG = "Servers";
+    protected final String SCRIPTS_TAG = "Scripts";
     protected final String SR_SECTION = "SystemRequirements";
 
     public Initializer (BaseApp app) {
@@ -111,14 +112,14 @@ public class Initializer implements Runnable {
         Cache.init(cacheDir);
 
         //initialize scripting engine
-        Log.i("Scripts", "initialize scripting engine...");
+        Log.i(SCRIPTS_TAG, "initialize scripting engine...");
         ScriptEngine.init();
 
-        Log.i("Scripts", "load init.lua script...");
+        Log.i(SCRIPTS_TAG, "load init.lua script...");
         try {
             ScriptEngine.getInstance().loadFile(new File(FilePath.parse("{data.dir}init/scripts/init.lua")));
         } catch (ScriptLoadException e) {
-            Log.e("Scripts", "Exception while loading init.lua script file: ", e);
+            Log.e(SCRIPTS_TAG, "Exception while loading init.lua script file: ", e);
             JavaFXUtils.showExceptionDialog(I.tr("Error!"), "Exception: ", e);
             Gdx.app.exit();
         }
