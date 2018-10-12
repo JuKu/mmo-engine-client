@@ -9,6 +9,7 @@ import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.network.ServerManager;
 import com.jukusoft.mmo.engine.applayer.script.ScriptEngine;
+import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
 import com.jukusoft.mmo.engine.applayer.utils.*;
 import com.jukusoft.mmo.engine.applayer.version.Version;
 import org.json.JSONObject;
@@ -112,6 +113,15 @@ public class Initializer implements Runnable {
         //initialize scripting engine
         Log.i("Scripts", "initialize scripting engine...");
         ScriptEngine.init();
+
+        Log.i("Scripts", "load init.lua script...");
+        try {
+            ScriptEngine.getInstance().loadFile(new File(FilePath.parse("{data.dir}init/scripts/init.lua")));
+        } catch (ScriptLoadException e) {
+            Log.e("Scripts", "Exception while loading init.lua script file: ", e);
+            JavaFXUtils.showExceptionDialog(I.tr("Error!"), "Exception: ", e);
+            Gdx.app.exit();
+        }
     }
 
     protected void error (String content) {

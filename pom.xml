@@ -88,7 +88,7 @@
 		<i18n.gettext.version>1.1.0</i18n.gettext.version>
 
 		<!-- lua rembulan version -->
-		<lua.rembulan.version>1.0.1</lua.rembulan.version>
+		<lua.rembulan.version>1.0.2</lua.rembulan.version>
 
 		<!-- Google javascript V8 engine -->
 		<js.v8.version>4.6.0</js.v8.version>

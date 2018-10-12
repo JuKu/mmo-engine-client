@@ -17,19 +17,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: file Initializer.java line 91
+#: file Initializer.java line 92
 msgid "Server Error!"
 msgstr "Server Error!"
 
-#: file Initializer.java line 144
-msgid "Updater"
-msgstr "Updater"
-
+#: file Initializer.java line 122
 #: file InputLayer.java line 81
 #: file InputLayer.java line 85
 #: file InputLayer.java line 96
 msgid "Error!"
 msgstr "Error!"
+
+#: file Initializer.java line 154
+msgid "Updater"
+msgstr "Updater"
 
 #: file InputLayer.java line 81
 msgid "Couldn't generate auto mapping for controller!"
