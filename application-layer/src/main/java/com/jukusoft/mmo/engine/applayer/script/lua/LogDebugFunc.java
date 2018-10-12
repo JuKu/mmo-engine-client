@@ -1,6 +1,7 @@
 package com.jukusoft.mmo.engine.applayer.script.lua;
 
 import com.jukusoft.mmo.engine.applayer.logger.Log;
+import net.sandius.rembulan.ByteString;
 import net.sandius.rembulan.impl.NonsuspendableFunctionException;
 import net.sandius.rembulan.runtime.AbstractFunction0;
 import net.sandius.rembulan.runtime.AbstractFunction2;
@@ -11,8 +12,8 @@ public class LogDebugFunc extends AbstractFunction2 {
 
     @Override
     public void invoke(ExecutionContext context, Object arg1, Object arg2) throws ResolvedControlThrowable {
-        String tag = (String) arg1;
-        String message = (String) arg2;
+        String tag = ((ByteString) arg1).toRawString();
+        String message = ((ByteString) arg2).toRawString();
 
         Log.d(tag, message);
     }
