@@ -47,4 +47,9 @@ public class JSRhinoScriptEngine implements IScriptEngine {
         return this.execFunc(funcName, null);
     }
 
+    @Override
+    public Object execScript(String scriptName, Object... args) {
+        throw new UnsupportedOperationException("method isn't implemented yet.");
+    }
+
 }

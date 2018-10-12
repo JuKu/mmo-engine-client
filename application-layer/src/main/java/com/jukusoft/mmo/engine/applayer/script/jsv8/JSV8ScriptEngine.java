@@ -32,4 +32,9 @@ public class JSV8ScriptEngine implements IScriptEngine {
         throw new UnsupportedOperationException("method isn't implemented yet.");
     }
 
+    @Override
+    public Object execScript(String scriptName, Object... args) {
+        throw new UnsupportedOperationException("method isn't implemented yet.");
+    }
+
 }

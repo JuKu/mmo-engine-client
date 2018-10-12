@@ -18,11 +18,13 @@ public class LogWriter implements Runnable {
 
     //config
     protected final boolean printToConsole;
+    protected final boolean writeToFile;
 
     protected LogWriter (final File file, final ConcurrentLinkedQueue<String> loggingQueue) {
         this.file = file;
         this.loggingQueue = loggingQueue;
         printToConsole = Config.getBool("Logger", "printToConsole");
+        writeToFile = Config.getBool("Logger", "writeToFile");
 
         if (!this.file.exists()) {
             try {

@@ -75,7 +75,7 @@ public class Log extends ScriptableObject {
         format = new SimpleDateFormat(Config.get(LOGGER_TAG, "timeFormat"));
 
         //first check, if logging is enabled
-        if (Log.enabled && Config.getBool(LOGGER_TAG, "writeToFile")) {
+        if (Log.enabled && (Config.getBool(LOGGER_TAG, "writeToFile") || Config.getBool(LOGGER_TAG, "printToConsole"))) {
             String filePath = FilePath.parse(Config.get(LOGGER_TAG, "file"));
 
             File file = new File(filePath);

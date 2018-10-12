@@ -116,4 +116,8 @@ public class Config {
         return Float.parseFloat(get(section, key));
     }
 
+    public static void set (String section, String key, String value) {
+        values.put(section + "." + key, value);
+    }
+
 }
