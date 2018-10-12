@@ -9,7 +9,7 @@ public class LuaUtils {
         Table table = new DefaultTable();
 
         for (int i = 0; i < elements.length; i++) {
-            table.rawset(i + 1, elements[i]);
+            table.rawset(i + 1l, elements[i]);
         }
 
         return table;
