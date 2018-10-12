@@ -5,6 +5,10 @@ import net.sandius.rembulan.impl.DefaultTable;
 
 public class LuaUtils {
 
+    protected LuaUtils () {
+        //
+    }
+
     public static Table array (Object... elements) {
         Table table = new DefaultTable();
 
