@@ -34,6 +34,8 @@ public class LuaScriptEngine implements IScriptEngine {
     //map with all registered global lua functions
     protected ObjectObjectMap<String, LuaFunction> luaFunctions = new ObjectObjectHashMap<>();
 
+    protected static final String SCRIPTS_TAG = "Scripts";
+
     public LuaScriptEngine () {
         //initialize state
         this.state = StateContexts.newDefaultInstance();
@@ -53,7 +55,7 @@ public class LuaScriptEngine implements IScriptEngine {
      */
     @Override
     public void compile (String scriptName, String programStr) throws ScriptLoadException {
-        Log.d("Scripts", "compile script '" + scriptName + "'");
+        Log.d(SCRIPTS_TAG, "compile script '" + scriptName + "'");
 
         scriptName = "script_" + scriptName;
 
@@ -63,7 +65,7 @@ public class LuaScriptEngine implements IScriptEngine {
         try {
             func = loader.loadTextChunk(new Variable(env), scriptName, programStr);
         } catch (LoaderException e) {
-            Log.e("Scripts", "Couldn't compile lua script: " + programStr + ", error: " + e.getLuaStyleErrorMessage(), e);
+            Log.e(SCRIPTS_TAG, "Couldn't compile lua script: " + programStr + ", error: " + e.getLuaStyleErrorMessage(), e);
             throw new ScriptLoadException("Coulnd't compile script: " + programStr + ", error: " + e.getLuaStyleErrorMessage());
         }
 
@@ -86,7 +88,7 @@ public class LuaScriptEngine implements IScriptEngine {
             this.compile(scriptName, content);
             this.execScript(scriptName);
         } catch (IOException e) {
-            Log.e("Scripts", "IOException while loading lua script file: ", e);
+            Log.e(SCRIPTS_TAG, "IOException while loading lua script file: ", e);
             throw new ScriptLoadException("Cannot read script file: " + file.getAbsolutePath() + ", IOException: " + e.getLocalizedMessage());
         }
     }
@@ -110,13 +112,13 @@ public class LuaScriptEngine implements IScriptEngine {
                 return null;
             }
         } catch (CallException e) {
-            Log.w("Scripts", "CallException: ", e);
+            Log.w(SCRIPTS_TAG, "CallException: ", e);
             throw e;
             //throw new ScriptExecutionException("CallException: " + e.getLocalizedMessage());
         } catch (CallPausedException e) {
-            Log.w("Scripts", "CallPausedException: ", e);
+            Log.w(SCRIPTS_TAG, "CallPausedException: ", e);
         } catch (InterruptedException e) {
-            Log.w("Scripts", "InterruptedException: ", e);
+            Log.w(SCRIPTS_TAG, "InterruptedException: ", e);
         }
 
         return null;
@@ -137,7 +139,7 @@ public class LuaScriptEngine implements IScriptEngine {
             throw new IllegalStateException("lua script '" + scriptName + "' doesn't exists in cache, you have to compile it first!");
         }
 
-        Log.d("Scripts", "execute lua script '" + scriptName + "'");
+        Log.d(SCRIPTS_TAG, "execute lua script '" + scriptName + "'");
 
         try {
             Object[] objs = DirectCallExecutor.newExecutor().call(state, func);
@@ -149,11 +151,11 @@ public class LuaScriptEngine implements IScriptEngine {
                 return null;
             }
         } catch (CallException e) {
-            Log.w("Scripts", "CallException: ", e);
+            Log.w(SCRIPTS_TAG, "CallException: ", e);
         } catch (CallPausedException e) {
-            Log.w("Scripts", "CallPausedException: ", e);
+            Log.w(SCRIPTS_TAG, "CallPausedException: ", e);
         } catch (InterruptedException e) {
-            Log.w("Scripts", "InterruptedException: ", e);
+            Log.w(SCRIPTS_TAG, "InterruptedException: ", e);
         }
 
         return null;
@@ -161,7 +163,7 @@ public class LuaScriptEngine implements IScriptEngine {
 
     protected void printEnvDebug () {
         for (long i = 0; i < env.rawlen(); i++) {
-            Log.d("Scripts", "rawget[" + i + "]: " + env.rawget(i));
+            Log.d(SCRIPTS_TAG, "rawget[" + i + "]: " + env.rawget(i));
         }
     }
 

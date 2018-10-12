@@ -3,7 +3,6 @@ package com.jukusoft.mmo.engine.applayer.script.lua;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import net.sandius.rembulan.ByteString;
 import net.sandius.rembulan.impl.NonsuspendableFunctionException;
-import net.sandius.rembulan.runtime.AbstractFunction0;
 import net.sandius.rembulan.runtime.AbstractFunction2;
 import net.sandius.rembulan.runtime.ExecutionContext;
 import net.sandius.rembulan.runtime.ResolvedControlThrowable;

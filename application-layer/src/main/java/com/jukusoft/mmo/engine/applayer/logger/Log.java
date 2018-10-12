@@ -2,7 +2,6 @@ package com.jukusoft.mmo.engine.applayer.logger;
 
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.utils.FilePath;
-import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
 import java.io.File;
