@@ -108,10 +108,10 @@ public class LuaScriptEngine implements IScriptEngine {
             //only compile this file, if it isn't in cache
             if (!this.luaFunctions.containsKey(scriptName1)) {
                 String content = FileUtils.readFile(file.getAbsolutePath(), StandardCharsets.UTF_8);
-                this.compile(scriptName1, content);
+                this.compile(scriptName, content);
             }
 
-            this.execScript(scriptName1);
+            this.execScript(scriptName);
         } catch (IOException e) {
             Log.e(SCRIPTS_TAG, "IOException while loading lua script file: ", e);
             throw new ScriptLoadException("Cannot read script file: " + file.getAbsolutePath() + ", IOException: " + e.getLocalizedMessage());
