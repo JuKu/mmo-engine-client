@@ -46,6 +46,9 @@ public class LuaScriptEngine implements IScriptEngine {
         this.env.rawset("logi", new LogInfoFunc());
 
         this.env.rawset("now", new NowFunc());
+
+        //add function to load other scripts
+        this.env.rawset("dofile", new DoFileFunc(this));
     }
 
     /**
@@ -56,6 +59,22 @@ public class LuaScriptEngine implements IScriptEngine {
     @Override
     public void compile (String scriptName, String programStr) throws ScriptLoadException {
         Log.d(SCRIPTS_TAG, "compile script '" + scriptName + "'");
+
+        String fileDir;
+
+        //get current script directory
+        try {
+            File currentDir = FileUtils.getRelativeFile(new File(scriptName), new File("."));
+            fileDir = currentDir.getPath().replace("\\", "/");
+
+            //remove filename
+            fileDir = fileDir.substring(0, fileDir.lastIndexOf("/") + 1);
+        } catch (IOException e) {
+            Log.w(SCRIPTS_TAG, "IOException while getting current relative file path of lua script: ", e);
+            throw new ScriptLoadException("IOException while loading script: ", e);
+        }
+
+        programStr = "--define global variable for relative dir path\nrelDir = \"" + fileDir + "\"; " + programStr;
 
         scriptName = "script_" + scriptName;
 
@@ -138,6 +157,9 @@ public class LuaScriptEngine implements IScriptEngine {
 
     @Override
     public Object execScript(String scriptName, Object... args) throws CallException {
+        String fileName = scriptName;
+        Log.v(SCRIPTS_TAG, "execScript: " + scriptName);
+
         scriptName = "script_" + scriptName;
 
         LuaFunction func = this.luaFunctions.get(scriptName);

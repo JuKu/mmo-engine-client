@@ -1,3 +1,5 @@
 logi("Lua", "Executed init.lua");
 
-dofile("file2.lua");
+-- print(relDir);
+
+dofile("file2.lua", relDir);

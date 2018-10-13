@@ -6,4 +6,8 @@ public class ScriptLoadException extends Exception {
         super(message);
     }
 
+    public ScriptLoadException (String message, Throwable e) {
+        super(message, e);
+    }
+
 }
