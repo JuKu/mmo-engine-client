@@ -1,5 +1,6 @@
 package com.jukusoft.mmo.engine.applayer.utils;
 
+import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
 import org.junit.Test;
 
 public class ExceptionUtilsTest {
@@ -19,6 +20,21 @@ public class ExceptionUtilsTest {
     @Test
     public void testLogException1 () {
         ExceptionUtils.logException("test", "test message", () -> {
+            //throw exception
+            throw new Exception("test");
+        });
+    }
+
+    @Test
+    public void testThrowScriptLoadException () throws ScriptLoadException {
+        ExceptionUtils.throwScriptLoadException("test", "test message", () -> {
+            //don't do anything here
+        });
+    }
+
+    @Test (expected = ScriptLoadException.class)
+    public void testThrowScriptLoadException1 () throws ScriptLoadException {
+        ExceptionUtils.throwScriptLoadException("test", "test message", () -> {
             //throw exception
             throw new Exception("test");
         });

@@ -1,6 +1,7 @@
 package com.jukusoft.mmo.engine.applayer.utils;
 
 import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
 
 public class ExceptionUtils {
 
@@ -15,6 +16,15 @@ public class ExceptionUtils {
             runnable.run();
         } catch (Exception e) {
             Log.e(tag, message, e);
+        }
+    }
+
+    public static void throwScriptLoadException (String tag, String message, RunnableWithException runnable) throws ScriptLoadException {
+        try {
+            runnable.run();
+        } catch (Exception e) {
+            Log.e(tag, message, e);
+            throw new ScriptLoadException(message, e);
         }
     }
 

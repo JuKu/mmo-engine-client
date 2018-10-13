@@ -12,7 +12,6 @@ import org.mozilla.javascript.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -51,7 +50,6 @@ public class JSRhinoScriptEngine implements IScriptEngine {
     public void compile(String scriptName, String programStr) throws ScriptLoadException {
         String fileDir;
 
-        //get current script directory (required for dofile() command)
         try {
             File currentDir = FileUtils.getRelativeFile(new File(scriptName), new File("."));
             fileDir = currentDir.getPath().replace("\\", "/");
