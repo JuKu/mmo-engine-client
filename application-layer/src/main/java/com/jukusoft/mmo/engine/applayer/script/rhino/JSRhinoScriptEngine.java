@@ -43,7 +43,10 @@ public class JSRhinoScriptEngine implements IScriptEngine {
         //The null parameter tells initStandardObjects to create and return a scope object that we use in later calls.
         this.scope = cx.initStandardObjects();
 
-        ExceptionUtils.logException(SCRIPTS_TAG, "Exception while initializing JSRhinoScriptEngine: ", () -> ScriptableObject.defineClass(this.scope, Log.class));
+        //ExceptionUtils.logException(SCRIPTS_TAG, "Exception while initializing JSRhinoScriptEngine: ", () -> ScriptableObject.defineClass(this.scope, Log.class));
+
+        //https://stackoverflow.com/questions/39771148/calling-java-function-from-rhino
+        //ScriptableObject.putProperty(this.scope, "log", Context.javaToJS(new Log(), this.scope));
     }
 
     @Override
@@ -61,12 +64,12 @@ public class JSRhinoScriptEngine implements IScriptEngine {
             throw new ScriptLoadException("IOException while loading script: ", e);
         }
 
-        programStr = "/*define global variable for relative dir path*/\nvar relDir = \"" + fileDir + "\";\n" + programStr;
+        programStr = "/*define global variable for relative dir path*/var relDir = \"" + fileDir + "\";\n" + programStr;
 
         //this.cx.evaluateString(scope, programStr, scriptName, 1, null);
 
         //compile string
-        Script script = this.cx.compileString(programStr, scriptName, 1, null);
+        Script script = this.cx.compileString(programStr, scriptName, 1 - 2, null);
 
         this.scripts.put(scriptName, script);
     }
