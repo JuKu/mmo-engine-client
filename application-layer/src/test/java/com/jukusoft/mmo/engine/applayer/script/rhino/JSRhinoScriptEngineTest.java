@@ -45,20 +45,29 @@ public class JSRhinoScriptEngineTest {
     @Test
     public void testCompile () throws ScriptLoadException {
         JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
-        assertNull(engine.scripts.get("script_test"));
+        assertNull(engine.scripts.get("test"));
 
         //compile script
         engine.compile("test", "java.lang.System.out.println(\"test\");");
         assertNotNull(engine.scripts.get("test"));
     }
 
+    @Test
+    public void testCompileInvalideScriptname () throws ScriptLoadException {
+        JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
+        assertNull(engine.scripts.get("test"));
+
+        //compile script
+        //engine.compile("../", "java.lang.System.out.println(\"test\");");
+    }
+
     @Test (expected = EvaluatorException.class)
     public void testCompileInvalideJS () throws ScriptLoadException {
         JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
-        assertNull(engine.scripts.get("script_test"));
+        assertNull(engine.scripts.get("test"));
 
         //compile script
-        engine.compile("script_test", "va test = 2;");
+        engine.compile("test", "va test = 2;");
     }
 
     @Test (expected = IllegalStateException.class)
@@ -72,10 +81,10 @@ public class JSRhinoScriptEngineTest {
         JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
 
         //compile script first
-        engine.compile("script_test", "java.lang.System.out.println(\"test\");");
+        engine.compile("test", "java.lang.System.out.println(\"test\");");
 
         //execute script
-        Object obj = engine.execScript("script_test", null);
+        Object obj = engine.execScript("test", null);
         assertNull(obj);
     }
 
@@ -106,10 +115,10 @@ public class JSRhinoScriptEngineTest {
         JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
 
         //compile script first
-        engine.compile("script_test", "function test(a) { return 2 * a; } ");
+        engine.compile("test", "function test(a) { return 2 * a; } ");
 
         //register function first (interpreter has to read this function)
-        engine.execScript("script_test", null);
+        engine.execScript("test", null);
 
         Object obj = engine.execFunc("test", 8);
         assertNotNull(obj);
@@ -121,10 +130,10 @@ public class JSRhinoScriptEngineTest {
         JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
 
         //compile script first
-        engine.compile("script_test", "function test() { return 2; } ");
+        engine.compile("test", "function test() { return 2; } ");
 
         //register function first (interpreter has to read this function)
-        engine.execScript("script_test");
+        engine.execScript("test");
 
         Object obj = engine.execFunc("test");
         assertNotNull(obj);
