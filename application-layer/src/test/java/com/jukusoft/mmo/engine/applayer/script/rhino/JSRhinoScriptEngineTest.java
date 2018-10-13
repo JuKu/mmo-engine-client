@@ -116,6 +116,21 @@ public class JSRhinoScriptEngineTest {
         assertEquals(16d, obj);
     }
 
+    @Test
+    public void testExecFunc1 () throws ScriptLoadException {
+        JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
+
+        //compile script first
+        engine.compile("script_test", "function test() { return 2; } ");
+
+        //register function first (interpreter has to read this function)
+        engine.execScript("script_test");
+
+        Object obj = engine.execFunc("test");
+        assertNotNull(obj);
+        assertEquals(2, obj);
+    }
+
     @Test (expected = ScriptLoadException.class)
     public void testLoadNotExistentFile () throws ScriptLoadException {
         JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
