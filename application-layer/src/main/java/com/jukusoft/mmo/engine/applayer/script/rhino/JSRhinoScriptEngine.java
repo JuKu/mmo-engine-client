@@ -79,7 +79,7 @@ public class JSRhinoScriptEngine implements IScriptEngine {
             throw new ScriptLoadException("js script file doesn't exists: " + file.getAbsolutePath());
         }
 
-        try {
+        ExceptionUtils.throwScriptLoadException(SCRIPTS_TAG, "Cannot read script file: " + file.getAbsolutePath() + ", IOException: ", () -> {
             File relFile = FileUtils.getRelativeFile(file, new File("."));
             String scriptName = relFile.getPath().replace("\\", "/");
 
@@ -90,10 +90,7 @@ public class JSRhinoScriptEngine implements IScriptEngine {
             }
 
             this.execScript(scriptName);
-        } catch (IOException e) {
-            Log.e(SCRIPTS_TAG, "IOException while loading lua script file: ", e);
-            throw new ScriptLoadException("Cannot read script file: " + file.getAbsolutePath() + ", IOException: " + e.getLocalizedMessage());
-        }
+        });
     }
 
     @Override
