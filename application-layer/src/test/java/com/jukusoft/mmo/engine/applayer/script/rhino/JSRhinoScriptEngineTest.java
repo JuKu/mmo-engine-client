@@ -52,15 +52,6 @@ public class JSRhinoScriptEngineTest {
         assertNotNull(engine.scripts.get("test"));
     }
 
-    @Test
-    public void testCompileInvalideScriptname () throws ScriptLoadException {
-        JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
-        assertNull(engine.scripts.get("test"));
-
-        //compile script
-        //engine.compile("../", "java.lang.System.out.println(\"test\");");
-    }
-
     @Test (expected = EvaluatorException.class)
     public void testCompileInvalideJS () throws ScriptLoadException {
         JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
@@ -85,6 +76,18 @@ public class JSRhinoScriptEngineTest {
 
         //execute script
         Object obj = engine.execScript("test", null);
+        assertNull(obj);
+    }
+
+    @Test (expected = UnsupportedOperationException.class)
+    public void testExecScriptWithArguments () throws ScriptLoadException {
+        JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
+
+        //compile script first
+        engine.compile("test", "java.lang.System.out.println(\"test\");");
+
+        //execute script
+        Object obj = engine.execScript("test", new Object[1]);
         assertNull(obj);
     }
 
