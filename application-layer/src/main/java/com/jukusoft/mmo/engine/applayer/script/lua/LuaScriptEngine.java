@@ -62,7 +62,7 @@ public class LuaScriptEngine implements IScriptEngine {
 
         String fileDir;
 
-        //get current script directory
+        //get current script directory (required for dofile() command)
         try {
             File currentDir = FileUtils.getRelativeFile(new File(scriptName), new File("."));
             fileDir = currentDir.getPath().replace("\\", "/");
