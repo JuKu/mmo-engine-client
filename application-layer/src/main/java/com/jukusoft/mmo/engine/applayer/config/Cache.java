@@ -5,6 +5,7 @@ import com.jukusoft.mmo.engine.applayer.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Cache {
 
@@ -13,9 +14,7 @@ public class Cache {
     protected final String CACHE_PATH;
 
     protected Cache(String path) {
-        if (path == null) {
-            throw new NullPointerException("Couldn't found config Paths.tempDir!");
-        }
+        Objects.requireNonNull(path, "path cannot be null.");
 
         if (!new File(path).exists()) {
             throw new IllegalStateException("cache directory doesn't exists: " + new File(path).getAbsolutePath());

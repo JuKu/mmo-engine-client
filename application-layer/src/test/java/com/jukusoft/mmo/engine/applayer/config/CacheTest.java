@@ -32,6 +32,31 @@ public class CacheTest {
         assertEquals(true, new File("../temp/").exists());
     }
 
+    @Test (expected = NullPointerException.class)
+    public void testNullConstructor () {
+        new Cache(null);
+    }
+
+    @Test (expected = IllegalStateException.class)
+    public void testConstructorWithNotExistentFile () {
+        new Cache("not-existent-dir");
+    }
+
+    @Test (expected = IllegalStateException.class)
+    public void testConstructorWithFile () {
+        new Cache("../config/junit-logger.cfg");
+    }
+
+    @Test
+    public void testConstructorWithSlash () {
+        new Cache("../temp/");
+    }
+
+    @Test
+    public void testConstructorWithoutSlash () {
+        new Cache("../temp");
+    }
+
     @Test (expected = IllegalStateException.class)
     public void testGetInstance () {
         Cache.instance = null;
