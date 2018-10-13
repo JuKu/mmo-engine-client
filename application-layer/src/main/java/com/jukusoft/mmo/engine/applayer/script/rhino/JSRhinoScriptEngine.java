@@ -5,10 +5,9 @@ import com.carrotsearch.hppc.ObjectObjectMap;
 import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.script.IScriptEngine;
-import com.jukusoft.mmo.engine.applayer.script.exception.ScriptExecutionException;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
+import com.jukusoft.mmo.engine.applayer.utils.ExceptionUtils;
 import com.jukusoft.mmo.engine.applayer.utils.FileUtils;
-import net.sandius.rembulan.exec.CallException;
 import org.mozilla.javascript.*;
 
 import java.io.File;
@@ -45,11 +44,7 @@ public class JSRhinoScriptEngine implements IScriptEngine {
         //The null parameter tells initStandardObjects to create and return a scope object that we use in later calls.
         this.scope = cx.initStandardObjects();
 
-        try {
-            ScriptableObject.defineClass(this.scope, Log.class);
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            Log.e(SCRIPTS_TAG, "Exception while initializing JSRhinoScriptEngine: ", e);
-        }
+        ExceptionUtils.logException(SCRIPTS_TAG, "Exception while initializing JSRhinoScriptEngine: ", () -> ScriptableObject.defineClass(this.scope, Log.class));
     }
 
     @Override
@@ -70,14 +65,11 @@ public class JSRhinoScriptEngine implements IScriptEngine {
 
         programStr = "/*define global variable for relative dir path*/\nvar relDir = \"" + fileDir + "\";\n" + programStr;
 
-        //scriptName = "script_" + scriptName;
-
         //this.cx.evaluateString(scope, programStr, scriptName, 1, null);
 
         //compile string
         Script script = this.cx.compileString(programStr, scriptName, 1, null);
 
-        //scriptName = "script_" + scriptName;
         this.scripts.put(scriptName, script);
     }
 
@@ -93,16 +85,13 @@ public class JSRhinoScriptEngine implements IScriptEngine {
             File relFile = FileUtils.getRelativeFile(file, new File("."));
             String scriptName = relFile.getPath().replace("\\", "/");
 
-            //String scriptName1 = "script_" + scriptName;
-            String scriptName1 = scriptName;
-
             //only compile this file, if it isn't in cache
-            if (!this.scripts.containsKey(scriptName1)) {
+            if (!this.scripts.containsKey(scriptName)) {
                 String content = FileUtils.readFile(file.getAbsolutePath(), StandardCharsets.UTF_8);
-                this.compile(scriptName1, content);
+                this.compile(scriptName, content);
             }
 
-            this.execScript(scriptName1);
+            this.execScript(scriptName);
         } catch (IOException e) {
             Log.e(SCRIPTS_TAG, "IOException while loading lua script file: ", e);
             throw new ScriptLoadException("Cannot read script file: " + file.getAbsolutePath() + ", IOException: " + e.getLocalizedMessage());
