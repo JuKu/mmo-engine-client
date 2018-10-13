@@ -119,6 +119,8 @@ public class Initializer implements Runnable {
 
         Log.i(SCRIPTS_TAG, "load & execute init.lua script...");
         long startTime = System.currentTimeMillis();
+        long startTimeNs = System.nanoTime();
+
         try {
             ScriptEngine.getInstance().loadFile(new File(FilePath.parse("{data.dir}init/scripts/init.lua")));
         } catch (ScriptLoadException | ScriptExecutionException | CallException e) {
@@ -127,9 +129,11 @@ public class Initializer implements Runnable {
             Gdx.app.exit();
         }
 
+        long endTimeNs = System.nanoTime();
         long endTime = System.currentTimeMillis();
+        long timeDiffNs = endTimeNs - startTimeNs;
         long timeDiff = endTime - startTime;
-        Log.d(SCRIPTS_TAG, "init script execution took " + timeDiff + "ms.");
+        Log.d(SCRIPTS_TAG, "init script execution took " + timeDiff + "ms (" + timeDiffNs + "ns).");
     }
 
     protected void error (String content) {

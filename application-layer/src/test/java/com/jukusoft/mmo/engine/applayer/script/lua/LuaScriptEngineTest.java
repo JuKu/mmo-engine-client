@@ -1,9 +1,15 @@
 package com.jukusoft.mmo.engine.applayer.script.lua;
 
+import com.badlogic.gdx.Gdx;
+import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.applayer.script.ScriptEngine;
+import com.jukusoft.mmo.engine.applayer.script.exception.ScriptExecutionException;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
 import com.jukusoft.mmo.engine.applayer.time.GameTime;
+import com.jukusoft.mmo.engine.applayer.utils.FilePath;
+import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
 import net.sandius.rembulan.StateContext;
 import net.sandius.rembulan.Table;
 import net.sandius.rembulan.Variable;
@@ -162,6 +168,41 @@ public class LuaScriptEngineTest {
     public void testLoadInitFile () throws ScriptLoadException, CallException {
         LuaScriptEngine engine = new LuaScriptEngine();
         engine.loadFile(new File("../data/init/scripts/init.lua"));
+    }
+
+    @Test
+    public void testLoadInitFileBenchmark () throws CallException, ScriptLoadException {
+        ScriptEngine.init();
+
+        long startTime = System.currentTimeMillis();
+        long startTimeNs = System.nanoTime();
+
+        ScriptEngine.getInstance().loadFile(new File(FilePath.parse("../data/init/scripts/init.lua")));
+
+        long endTimeNs = System.nanoTime();
+        long endTime = System.currentTimeMillis();
+        long timeDiffNs = endTimeNs - startTimeNs;
+        long timeDiff = endTime - startTime;
+
+        System.err.println("execute init.lua took " + timeDiff + "ms (" + timeDiffNs + "ns).");
+
+        for (int i = 0; i < 10; i++) {
+            //execute again (while script is already compiled in cache)
+            startTime = System.currentTimeMillis();
+            startTimeNs = System.nanoTime();
+
+            ScriptEngine.getInstance().loadFile(new File(FilePath.parse("../data/init/scripts/init.lua")));
+
+            endTimeNs = System.nanoTime();
+            endTime = System.currentTimeMillis();
+            timeDiffNs = endTimeNs - startTimeNs;
+            timeDiff = endTime - startTime;
+
+            System.err.println("[" + i + "]: execute pre-compiled init.lua took " + timeDiff + "ms (" + timeDiffNs + "ns).");
+        }
+
+        //cleanup script engine
+        ScriptEngine.cleanUp();
     }
 
 }
