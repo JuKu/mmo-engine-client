@@ -79,7 +79,7 @@ public class JSRhinoScriptEngine implements IScriptEngine {
             throw new ScriptLoadException("js script file doesn't exists: " + file.getAbsolutePath());
         }
 
-        ExceptionUtils.throwScriptLoadException(SCRIPTS_TAG, "Cannot read script file: " + file.getAbsolutePath() + ", IOException: ", () -> {
+        ExceptionUtils.throwSLEOnException(SCRIPTS_TAG, "Cannot read script file: " + file.getAbsolutePath() + ", IOException: ", () -> {
             File relFile = FileUtils.getRelativeFile(file, new File("."));
             String scriptName = relFile.getPath().replace("\\", "/");
 

@@ -19,7 +19,7 @@ public class ExceptionUtils {
         }
     }
 
-    public static void throwScriptLoadException (String tag, String message, RunnableWithException runnable) throws ScriptLoadException {
+    public static void throwSLEOnException(String tag, String message, RunnableWithException runnable) throws ScriptLoadException {
         try {
             runnable.run();
         } catch (Exception e) {
