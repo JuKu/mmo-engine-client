@@ -44,4 +44,9 @@ public class JSV8ScriptEngine implements IScriptEngine {
         throw new UnsupportedOperationException("method isn't implemented yet.");
     }
 
+    @Override
+    public void shutdown() {
+        //
+    }
+
 }

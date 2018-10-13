@@ -17,4 +17,6 @@ public interface IScriptEngine {
 
     public Object execScript (String scriptName, Object... args) throws CallException;
 
+    public void shutdown ();
+
 }

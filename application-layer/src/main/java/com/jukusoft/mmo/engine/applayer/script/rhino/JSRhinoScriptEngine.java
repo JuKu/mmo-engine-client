@@ -1,11 +1,10 @@
 package com.jukusoft.mmo.engine.applayer.script.rhino;
 
+import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.script.IScriptEngine;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.*;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -15,11 +14,17 @@ public class JSRhinoScriptEngine implements IScriptEngine {
     protected Context cx = null;
     protected Scriptable scope = null;
 
+    protected int optimisationLevel = 9;
+    protected int languageVersion = Context.VERSION_DEFAULT;
+
     //https://github.com/mozilla/rhino/tree/master/examples
 
     public JSRhinoScriptEngine () {
         //creates and enters a Context. A Context stores information about the execution environment of a script.
         this.cx = Context.enter();
+        cx.setOptimizationLevel(optimisationLevel);
+        cx.setLanguageVersion(languageVersion);
+        cx.setLocale(I.getLanguage());
 
         //initializes the standard objects (Object, Function, etc.)
         //This must be done before scripts can be executed.
@@ -56,6 +61,11 @@ public class JSRhinoScriptEngine implements IScriptEngine {
     @Override
     public Object execScript(String scriptName, Object... args) {
         throw new UnsupportedOperationException("method isn't implemented yet.");
+    }
+
+    @Override
+    public void shutdown() {
+        Context.exit();
     }
 
 }

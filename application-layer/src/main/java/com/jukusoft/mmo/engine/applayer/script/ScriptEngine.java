@@ -26,6 +26,7 @@ public class ScriptEngine {
             return;
         }
 
+        ScriptEngine.instance.shutdown();
         ScriptEngine.instance = null;
     }
 

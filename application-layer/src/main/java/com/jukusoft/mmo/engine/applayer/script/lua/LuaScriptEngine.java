@@ -192,6 +192,13 @@ public class LuaScriptEngine implements IScriptEngine {
         return null;
     }
 
+    @Override
+    public void shutdown() {
+        this.luaFunctions.clear();
+        this.env = null;
+        this.state = null;
+    }
+
     protected void printEnvDebug () {
         for (long i = 0; i < env.rawlen(); i++) {
             Log.d(SCRIPTS_TAG, "rawget[" + i + "]: " + env.rawget(i));
