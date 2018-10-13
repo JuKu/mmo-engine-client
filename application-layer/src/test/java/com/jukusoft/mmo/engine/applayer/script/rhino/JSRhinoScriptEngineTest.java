@@ -2,7 +2,10 @@ package com.jukusoft.mmo.engine.applayer.script.rhino;
 
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.applayer.script.ScriptEngine;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
+import com.jukusoft.mmo.engine.applayer.utils.FilePath;
+import net.sandius.rembulan.exec.CallException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -132,6 +135,41 @@ public class JSRhinoScriptEngineTest {
     public void testShutdown () {
         JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
         engine.shutdown();
+    }
+
+    @Test
+    public void testLoadInitFileBenchmark () throws CallException, ScriptLoadException {
+        JSRhinoScriptEngine engine = new JSRhinoScriptEngine();
+
+        long startTime = System.currentTimeMillis();
+        long startTimeNs = System.nanoTime();
+
+        engine.loadFile(new File(FilePath.parse("../data/init/scripts/init.js")));
+
+        long endTimeNs = System.nanoTime();
+        long endTime = System.currentTimeMillis();
+        long timeDiffNs = endTimeNs - startTimeNs;
+        long timeDiff = endTime - startTime;
+
+        System.err.println("execute init.js took " + timeDiff + "ms (" + timeDiffNs + "ns).");
+
+        for (int i = 0; i < 10; i++) {
+            //execute again (while script is already compiled in cache)
+            startTime = System.currentTimeMillis();
+            startTimeNs = System.nanoTime();
+
+            engine.loadFile(new File(FilePath.parse("../data/init/scripts/init.js")));
+
+            endTimeNs = System.nanoTime();
+            endTime = System.currentTimeMillis();
+            timeDiffNs = endTimeNs - startTimeNs;
+            timeDiff = endTime - startTime;
+
+            System.err.println("[" + i + "]: execute pre-compiled init.js took " + timeDiff + "ms (" + timeDiffNs + "ns).");
+        }
+
+        //cleanup script engine
+        ScriptEngine.cleanUp();
     }
 
 }
