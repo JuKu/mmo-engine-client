@@ -31,6 +31,8 @@ public class JSRhinoScriptEngine implements IScriptEngine {
 
     //https://github.com/mozilla/rhino/tree/master/examples
 
+    //https://stackoverflow.com/questions/12399462/rhino-print-function
+
     public JSRhinoScriptEngine () {
         //creates and enters a Context. A Context stores information about the execution environment of a script.
         this.cx = Context.enter();
@@ -68,13 +70,14 @@ public class JSRhinoScriptEngine implements IScriptEngine {
 
         programStr = "/*define global variable for relative dir path*/\nvar relDir = \"" + fileDir + "\";\n" + programStr;
 
-        scriptName = "script_" + scriptName;
+        //scriptName = "script_" + scriptName;
 
         //this.cx.evaluateString(scope, programStr, scriptName, 1, null);
 
         //compile string
         Script script = this.cx.compileString(programStr, scriptName, 1, null);
 
+        //scriptName = "script_" + scriptName;
         this.scripts.put(scriptName, script);
     }
 
@@ -83,14 +86,15 @@ public class JSRhinoScriptEngine implements IScriptEngine {
         Objects.requireNonNull(file);
 
         if (!file.exists()) {
-            throw new ScriptLoadException("lua script file doesn't exists: " + file.getAbsolutePath());
+            throw new ScriptLoadException("js script file doesn't exists: " + file.getAbsolutePath());
         }
 
         try {
             File relFile = FileUtils.getRelativeFile(file, new File("."));
             String scriptName = relFile.getPath().replace("\\", "/");
 
-            String scriptName1 = "script_" + scriptName;
+            //String scriptName1 = "script_" + scriptName;
+            String scriptName1 = scriptName;
 
             //only compile this file, if it isn't in cache
             if (!this.scripts.containsKey(scriptName1)) {
@@ -117,17 +121,25 @@ public class JSRhinoScriptEngine implements IScriptEngine {
 
     @Override
     public Object execScript(String scriptName, Object... args) {
-        scriptName = "script_" + scriptName;
-
         Script script = this.scripts.get(scriptName);
 
         if (script == null) {
             throw new IllegalStateException("js script '" + scriptName + "' doesn't exists in cache, you have to compile it first!");
         }
 
+        if (args != null && args.length > 0) {
+            throw new UnsupportedOperationException("javascript doesn't supports args for scripts.");
+        }
+
         Log.d(SCRIPTS_TAG, "execute js script '" + scriptName + "'");
 
-        return script.exec(this.cx, this.scope);
+        Object res = script.exec(this.cx, this.scope);
+
+        if (Undefined.isUndefined(res)) {
+            return null;
+        }
+
+        return res;
     }
 
     @Override
