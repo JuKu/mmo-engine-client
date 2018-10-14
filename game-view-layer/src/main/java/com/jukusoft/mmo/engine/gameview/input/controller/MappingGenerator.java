@@ -1,4 +1,4 @@
-package com.jukusoft.mmo.engine.gameview.mapping;
+package com.jukusoft.mmo.engine.gameview.input.controller;
 
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.utils.FileUtils;
