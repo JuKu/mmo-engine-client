@@ -68,15 +68,13 @@ public class LuaScriptEngine implements IScriptEngine {
             fileDir = currentDir.getPath().replace("\\", "/");
 
             //remove filename
-            fileDir = fileDir.substring(0, fileDir.lastIndexOf("/") + 1);
+            fileDir = fileDir.substring(0, fileDir.lastIndexOf('/') + 1);
         } catch (IOException e) {
             Log.w(SCRIPTS_TAG, "IOException while getting current relative file path of lua script: ", e);
             throw new ScriptLoadException("IOException while loading script: ", e);
         }
 
         programStr = "--define global variable for relative dir path\nrelDir = \"" + fileDir + "\"; " + programStr;
-
-        scriptName = "script_" + scriptName;
 
         //compile
         ChunkLoader loader = CompilerChunkLoader.of("engine");
@@ -103,10 +101,8 @@ public class LuaScriptEngine implements IScriptEngine {
             File relFile = FileUtils.getRelativeFile(file, new File("."));
             String scriptName = relFile.getPath().replace("\\", "/");
 
-            String scriptName1 = "script_" + scriptName;
-
             //only compile this file, if it isn't in cache
-            if (!this.luaFunctions.containsKey(scriptName1)) {
+            if (!this.luaFunctions.containsKey(scriptName)) {
                 String content = FileUtils.readFile(file.getAbsolutePath(), StandardCharsets.UTF_8);
                 this.compile(scriptName, content);
             }
@@ -157,10 +153,7 @@ public class LuaScriptEngine implements IScriptEngine {
 
     @Override
     public Object execScript(String scriptName, Object... args) throws CallException {
-        String fileName = scriptName;
         Log.v(SCRIPTS_TAG, "execScript: " + scriptName);
-
-        scriptName = "script_" + scriptName;
 
         LuaFunction func = this.luaFunctions.get(scriptName);
 

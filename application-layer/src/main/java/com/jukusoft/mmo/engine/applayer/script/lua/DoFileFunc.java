@@ -4,7 +4,6 @@ import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptExecutionException;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
 import net.sandius.rembulan.ByteString;
-import net.sandius.rembulan.exec.CallException;
 import net.sandius.rembulan.impl.NonsuspendableFunctionException;
 import net.sandius.rembulan.runtime.AbstractFunction2;
 import net.sandius.rembulan.runtime.ExecutionContext;
