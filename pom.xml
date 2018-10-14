@@ -288,6 +288,7 @@
 						<dir>${project.basedir}/application-layer/src</dir>
 						<dir>${project.basedir}/game-logic-layer/src</dir>
 						<dir>${project.basedir}/game-view-layer/src</dir>
+						<dir>data/init/scripts</dir>
 						<!-- <dir>src</dir> -->
 					</srcDirs>
 				</configuration>
