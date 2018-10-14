@@ -24,4 +24,37 @@ public class KeyboardInputProcessor extends InputAdapter {
         this.enabled = true;
     }
 
+    public boolean keyDown (int keycode) {
+        if (!this.enabled) {
+            //game is paused
+            return false;
+        }
+
+        //TODO: add code here
+
+        return false;
+    }
+
+    public boolean keyUp (int keycode) {
+        if (!this.enabled) {
+            //game is paused
+            return false;
+        }
+
+        //TODO: add code here
+
+        return false;
+    }
+
+    public boolean keyTyped (char character) {
+        if (!this.enabled) {
+            //game is paused
+            return false;
+        }
+
+        //TODO: add code here
+
+        return false;
+    }
+
 }
