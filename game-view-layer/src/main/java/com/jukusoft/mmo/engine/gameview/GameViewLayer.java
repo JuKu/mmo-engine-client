@@ -20,7 +20,11 @@ public class GameViewLayer implements SubSystem {
 
     @Override
     public void onGameloop() {
-        //
+        //update game screens
+        screenManager.update();
+
+        //draw game screen
+        screenManager.draw();
     }
 
     @Override
