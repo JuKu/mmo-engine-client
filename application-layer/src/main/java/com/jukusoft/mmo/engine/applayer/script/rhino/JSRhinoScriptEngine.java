@@ -45,6 +45,8 @@ public class JSRhinoScriptEngine implements IScriptEngine {
 
         //ExceptionUtils.logException(SCRIPTS_TAG, "Exception while initializing JSRhinoScriptEngine: ", () -> ScriptableObject.defineClass(this.scope, Log.class));
 
+        //https://stackoverflow.com/questions/14561874/calling-jsfunction-from-javascript-typeerror-cannot-find-default-value-for-ob
+
         //https://stackoverflow.com/questions/39771148/calling-java-function-from-rhino
         //ScriptableObject.putProperty(this.scope, "log", Context.javaToJS(new Log(), this.scope));
     }
@@ -120,13 +122,9 @@ public class JSRhinoScriptEngine implements IScriptEngine {
 
         Log.d(SCRIPTS_TAG, "execute js script '" + scriptName + "'");
 
-        Object res = script.exec(this.cx, this.scope);
+        script.exec(this.cx, this.scope);
 
-        if (Undefined.isUndefined(res)) {
-            return null;
-        }
-
-        return res;
+        return null;
     }
 
     @Override
