@@ -19,7 +19,7 @@ public class MappingGenerator {
             throw new IllegalStateException("file already exists: " + file.getAbsolutePath());
         }
 
-        Log.i("Controller", "generate new mapping for controller: " + controllerName);
+        Log.i("Controller", "generate new keyDownMapping for controller: " + controllerName);
 
         StringBuilder sb = new StringBuilder();
 

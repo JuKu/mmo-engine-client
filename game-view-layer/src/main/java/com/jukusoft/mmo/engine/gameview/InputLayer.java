@@ -1,6 +1,5 @@
 package com.jukusoft.mmo.engine.gameview;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
@@ -37,6 +36,9 @@ public class InputLayer implements SubSystem {
         //create and set game input processor
         this.keyboardInputProcessor = new KeyboardInputProcessor();
         this.keyboardInputProcessor.enable();
+
+        //add input processor for game logic
+        this.manager.add(this.keyboardInputProcessor);
     }
 
     @Override
@@ -83,21 +85,21 @@ public class InputLayer implements SubSystem {
     }
 
     protected void initController (Controller controller) {
-        //search for mapping
+        //search for keyDownMapping
         String name = controller.getName().replace(" ", "_");
         String mappingFile = FilePath.parse("{data.dir}input/mappings/" + name.toLowerCase() + ".ini");
 
         if (!new File(mappingFile).exists()) {
-            Log.w(CONTROLLER_TAG, "mapping file for controller doesn't exists! search path: " + mappingFile);
+            Log.w(CONTROLLER_TAG, "keyDownMapping file for controller doesn't exists! search path: " + mappingFile);
 
             if (Config.getBool(CONTROLLER_TAG, "autoGenerateMapping")) {
-                Log.i(CONTROLLER_TAG, "auto generate mapping file now: " + mappingFile);
+                Log.i(CONTROLLER_TAG, "auto generate keyDownMapping file now: " + mappingFile);
 
                 try {
                     MappingGenerator.generateDefaultMapping(new File(mappingFile), name);
                 } catch (IOException e) {
-                    Log.w(CONTROLLER_TAG, "Couldn't generate auto mapping for controller!", e);
-                    JavaFXUtils.showExceptionDialog(I.tr("Error!"), I.tr("Couldn't generate auto mapping for controller!"), e);
+                    Log.w(CONTROLLER_TAG, "Couldn't generate auto keyDownMapping for controller!", e);
+                    JavaFXUtils.showExceptionDialog(I.tr("Error!"), I.tr("Couldn't generate auto keyDownMapping for controller!"), e);
                 }
             } else {
                 Log.w(CONTROLLER_TAG, "auto generating of controller mappings is disabled.");
@@ -107,12 +109,12 @@ public class InputLayer implements SubSystem {
             }
         }
 
-        //load mapping
+        //load keyDownMapping
         try {
             Config.load(new File(mappingFile));
         } catch (IOException e) {
-            Log.e(CONTROLLER_TAG, "Coulnd't load mapping for controller '" + controller.getName() + "'!");
-            JavaFXUtils.showExceptionDialog(I.tr("Error!"), I.tr("Coulnd't load mapping for controller!"), e);
+            Log.e(CONTROLLER_TAG, "Coulnd't load keyDownMapping for controller '" + controller.getName() + "'!");
+            JavaFXUtils.showExceptionDialog(I.tr("Error!"), I.tr("Coulnd't load keyDownMapping for controller!"), e);
         }
 
         //https://github.com/MrStahlfelge/gdx-controllerutils/tree/master/core-mapping
