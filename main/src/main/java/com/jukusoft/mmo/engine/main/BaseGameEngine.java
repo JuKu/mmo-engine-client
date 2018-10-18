@@ -2,7 +2,7 @@ package com.jukusoft.mmo.engine.main;
 
 import com.jukusoft.mmo.engine.applayer.base.BaseApp;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystemManager;
-import com.jukusoft.mmo.engine.gameview.GameViewLayer;
+import com.jukusoft.mmo.engine.gameview.HumanView;
 import com.jukusoft.mmo.engine.gameview.InputLayer;
 import com.jukusoft.mmo.engine.logic.GameLogicLayer;
 
@@ -17,7 +17,7 @@ public class BaseGameEngine extends BaseApp {
         manager.addSubSystem(new GameLogicLayer(), true);
 
         //add game-view-layer
-        manager.addSubSystem(new GameViewLayer(), false);
+        manager.addSubSystem(new HumanView(), false);
     }
 
 }

@@ -6,7 +6,7 @@ public class GameViewLayerTest {
 
     @Test
     public void testConstructor () {
-        new GameViewLayer();
+        new HumanView();
     }
 
 }
