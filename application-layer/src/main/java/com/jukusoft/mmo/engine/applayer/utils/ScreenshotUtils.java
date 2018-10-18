@@ -29,7 +29,9 @@ public class ScreenshotUtils {
             throw new IllegalStateException("screenshot already exists: " + saveFileName);
         }
 
-        new File(saveFileName).createNewFile();
+        if (!new File(saveFileName).createNewFile()) {
+            throw new IOException("Coulnd't create new file: " + new File(saveFileName).getAbsolutePath());
+        }
 
         //take all pixels from framebuffer and save into byte array
         byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, width, height, flipY);
