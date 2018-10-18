@@ -20,9 +20,16 @@
 		</dependency>
 
 		<!-- game logic layer -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.jukusoft</groupId>
 			<artifactId>mmo-engine-client-game-logic-layer</artifactId>
+			<version>${project.version}</version>
+		</dependency> -->
+
+		<!-- shared library -->
+		<dependency>
+			<groupId>com.jukusoft</groupId>
+			<artifactId>shared-commons-library</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

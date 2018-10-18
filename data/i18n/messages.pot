@@ -21,10 +21,10 @@ msgstr ""
 msgid "Server Error!"
 msgstr "Server Error!"
 
-#: file InputLayer.java line 100
+#: file InputLayer.java line 102
 #: file Initializer.java line 128
-#: file InputLayer.java line 104
-#: file InputLayer.java line 115
+#: file InputLayer.java line 106
+#: file InputLayer.java line 117
 msgid "Error!"
 msgstr "Error!"
 
@@ -32,14 +32,14 @@ msgstr "Error!"
 msgid "Updater"
 msgstr "Updater"
 
-#: file InputLayer.java line 100
-msgid "Couldn't generate auto mapping for controller!"
-msgstr "Couldn't generate auto mapping for controller!"
+#: file InputLayer.java line 102
+msgid "Couldn't generate auto keyDownMapping for controller!"
+msgstr "Couldn't generate auto keyDownMapping for controller!"
 
-#: file InputLayer.java line 104
+#: file InputLayer.java line 106
 msgid "Controller unbekannt! Für diesen Controller existieren derzeit keine Mappings!"
 msgstr "Controller unbekannt! Für diesen Controller existieren derzeit keine Mappings!"
 
-#: file InputLayer.java line 115
-msgid "Coulnd't load mapping for controller!"
-msgstr "Coulnd't load mapping for controller!"
+#: file InputLayer.java line 117
+msgid "Coulnd't load keyDownMapping for controller!"
+msgstr "Coulnd't load keyDownMapping for controller!"

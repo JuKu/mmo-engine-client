@@ -70,6 +70,9 @@
 		<!-- libGDX version -->
 		<libgdx.version>1.9.8</libgdx.version>
 
+		<!-- libGDX collections -->
+		<gdx.collections.version>1.9.8</gdx.collections.version>
+
 		<!-- VisUI - ui library for libGDX -->
 		<vis.ui.version>1.4.0</vis.ui.version>
 
