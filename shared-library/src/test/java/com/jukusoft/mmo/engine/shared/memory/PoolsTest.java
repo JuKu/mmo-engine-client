@@ -1,6 +1,5 @@
-package com.jukusoft.mmo.engine.shared.pool;
+package com.jukusoft.mmo.engine.shared.memory;
 
-import com.jukusoft.mmo.engine.shared.pool.Pools;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

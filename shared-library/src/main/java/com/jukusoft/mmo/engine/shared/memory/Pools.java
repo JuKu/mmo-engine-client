@@ -1,7 +1,5 @@
-package com.jukusoft.mmo.engine.shared.pool;
+package com.jukusoft.mmo.engine.shared.memory;
 
-import com.carrotsearch.hppc.ObjectObjectHashMap;
-import com.carrotsearch.hppc.ObjectObjectMap;
 import org.mini2Dx.gdx.utils.Pool;
 
 /**
