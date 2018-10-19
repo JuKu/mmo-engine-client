@@ -114,7 +114,7 @@ public class EventManager {
      * @return singleton instance of event manager
     */
     public static final EventManager getInstance() {
-        return EventManager.getInstance();
+        return EventManager.instance;
     }
 
 }
