@@ -1,5 +1,6 @@
 package com.jukusoft.mmo.engine.shared.memory;
 
+import com.jukusoft.mmo.engine.shared.events.EventData;
 import org.mini2Dx.gdx.utils.Pool;
 
 /**
@@ -14,7 +15,14 @@ public class Pools {
     }
 
     public static <T> T get (Class<T> cls) {
-        return org.mini2Dx.gdx.utils.Pools.get(cls).obtain();
+        T obj = org.mini2Dx.gdx.utils.Pools.get(cls).obtain();
+
+        if (obj instanceof EventData) {
+            //initialize event
+            ((EventData) obj).init();
+        }
+
+        return obj;
     }
 
     public static <T> void free (T obj) {
