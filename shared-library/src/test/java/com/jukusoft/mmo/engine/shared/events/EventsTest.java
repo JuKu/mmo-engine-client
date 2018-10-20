@@ -1,6 +1,7 @@
 package com.jukusoft.mmo.engine.shared.events;
 
 import com.jukusoft.mmo.engine.shared.memory.DummyEventDataObject;
+import com.jukusoft.mmo.engine.shared.memory.DummyOtherEventDataObject;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,6 +51,33 @@ public class EventsTest {
         });
     }
 
+    @Test
+    public void testTriggerEvent () {
+        AtomicInteger count = new AtomicInteger(0);
+        AtomicInteger count1 = new AtomicInteger(0);
+
+        EventListener listener = eventData -> {
+            count.incrementAndGet();
+        };
+
+        EventListener listener1 = event -> {
+            count1.incrementAndGet();
+        };
+
+        Events.addListener(Events.UI_THREAD, 2, listener);
+        Events.addListener(Events.LOGIC_THREAD, 2, listener1);
+
+        Events.triggerEvent(new DummyOtherEventDataObject());
+        Events.triggerEvent(new DummyOtherEventDataObject());
+
+        //check, if ui and logic thread listeners was called
+        assertEquals(2, count.get());
+        assertEquals(2, count1.get());
+
+        //remove listeners again (cleanup)
+        Events.removeListener(Events.UI_THREAD, 1, listener);
+        Events.removeListener(Events.LOGIC_THREAD, 1, listener1);
+    }
 
     @Test (expected = IllegalArgumentException.class)
     public void testUpdateIllegalThreadId () {
@@ -65,10 +93,12 @@ public class EventsTest {
             count.incrementAndGet();
         };
 
-        Events.addListener(Events.UI_THREAD, 1, listener);
-        Events.addListener(Events.LOGIC_THREAD, 1, event -> {
+        EventListener listener1 = event -> {
             count1.incrementAndGet();
-        });
+        };
+
+        Events.addListener(Events.UI_THREAD, 1, listener);
+        Events.addListener(Events.LOGIC_THREAD, 1, listener1);
 
         Events.queueEvent(new DummyEventDataObject());
         Events.queueEvent(new DummyEventDataObject());
@@ -81,6 +111,7 @@ public class EventsTest {
         assertEquals(0, count1.get());
 
         Events.removeListener(Events.UI_THREAD, 1, listener);
+        Events.removeListener(Events.LOGIC_THREAD, 1, listener1);
     }
 
 }
