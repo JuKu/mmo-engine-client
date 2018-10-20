@@ -1,5 +1,10 @@
 package com.jukusoft.mmo.engine.shared.events;
 
+/**
+* class to queue and trigger events like EventManager, but in thread safe
+ *
+ * @see EventManager
+*/
 public class Events {
 
     protected static final int NUM_THREADS = 2;
@@ -48,6 +53,22 @@ public class Events {
 
         //process events
         managers[threadID].update(maxMillis);
+    }
+
+    public static void addListener (int threadID, int typeID, EventListener listener) {
+        if (threadID >= NUM_THREADS) {
+            throw new IllegalArgumentException("threadID cannot >= number of threads, but threadID: " + threadID + " >= " + NUM_THREADS);
+        }
+
+        managers[threadID].addListener(typeID, listener);
+    }
+
+    public static void removeListener (int threadID, int typeID, EventListener listener) {
+        if (threadID >= NUM_THREADS) {
+            throw new IllegalArgumentException("threadID cannot >= number of threads, but threadID: " + threadID + " >= " + NUM_THREADS);
+        }
+
+        managers[threadID].removeListener(typeID, listener);
     }
 
 }
