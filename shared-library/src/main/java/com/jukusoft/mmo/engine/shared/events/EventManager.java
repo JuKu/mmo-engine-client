@@ -128,14 +128,11 @@ public class EventManager {
         //find listener
         Array<EventListener> listeners = this.listenerMap.get(event.getEventType());
 
-        if (listeners == null) {
-            //no listener registered for this event
-            return;
-        }
-
-        //call listeners
-        for (EventListener listener : listeners) {
-            listener.handleEvent(event);
+        if (listeners != null) {
+            //call listeners
+            for (EventListener listener : listeners) {
+                listener.handleEvent(event);
+            }
         }
 
         event.release();

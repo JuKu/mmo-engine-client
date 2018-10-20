@@ -1,6 +1,7 @@
 package com.jukusoft.mmo.engine.shared.events;
 
 import com.jukusoft.mmo.engine.shared.memory.DummyEventDataObject;
+import com.jukusoft.mmo.engine.shared.memory.DummyOtherEventDataObject;
 import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -169,6 +170,7 @@ public class EventManagerTest {
         manager.queueEvent(new DummyEventDataObject());
         manager.queueEvent(new DummyEventDataObject());
 
+
         //process events
         manager.update();
 
@@ -202,8 +204,11 @@ public class EventManagerTest {
         manager.addListener(1, listener);
 
         //queue event twice, listener requires 100ms to handle this event
+        DummyEventDataObject event = new DummyEventDataObject();
+        assertEquals(1, event.getRefCount());
+        manager.queueEvent(event);
         manager.queueEvent(new DummyEventDataObject());
-        manager.queueEvent(new DummyEventDataObject());
+        manager.queueEvent(new DummyOtherEventDataObject());
 
         //process events
         manager.update();
@@ -211,8 +216,11 @@ public class EventManagerTest {
         //check, if listener was executed
         assertEquals(true, b.get());
 
-        //check, if only one event was processed
+        //check, if all events was processed and only 2 listeners was called (2 events with typeID 1 and 1 event with typeID 2)
         assertEquals(2, count.get());
+
+        //check reference count of event (1, because Pools.free() retains event again)
+        assertEquals(1, event.getRefCount());
 
         //check, if all queues are empty, this means all events was processed
         assertNull(manager.eventQueue[0].poll());
