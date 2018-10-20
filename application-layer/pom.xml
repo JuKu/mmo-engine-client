@@ -19,6 +19,13 @@
 			<version>${hppc.version}</version>
 		</dependency>
 
+		<!-- shared library -->
+		<dependency>
+			<groupId>com.jukusoft</groupId>
+			<artifactId>shared-commons-library</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<!-- ini4j -->
 		<dependency>
 			<groupId>org.ini4j</groupId>

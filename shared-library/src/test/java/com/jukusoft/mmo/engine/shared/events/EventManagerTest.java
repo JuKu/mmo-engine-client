@@ -56,8 +56,52 @@ public class EventManagerTest {
         });
     }
 
-    public void removeListener () {
-        //
+    @Test (expected = NullPointerException.class)
+    public void testRemoveNullListener () {
+        EventManager manager = new EventManager("test", false);
+        manager.removeListener(1, null);
+    }
+
+    @Test
+    public void testRemoveNotExistentListener () {
+        EventManager manager = new EventManager("test", false);
+        manager.removeListener(1, (event) -> {
+            //don't do anything here
+        });
+    }
+
+    @Test
+    public void testAddAndRemoveListener () {
+        EventManager manager = new EventManager("test", false);
+
+        //there should not listener array exists yet
+        assertNull(manager.listenerMap.get(2));
+
+        //register listener
+        EventListener listener = (eventData -> {
+            //don't do anything here
+        });
+        manager.addListener(2, listener);
+
+        //check, if listener is registered correctly
+        assertNotNull(manager.listenerMap.get(2));
+        assertEquals(1, manager.listenerMap.get(2).size);
+        assertEquals(listener, manager.listenerMap.get(2).get(0));
+
+        //remove other listener typeID
+        manager.removeListener(3, listener);
+
+        //check again, if listener is registered correctly
+        assertNotNull(manager.listenerMap.get(2));
+        assertEquals(1, manager.listenerMap.get(2).size);
+        assertEquals(listener, manager.listenerMap.get(2).get(0));
+
+        //remove other listener typeID
+        manager.removeListener(2, listener);
+
+        //check, if listener was removed
+        assertNotNull(manager.listenerMap.get(2));
+        assertEquals(0, manager.listenerMap.get(2).size);
     }
 
 }

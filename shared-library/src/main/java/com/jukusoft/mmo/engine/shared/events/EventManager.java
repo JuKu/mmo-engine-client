@@ -4,6 +4,7 @@ import com.jukusoft.mmo.engine.shared.memory.Pools;
 import org.mini2Dx.gdx.utils.Array;
 import org.mini2Dx.gdx.utils.AtomicQueue;
 import org.mini2Dx.gdx.utils.IntMap;
+import org.mini2Dx.gdx.utils.Queue;
 
 import java.util.Objects;
 
@@ -21,12 +22,10 @@ public class EventManager {
 
     //queues
     protected AtomicQueue<EventData>[] eventQueue = new AtomicQueue[NUM_QUEUES];
-    protected AtomicQueue<EventData>[] logicEventQueue = new AtomicQueue[NUM_QUEUES];
     protected volatile int activeQueue = 0;
 
     //listeners
     protected IntMap<Array<EventListener>> listenerMap = new IntMap<>(50);
-    protected IntMap<Array<EventListener>> logicListenerMap = new IntMap<>(50);
 
     /**
     * default constructor
@@ -64,8 +63,36 @@ public class EventManager {
     public void update (int maxMillis) {
         long startTime = System.currentTimeMillis();
 
-        //set active queue
+        //first, copy queue
+        AtomicQueue<EventData> queue = this.eventQueue[this.activeQueue];
+
+        //set active queue (swap queue)
         this.activeQueue = (this.activeQueue + 1) % NUM_QUEUES;
+
+        EventData event;
+        long endTime = 0;
+        long diffTime = 0;
+
+        //process all events
+        while ((event = queue.poll()) != null) {
+            this.handleEvent(event);
+
+            endTime = System.currentTimeMillis();
+            diffTime = endTime - startTime;
+
+            if (diffTime >= maxMillis) {
+                int remainingEvents = 0;
+
+                //don't process this elements yet, add them to active queue and process them in next tick
+                while ((event = queue.poll()) != null) {
+                    this.eventQueue[this.activeQueue].put(event);
+                    remainingEvents++;
+                }
+
+                System.err.println("Couldn't process all events in one update() call, remaining events: " + remainingEvents);
+                break;
+            }
+        }
     }
 
     /**
@@ -74,12 +101,8 @@ public class EventManager {
      * @param event game event
     */
     public void queueEvent (EventData event) {
-        //increment reference counter
-        event.retain(NUM_QUEUES - 1);
-
-        //add event to queues
+        //add event to queue
         this.eventQueue[this.activeQueue].put(event);
-        this.logicEventQueue[this.activeQueue].put(event);
     }
 
     /**
@@ -93,11 +116,8 @@ public class EventManager {
             throw new IllegalStateException("It isn't allowed to trigger this event type!");
         }
 
-        //trigger event with ui listeners
-        this.handleEvent(event, false);
-
-        //trigger event with logic listeners
-        this.handleEvent(event, true);
+        //trigger event
+        this.handleEvent(event);
     }
 
     /**
@@ -105,12 +125,9 @@ public class EventManager {
      *
      * @param event event to handle
     */
-    protected void handleEvent (EventData event, boolean extraThread) {
-        //get map for correct thread
-        IntMap<Array<EventListener>> map = extraThread == false ? this.listenerMap : this.logicListenerMap;
-
+    protected void handleEvent (EventData event) {
         //find listener
-        Array<EventListener> listeners = map.get(event.getEventType());
+        Array<EventListener> listeners = this.listenerMap.get(event.getEventType());
 
         if (listeners == null) {
             //no listener registered for this event
@@ -130,7 +147,7 @@ public class EventManager {
         }
     }
 
-    public <T extends EventData> void addListener (int typeID, EventListener<T> listener, boolean logicThread) {
+    public <T extends EventData> void addListener (int typeID, EventListener<T> listener) {
         Objects.requireNonNull(listener);
 
         Array<EventListener> list = this.listenerMap.get(typeID);
@@ -143,7 +160,8 @@ public class EventManager {
         list.add(listener);
     }
 
-    public <T extends EventData> void removeListener (int typeID, EventListener<T> listener, boolean logicThread) {
+    public <T extends EventData> void removeListener (int typeID, EventListener<T> listener) {
+        Objects.requireNonNull(listener);
         Array<EventListener> list = this.listenerMap.get(typeID);
 
         if (list != null) {

@@ -13,6 +13,7 @@ import com.jukusoft.mmo.engine.applayer.script.exception.ScriptExecutionExceptio
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
 import com.jukusoft.mmo.engine.applayer.utils.*;
 import com.jukusoft.mmo.engine.applayer.version.Version;
+import com.jukusoft.mmo.engine.shared.events.Events;
 import net.sandius.rembulan.exec.CallException;
 import org.json.JSONObject;
 
@@ -112,6 +113,10 @@ public class Initializer implements Runnable {
         String cacheDir = FilePath.parse(Config.get("Paths", "tempDir"));
         Log.i("Cache", "initialize cache: " + new File(cacheDir).getAbsolutePath());
         Cache.init(cacheDir);
+
+        //initialize event system
+        Log.i("Events", "initialize event system");
+        Events.init();
 
         //initialize scripting engine
         Log.i(SCRIPTS_TAG, "initialize scripting engine...");
