@@ -3,6 +3,9 @@ package com.jukusoft.mmo.engine.shared.events;
 import com.jukusoft.mmo.engine.shared.memory.DummyEventDataObject;
 import org.junit.Test;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -155,6 +158,65 @@ public class EventManagerTest {
         //check, if all queues are empty, this means event was processed
         assertNull(manager.eventQueue[0].poll());
         assertNull(manager.eventQueue[1].poll());
+    }
+
+    @Test
+    public void testQueueMultipleEvent () {
+        EventManager manager = new EventManager("test", false);
+
+        //add events to queue
+        manager.queueEvent(new DummyEventDataObject());
+        manager.queueEvent(new DummyEventDataObject());
+        manager.queueEvent(new DummyEventDataObject());
+
+        //process events
+        manager.update();
+
+        //check, if all queues are empty, this means events was processed
+        assertNull(manager.eventQueue[0].poll());
+        assertNull(manager.eventQueue[1].poll());
+    }
+
+    @Test
+    public void testUpdateWithMillis () {
+        EventManager manager = new EventManager("test", false);
+
+        AtomicBoolean b = new AtomicBoolean(false);
+        AtomicInteger count = new AtomicInteger(0);
+
+        EventListener listener = new EventListener() {
+            @Override
+            public void handleEvent(EventData eventData) {
+                b.set(true);
+                count.incrementAndGet();
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        //add listener to queue
+        manager.addListener(1, listener);
+
+        //queue event twice, listener requires 100ms to handle this event
+        manager.queueEvent(new DummyEventDataObject());
+        manager.queueEvent(new DummyEventDataObject());
+
+        //process events
+        manager.update(10);
+
+        //check, if listener was executed
+        assertEquals(true, b.get());
+
+        //check, if only one event was processed
+        assertEquals(1, count.get());
+
+        //check, if queue is empty, but other active queue contains new event
+        assertNull(manager.eventQueue[0].poll());
+        assertNotNull(manager.eventQueue[1].poll());
     }
 
 }
