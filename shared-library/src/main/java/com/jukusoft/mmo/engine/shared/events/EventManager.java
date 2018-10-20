@@ -156,6 +156,11 @@ public class EventManager {
             this.listenerMap.put(typeID, list);
         }
 
+        //check, if listener already exists in list
+        if (list.contains(listener, false)) {
+            throw new IllegalStateException("listener for typeID '" + typeID + "' and hash " + listener + " is already registered.");
+        }
+
         list.add(listener);
     }
 
