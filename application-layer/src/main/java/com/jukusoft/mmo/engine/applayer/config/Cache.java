@@ -67,7 +67,7 @@ public class Cache {
     }
 
     public void clear () throws IOException {
-        FileUtils.recursiveDeleteDirectory(new File(CACHE_PATH));
+        FileUtils.recursiveDeleteDirectory(new File(CACHE_PATH), false);
     }
 
 }

@@ -127,6 +127,10 @@ public class FileUtils {
     }
 
     public static void recursiveDeleteDirectory (File f) throws IOException {
+        FileUtils.recursiveDeleteDirectory(f, true);
+    }
+
+    public static void recursiveDeleteDirectory (File f, boolean deleteDir) throws IOException {
         if (f == null) {
             throw new NullPointerException("file cannot be null.");
         }
@@ -148,7 +152,9 @@ public class FileUtils {
         Logger.getAnonymousLogger().log(Level.INFO, "delete directory / file: " + f.getAbsolutePath());
 
         //delete directory / file
-        Files.delete(f.toPath());
+        if (deleteDir) {
+            Files.delete(f.toPath());
+        }
     }
 
     /**
