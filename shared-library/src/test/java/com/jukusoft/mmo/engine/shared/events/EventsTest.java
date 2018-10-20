@@ -59,12 +59,16 @@ public class EventsTest {
     @Test
     public void testUpdate () {
         AtomicInteger count = new AtomicInteger(0);
+        AtomicInteger count1 = new AtomicInteger(0);
 
         EventListener listener = eventData -> {
             count.incrementAndGet();
         };
 
         Events.addListener(Events.UI_THREAD, 1, listener);
+        Events.addListener(Events.LOGIC_THREAD, 1, event -> {
+            count1.incrementAndGet();
+        });
 
         Events.queueEvent(new DummyEventDataObject());
         Events.queueEvent(new DummyEventDataObject());
@@ -72,6 +76,9 @@ public class EventsTest {
         Events.update(Events.UI_THREAD, 200);
 
         assertEquals(2, count.get());
+
+        //check, that only UI thread was processed and listeners in other thread wasn't processed with this update() call
+        assertEquals(0, count1.get());
 
         Events.removeListener(Events.UI_THREAD, 1, listener);
     }
