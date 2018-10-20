@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class JSRhinoScriptEngine implements IScriptEngine {
 
@@ -53,18 +54,7 @@ public class JSRhinoScriptEngine implements IScriptEngine {
 
     @Override
     public void compile(String scriptName, String programStr) throws ScriptLoadException {
-        String fileDir;
-
-        try {
-            File currentDir = FileUtils.getRelativeFile(new File(scriptName), new File("."));
-            fileDir = currentDir.getPath().replace("\\", "/");
-
-            //remove filename
-            fileDir = fileDir.substring(0, fileDir.lastIndexOf("/") + 1);
-        } catch (IOException e) {
-            Log.w(SCRIPTS_TAG, "IOException while getting current relative file path of lua script: ", e);
-            throw new ScriptLoadException("IOException while loading script: ", e);
-        }
+        String fileDir = this.getRelativeFileDir(scriptName);
 
         programStr = "/*define global variable for relative dir path*/var relDir = \"" + fileDir + "\";\n" + programStr;
 
@@ -74,6 +64,22 @@ public class JSRhinoScriptEngine implements IScriptEngine {
         Script script = this.cx.compileString(programStr, scriptName, 1 - 2, null);
 
         this.scripts.put(scriptName, script);
+    }
+
+    private String getRelativeFileDir (String scriptName) throws ScriptLoadException {
+        AtomicReference<String> ar = new AtomicReference<>();
+
+        //convert IOException to ScriptLoadException
+        ExceptionUtils.throwSLEOnException(SCRIPTS_TAG, "IOException while getting current relative file path of lua script: ", () -> {
+            File currentDir = FileUtils.getRelativeFile(new File(scriptName), new File("."));
+            String fileDir = currentDir.getPath().replace("\\", "/");
+
+            //remove filename
+            fileDir = fileDir.substring(0, fileDir.lastIndexOf("/") + 1);
+            ar.set(fileDir);
+        });
+
+        return ar.get();
     }
 
     @Override
