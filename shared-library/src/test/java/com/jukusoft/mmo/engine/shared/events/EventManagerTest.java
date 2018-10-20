@@ -208,6 +208,32 @@ public class EventManagerTest {
     }
 
     @Test
+    public void testTriggerEvent1 () {
+        EventManager manager = new EventManager("test", false);
+
+        AtomicInteger count = new AtomicInteger(0);
+
+        EventListener listener = new EventListener() {
+            @Override
+            public void handleEvent(EventData eventData) {
+                count.incrementAndGet();
+            }
+        };
+
+        //add listener to queue
+        manager.addListener(2, listener);
+
+        DummyOtherEventDataObject event = new DummyOtherEventDataObject();
+        event.retain();
+        assertEquals(2, event.getRefCount());
+        manager.triggerEvent(event);
+
+        //check, if event listener was called
+        assertEquals(1, count.get());
+        assertEquals(1, event.getRefCount());
+    }
+
+    @Test
     public void testUpdate () {
         EventManager manager = new EventManager("test", false);
 
