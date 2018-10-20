@@ -21,10 +21,12 @@ public class EventManager {
 
     //queues
     protected AtomicQueue<EventData>[] eventQueue = new AtomicQueue[NUM_QUEUES];
+    protected AtomicQueue<EventData>[] logicEventQueue = new AtomicQueue[NUM_QUEUES];
     protected volatile int activeQueue = 0;
 
     //listeners
     protected IntMap<Array<EventListener>> listenerMap = new IntMap<>(50);
+    protected IntMap<Array<EventListener>> logicListenerMap = new IntMap<>(50);
 
     /**
     * default constructor
@@ -72,7 +74,12 @@ public class EventManager {
      * @param event game event
     */
     public void queueEvent (EventData event) {
-        //
+        //increment reference counter
+        event.retain(NUM_QUEUES - 1);
+
+        //add event to queues
+        this.eventQueue[this.activeQueue].put(event);
+        this.logicEventQueue[this.activeQueue].put(event);
     }
 
     /**
@@ -82,7 +89,15 @@ public class EventManager {
      * @param event game event
      */
     public void triggerEvent (EventData event) {
-        this.handleEvent(event);
+        if (!event.allowTrigger()) {
+            throw new IllegalStateException("It isn't allowed to trigger this event type!");
+        }
+
+        //trigger event with ui listeners
+        this.handleEvent(event, false);
+
+        //trigger event with logic listeners
+        this.handleEvent(event, true);
     }
 
     /**
@@ -90,9 +105,12 @@ public class EventManager {
      *
      * @param event event to handle
     */
-    protected void handleEvent (EventData event) {
+    protected void handleEvent (EventData event, boolean extraThread) {
+        //get map for correct thread
+        IntMap<Array<EventListener>> map = extraThread == false ? this.listenerMap : this.logicListenerMap;
+
         //find listener
-        Array<EventListener> listeners = this.listenerMap.get(event.getEventType());
+        Array<EventListener> listeners = map.get(event.getEventType());
 
         if (listeners == null) {
             //no listener registered for this event
@@ -104,8 +122,33 @@ public class EventManager {
             listener.handleEvent(event);
         }
 
-        //add event back to memory pool, so it can be reused
-        Pools.free(event);
+        event.release();
+
+        if (event.getRefCount() <= 0) {
+            //add event back to memory pool, so it can be reused
+            Pools.free(event);
+        }
+    }
+
+    public <T extends EventData> void addListener (int typeID, EventListener<T> listener, boolean logicThread) {
+        Objects.requireNonNull(listener);
+
+        Array<EventListener> list = this.listenerMap.get(typeID);
+
+        if (list == null) {
+            list = new Array<>(10);
+            this.listenerMap.put(typeID, list);
+        }
+
+        list.add(listener);
+    }
+
+    public <T extends EventData> void removeListener (int typeID, EventListener<T> listener, boolean logicThread) {
+        Array<EventListener> list = this.listenerMap.get(typeID);
+
+        if (list != null) {
+            list.removeValue(listener, false);
+        }
     }
 
     /**

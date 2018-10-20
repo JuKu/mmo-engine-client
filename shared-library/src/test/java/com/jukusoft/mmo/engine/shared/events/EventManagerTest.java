@@ -42,4 +42,22 @@ public class EventManagerTest {
         EventManager.instance = null;
     }
 
+    @Test (expected = NullPointerException.class)
+    public void testAddNullListener () {
+        EventManager manager = new EventManager("test", false);
+        manager.addListener(1, null);
+    }
+
+    @Test
+    public void testAddListener () {
+        EventManager manager = new EventManager("test", false);
+        manager.addListener(1, eventData -> {
+            //don't do anything here
+        });
+    }
+
+    public void removeListener () {
+        //
+    }
+
 }
