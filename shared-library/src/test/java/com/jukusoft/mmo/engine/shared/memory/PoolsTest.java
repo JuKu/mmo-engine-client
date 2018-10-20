@@ -13,6 +13,17 @@ public class PoolsTest {
     }
 
     @Test
+    public void testGetNonPoolableObject () {
+        for (int i = 0; i < 10; i++) {
+            Object obj = Pools.get(String.class);
+            assertNotNull(obj);
+
+            //test free
+            Pools.free(obj);
+        }
+    }
+
+    @Test
     public void testGetObject () {
         for (int i = 0; i < 10; i++) {
             Object obj = Pools.get(DummyPoolObject.class);
