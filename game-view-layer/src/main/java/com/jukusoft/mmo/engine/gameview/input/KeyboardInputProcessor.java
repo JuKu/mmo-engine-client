@@ -1,7 +1,6 @@
 package com.jukusoft.mmo.engine.gameview.input;
 
 import com.badlogic.gdx.InputAdapter;
-import com.jukusoft.mmo.engine.logic.input.InputActions;
 
 public class KeyboardInputProcessor extends InputAdapter {
 
@@ -34,11 +33,11 @@ public class KeyboardInputProcessor extends InputAdapter {
             return false;
         }
 
-        InputActions action = this.inputMapper.getKeyDownAction(keycode);
+        /*InputActions action = this.inputMapper.getKeyDownAction(keycode);
 
         if (action != null) {
             //TODO: call handler
-        }
+        }*/
 
         return false;
     }
@@ -50,11 +49,11 @@ public class KeyboardInputProcessor extends InputAdapter {
             return false;
         }
 
-        InputActions action = this.inputMapper.getKeyUpAction(keycode);
+        /*InputActions action = this.inputMapper.getKeyUpAction(keycode);
 
         if (action != null) {
             //TODO: call handler
-        }
+        }*/
 
         return false;
     }

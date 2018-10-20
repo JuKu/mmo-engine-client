@@ -2,11 +2,10 @@ package com.jukusoft.mmo.engine.gameview.input;
 
 import com.carrotsearch.hppc.IntObjectHashMap;
 import com.carrotsearch.hppc.IntObjectMap;
-import com.jukusoft.mmo.engine.logic.input.InputActions;
 
 public class InputMapper {
 
-    protected IntObjectMap<InputActions> keyDownMapping = new IntObjectHashMap<>();
+    /*protected IntObjectMap<InputActions> keyDownMapping = new IntObjectHashMap<>();
     protected IntObjectMap<InputActions> keyUpMapping = new IntObjectHashMap<>();
 
     public InputMapper () {
@@ -35,6 +34,6 @@ public class InputMapper {
 
     public void removeMapping (int keyCode) {
         this.keyDownMapping.remove(keyCode);
-    }
+    }*/
 
 }
