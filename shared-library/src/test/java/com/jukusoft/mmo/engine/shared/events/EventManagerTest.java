@@ -178,6 +178,48 @@ public class EventManagerTest {
     }
 
     @Test
+    public void testUpdate () {
+        EventManager manager = new EventManager("test", false);
+
+        AtomicBoolean b = new AtomicBoolean(false);
+        AtomicInteger count = new AtomicInteger(0);
+
+        EventListener listener = new EventListener() {
+            @Override
+            public void handleEvent(EventData eventData) {
+                b.set(true);
+                count.incrementAndGet();
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        //add listener to queue
+        manager.addListener(1, listener);
+
+        //queue event twice, listener requires 100ms to handle this event
+        manager.queueEvent(new DummyEventDataObject());
+        manager.queueEvent(new DummyEventDataObject());
+
+        //process events
+        manager.update();
+
+        //check, if listener was executed
+        assertEquals(true, b.get());
+
+        //check, if only one event was processed
+        assertEquals(2, count.get());
+
+        //check, if all queues are empty, this means all events was processed
+        assertNull(manager.eventQueue[0].poll());
+        assertNull(manager.eventQueue[1].poll());
+    }
+
+    @Test
     public void testUpdateWithMillis () {
         EventManager manager = new EventManager("test", false);
 
