@@ -18,6 +18,10 @@ import java.util.Date;
  */
 public class ScreenshotUtils {
 
+    protected ScreenshotUtils () {
+        //
+    }
+
     public static void takeScreenshot (String saveFileName, int width, int height, boolean flipY) throws IOException {
         if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
             Gdx.app.log("Screenshot", "Cannot take screenshot, because this feature is only available for desktop backend.");

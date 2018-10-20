@@ -52,7 +52,7 @@ public class Shake3CameraModification implements CameraModification {
 
     @Override
     public void dispose() {
-
+        //
     }
 
     public boolean isShaking() {

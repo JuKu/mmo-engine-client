@@ -278,9 +278,6 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
             gameTime.setTime(System.currentTimeMillis());
             gameTime.setDelta(Gdx.graphics.getDeltaTime());
 
-            //Gdx.gl.glClearColor(0, 0, 0, 1);
-            //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
             //call subsystems which has to be executed in main thread
             long startTime = System.currentTimeMillis();
             subSystems.iterator().forEachRemaining(system -> system.value.onGameloop());

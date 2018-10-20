@@ -188,9 +188,7 @@ public class CameraHelper implements ModificationFinishedListener {
         this.calculateOffset();
 
         //call resize listeners
-        this.resizeListeners.stream().forEach(consumer -> {
-            consumer.onResize(width, height);
-        });
+        this.resizeListeners.stream().forEach(consumer -> consumer.onResize(width, height));
 
     }
 
