@@ -37,6 +37,25 @@ public class EventsTest {
         Events.addListener(1, 1, null);
     }
 
+    @Test (expected = IllegalArgumentException.class)
+    public void testAddListenerWithIllegalThreadID () {
+        Events.addListener(10, 1, eventData -> {
+            //don't do anything here
+        });
+    }
+    @Test (expected = IllegalArgumentException.class)
+    public void testRemoveListenerWithIllegalThreadID () {
+        Events.removeListener(10, 1, eventData -> {
+            //don't do anything here
+        });
+    }
+
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testUpdateIllegalThreadId () {
+        Events.update(10, 10);
+    }
+
     @Test
     public void testUpdate () {
         AtomicInteger count = new AtomicInteger(0);
