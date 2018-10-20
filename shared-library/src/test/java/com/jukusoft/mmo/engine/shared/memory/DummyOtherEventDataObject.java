@@ -9,4 +9,8 @@ public class DummyOtherEventDataObject extends EventData {
         return 2;
     }
 
+    @Override
+    public boolean allowTrigger() {
+        return true;
+    }
 }

@@ -179,6 +179,34 @@ public class EventManagerTest {
         assertNull(manager.eventQueue[1].poll());
     }
 
+    @Test (expected = IllegalStateException.class)
+    public void testTriggerUnsupportedEvent () {
+        EventManager manager = new EventManager("test", false);
+        manager.triggerEvent(new DummyEventDataObject());
+    }
+
+    @Test
+    public void testTriggerEvent () {
+        EventManager manager = new EventManager("test", false);
+
+        AtomicInteger count = new AtomicInteger(0);
+
+        EventListener listener = new EventListener() {
+            @Override
+            public void handleEvent(EventData eventData) {
+                count.incrementAndGet();
+            }
+        };
+
+        //add listener to queue
+        manager.addListener(2, listener);
+
+        manager.triggerEvent(new DummyOtherEventDataObject());
+
+        //check, if event listener was called
+        assertEquals(1, count.get());
+    }
+
     @Test
     public void testUpdate () {
         EventManager manager = new EventManager("test", false);
