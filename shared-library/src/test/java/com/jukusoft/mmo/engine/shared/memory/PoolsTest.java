@@ -46,6 +46,17 @@ public class PoolsTest {
     }
 
     @Test
+    public void testGetEventDataObject () {
+        for (int i = 0; i < 10; i++) {
+            Object obj = Pools.get(DummyEventDataObject.class);
+            assertNotNull(obj);
+
+            //test free
+            Pools.free(obj);
+        }
+    }
+
+    @Test
     public void testFreePoolableObject () {
         DummyPoolableObject obj = Pools.get(DummyPoolableObject.class);
         assertNotNull(obj);
