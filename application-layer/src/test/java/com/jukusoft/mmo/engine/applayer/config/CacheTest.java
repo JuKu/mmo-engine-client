@@ -113,7 +113,7 @@ public class CacheTest {
         //check, if test file exists
         assertEquals(false, new File("../temp/junit-test/test.txt").exists());
 
-        //check, if temp directory exists after clear() call
+        //check, if temp directory exists after clear() call, this means only content was deleted, but not directory itself
         assertEquals(true, new File("../temp/junit-test/").exists());
         assertEquals(true, new File("../temp/junit-test/").isDirectory());
     }
