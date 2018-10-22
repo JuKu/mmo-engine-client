@@ -2,6 +2,10 @@ package com.jukusoft.mmo.engine.gameview.input;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector3;
+import com.jukusoft.mmo.engine.applayer.config.Config;
+import com.jukusoft.mmo.engine.applayer.utils.FilePath;
+
+import java.io.File;
 
 public class KeyboardInputProcessor extends InputAdapter {
 
@@ -12,7 +16,14 @@ public class KeyboardInputProcessor extends InputAdapter {
     protected final Vector3 direction;
 
     public KeyboardInputProcessor (Vector3 direction) {
+        //find configuration file for keyboard bindings
+        File keyboardBindingsFile = new File(FilePath.parse(Config.get("Input", "keyboardMappings")));
+
+        //load keyboard bindings
         this.inputMapper = new InputMapper();
+        this.inputMapper.load(keyboardBindingsFile);
+
+        //set reference
         this.direction = direction;
     }
 
