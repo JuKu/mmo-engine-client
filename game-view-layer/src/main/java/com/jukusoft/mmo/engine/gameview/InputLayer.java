@@ -27,7 +27,7 @@ public class InputLayer implements SubSystem {
     protected KeyboardInputProcessor keyboardInputProcessor = null;
 
     //player input
-    protected final Vector3 playerMoveDirection = new Vector3(0, 0, 0);//z coordinate is movement speed in percent (0 - 1)
+    protected final Vector3 playerMoveDirection = new Vector3(0, 0, 1);//z coordinate is movement speed in percent (0 - 1)
 
     @Override
     public void onInit() {
@@ -55,6 +55,8 @@ public class InputLayer implements SubSystem {
         event.x = this.playerMoveDirection.x;
         event.y = this.playerMoveDirection.y;
         event.speed = (event.x != 0 || event.y != 0) ? this.playerMoveDirection.z : 0f;
+
+        System.err.println("fire input event: (" + playerMoveDirection.x + ", " + playerMoveDirection.y + ", " + playerMoveDirection.z + ")");
 
         //fire event
         Events.queueEvent(event);

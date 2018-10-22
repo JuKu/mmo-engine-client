@@ -60,6 +60,78 @@ public class KeyboardInputProcessor extends InputAdapter {
                 return true;
             }
         });
+
+        //move left
+        inputMapper.registerTemplate("MOVE_LEFT", new KeyBindingAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                direction.x = -1;
+                return true;
+            }
+
+            @Override
+            public boolean keyUp(int keycode) {
+                if (direction.x < 0) {
+                    direction.x = 0;
+                }
+
+                return true;
+            }
+        });
+
+        //move right
+        inputMapper.registerTemplate("MOVE_RIGHT", new KeyBindingAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                direction.x = 1;
+                return true;
+            }
+
+            @Override
+            public boolean keyUp(int keycode) {
+                if (direction.x > 0) {
+                    direction.x = 0;
+                }
+
+                return true;
+            }
+        });
+
+        //move top
+        inputMapper.registerTemplate("MOVE_TOP", new KeyBindingAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                direction.y = 1;
+                return true;
+            }
+
+            @Override
+            public boolean keyUp(int keycode) {
+                if (direction.y > 0) {
+                    direction.y = 0;
+                }
+
+                return true;
+            }
+        });
+
+        //move bottom
+        inputMapper.registerTemplate("MOVE_DOWN", new KeyBindingAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                direction.y = -1;
+                return true;
+            }
+
+            @Override
+            public boolean keyUp(int keycode) {
+                if (direction.y < 0) {
+                    direction.y = 0;
+                }
+
+                return true;
+            }
+        });
     }
 
     /**
