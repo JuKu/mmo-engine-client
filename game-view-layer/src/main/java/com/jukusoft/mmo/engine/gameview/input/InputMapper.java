@@ -3,7 +3,10 @@ package com.jukusoft.mmo.engine.gameview.input;
 import com.badlogic.gdx.Input;
 import com.carrotsearch.hppc.IntObjectHashMap;
 import com.carrotsearch.hppc.IntObjectMap;
+import com.carrotsearch.hppc.ObjectObjectHashMap;
+import com.carrotsearch.hppc.ObjectObjectMap;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.gameview.input.binding.KeyBinding;
 import org.ini4j.Ini;
 import org.ini4j.Profile;
 
@@ -13,10 +16,12 @@ import java.lang.reflect.Field;
 
 public class InputMapper {
 
-    //protected IntObjectMap<InputActions> keyDownMapping = new IntObjectHashMap<>();
-    //protected IntObjectMap<InputActions> keyUpMapping = new IntObjectHashMap<>();
-
     protected static final String LOG_TAG = "InputMapper";
+
+    protected KeyBinding[] bindings = null;
+
+    //map with key bindings
+    protected ObjectObjectMap<String,KeyBinding> templates = new ObjectObjectHashMap<>();
 
     public InputMapper () {
         //
@@ -50,6 +55,31 @@ public class InputMapper {
 
         Class<?> cls = Input.Keys.class;
 
+        Log.v(LOG_TAG, "fields in class Input.Keys found: " + cls.getDeclaredFields().length);
+        int highestValue = 0;
+
+        //first detect highest value to allocate array size
+        for (Field field : cls.getDeclaredFields()) {
+            field.setAccessible(true);
+
+            try {
+                int keyCode = field.getInt(null);
+
+                if (highestValue < keyCode) {
+                    highestValue = keyCode;
+                }
+            } catch (IllegalAccessException e) {
+                Log.e(LOG_TAG, "IllegalAccessException while getting highest keyCode: ", e);
+            } catch (IllegalArgumentException e) {
+                //we can ignore this exception, because it occurs if we access a non-static variable (which we doesn't need)
+            }
+        }
+
+        Log.v(LOG_TAG, "highest value in class Input.Keys: " + highestValue);
+
+        //allocate array for all key bindings
+        this.bindings = new KeyBinding[highestValue];
+
         //iterate through keys
         for (String key : section.keySet()) {
             //find variable and get value
@@ -62,7 +92,17 @@ public class InputMapper {
                 field.setAccessible(true);
                 int keyCode = field.getInt(null);
 
-                Log.v(LOG_TAG, "register keyboard binding " + key + " (" + keyCode + ") --> " + value);
+                //check, if template is registered for this value
+                KeyBinding template = this.templates.get(value);
+
+                if (template == null) {
+                    Log.w(LOG_TAG, "no template registered for action type '" + value + "'!");
+                    continue;
+                }
+
+                //register template to keyCode
+                Log.v(LOG_TAG, "register keyboard binding " + key + " (" + keyCode + ") --> " + template.getClass().getName());
+                this.bindings[keyCode] = template;
             } catch (NoSuchFieldException e) {
                 Log.e(LOG_TAG, "Illegal keyboard binding '" + key + "', this variable doesn't exists in libGDX class Input.Keys!", e);
             } catch (IllegalAccessException e) {
@@ -73,28 +113,12 @@ public class InputMapper {
         //TODO: add code here
     }
 
-    /*public void init () {
-        //TODO: read config file and add mappings to map
+    public void registerTemplate (String actionType, KeyBinding binding) {
+        this.templates.put(actionType, binding);
     }
 
-    public InputActions getKeyDownAction (int keyCode) {
-        return this.keyDownMapping.get(keyCode);
+    public KeyBinding[] getBindings () {
+        return bindings;
     }
-
-    public InputActions getKeyUpAction (int keyCode) {
-        return this.keyDownMapping.get(keyCode);
-    }
-
-    public void addMapping(int keyCode, InputActions action) {
-        if (this.keyDownMapping.containsKey(keyCode)) {
-            throw new IllegalStateException("keyCode is already registered.");
-        }
-
-        this.keyDownMapping.put(keyCode, action);
-    }
-
-    public void removeMapping (int keyCode) {
-        this.keyDownMapping.remove(keyCode);
-    }*/
 
 }

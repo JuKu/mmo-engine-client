@@ -1,9 +1,17 @@
 package com.jukusoft.mmo.engine.gameview.input;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector3;
 import com.jukusoft.mmo.engine.applayer.config.Config;
+import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.utils.FilePath;
+import com.jukusoft.mmo.engine.gameview.input.binding.KeyBinding;
+import com.jukusoft.mmo.engine.gameview.input.binding.KeyBindingAdapter;
+import com.jukusoft.mmo.engine.shared.client.events.input.TakeScreenshotEvent;
+import com.jukusoft.mmo.engine.shared.events.Events;
+import com.jukusoft.mmo.engine.shared.memory.Pools;
 
 import java.io.File;
 
@@ -15,16 +23,43 @@ public class KeyboardInputProcessor extends InputAdapter {
     //vector with player movement direction (x, y) and speed (z)
     protected final Vector3 direction;
 
+    protected final KeyBinding[] bindings;
+
     public KeyboardInputProcessor (Vector3 direction) {
         //find configuration file for keyboard bindings
         File keyboardBindingsFile = new File(FilePath.parse(Config.get("Input", "keyboardMappings")));
 
         //load keyboard bindings
         this.inputMapper = new InputMapper();
+
+        //register templates first
+        this.registerTemplates(this.inputMapper);
+
+        //load mappings (key bindings)
         this.inputMapper.load(keyboardBindingsFile);
+
+        //get bindings
+        this.bindings = this.inputMapper.getBindings();
 
         //set reference
         this.direction = direction;
+    }
+
+    protected void registerTemplates (InputMapper inputMapper) {
+        //fire event to
+        inputMapper.registerTemplate("TAKE_SCREENSHOT", new KeyBindingAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                if (!Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && !Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
+                    return false;
+                }
+
+                //fire take screenshot event
+                Events.queueEvent(Pools.get(TakeScreenshotEvent.class));
+
+                return true;
+            }
+        });
     }
 
     /**
@@ -48,11 +83,18 @@ public class KeyboardInputProcessor extends InputAdapter {
             return false;
         }
 
-        /*InputActions action = this.inputMapper.getKeyDownAction(keycode);
+        if (keycode > this.bindings.length) {
+            //this key isn't supported
+            return false;
+        }
 
-        if (action != null) {
-            //TODO: call handler
-        }*/
+        //find key binding
+        KeyBinding binding = this.bindings[keycode];
+
+        if (binding != null) {
+            binding.keyDown(keycode);
+            return true;
+        }
 
         return false;
     }
@@ -64,11 +106,18 @@ public class KeyboardInputProcessor extends InputAdapter {
             return false;
         }
 
-        /*InputActions action = this.inputMapper.getKeyUpAction(keycode);
+        if (keycode > this.bindings.length) {
+            //this key isn't supported
+            return false;
+        }
 
-        if (action != null) {
-            //TODO: call handler
-        }*/
+        //find key binding
+        KeyBinding binding = this.bindings[keycode];
+
+        if (binding != null) {
+            binding.keyUp(keycode);
+            return true;
+        }
 
         return false;
     }
@@ -80,7 +129,22 @@ public class KeyboardInputProcessor extends InputAdapter {
             return false;
         }
 
-        //TODO: add code here
+        //convert character to int, to find binding
+        int keycode = Character.toLowerCase(character);
+        keycode = keycode - 68;
+
+        if (keycode > this.bindings.length) {
+            //this key isn't supported
+            return false;
+        }
+
+        //find key binding
+        KeyBinding binding = this.bindings[keycode];
+
+        if (binding != null) {
+            binding.keyTyped(character);
+            return true;
+        }
 
         return false;
     }
