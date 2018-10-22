@@ -27,7 +27,7 @@ public class InputLayer implements SubSystem {
     protected KeyboardInputProcessor keyboardInputProcessor = null;
 
     //player input
-    protected Vector3 playerMoveDirection = new Vector3(0, 0, 0);//z coordinate is movement speed in percent (0 - 1)
+    protected final Vector3 playerMoveDirection = new Vector3(0, 0, 0);//z coordinate is movement speed in percent (0 - 1)
 
     @Override
     public void onInit() {
@@ -41,7 +41,7 @@ public class InputLayer implements SubSystem {
         this.manager.setGdxInputProcessor();
 
         //create and set game input processor
-        this.keyboardInputProcessor = new KeyboardInputProcessor();
+        this.keyboardInputProcessor = new KeyboardInputProcessor(this.playerMoveDirection);
         this.keyboardInputProcessor.enable();
 
         //add input processor for game logic
