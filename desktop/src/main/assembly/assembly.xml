@@ -56,6 +56,16 @@
 			</excludes>
 		</fileSet>
 
+		<!-- addons directory -->
+		<fileSet>
+			<directory>../addons</directory>
+			<outputDirectory>addons</outputDirectory>
+			<excludes>
+				<exclude>*.cfg</exclude>
+				<exclude>*.jar</exclude>
+			</excludes>
+		</fileSet>
+
 		<!-- updater directory -->
 		<fileSet>
 			<directory>../updater</directory>
