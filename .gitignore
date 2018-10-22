@@ -9,6 +9,8 @@ temp
 !*pom.xml
 !pom.xml
 
+*.jfr
+
 *.pentaquin
 .pentaquin
 
