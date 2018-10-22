@@ -1,15 +1,19 @@
 package com.jukusoft.mmo.engine.gameview.input;
 
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.math.Vector3;
 
 public class KeyboardInputProcessor extends InputAdapter {
 
     protected boolean enabled = true;
     protected InputMapper inputMapper = null;
 
-    public KeyboardInputProcessor () {
-        this.inputMapper = new InputMapper();
+    //vector with player movement direction (x, y) and speed (z)
+    protected final Vector3 direction;
 
+    public KeyboardInputProcessor (Vector3 direction) {
+        this.inputMapper = new InputMapper();
+        this.direction = direction;
     }
 
     /**
