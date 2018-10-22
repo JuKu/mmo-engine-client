@@ -11,6 +11,8 @@ public class InputMapper {
     //protected IntObjectMap<InputActions> keyDownMapping = new IntObjectHashMap<>();
     //protected IntObjectMap<InputActions> keyUpMapping = new IntObjectHashMap<>();
 
+    protected static final String LOG_TAG = "InputMapper";
+
     public InputMapper () {
         //
     }
@@ -21,11 +23,13 @@ public class InputMapper {
      * @param configFile keyboard bindings file, e.q. keyboard.cfg
     */
     public void load (File configFile) {
-        Log.d("InputMapper", "load keyboard bindings...");
+        Log.i(LOG_TAG, "load keyboard bindings...");
 
         if (!configFile.exists()) {
             throw new IllegalStateException("keyboard bindings configuration file doesn't exists: " + configFile.getAbsolutePath());
         }
+
+        Log.d(LOG_TAG, "load keyboard bindings from file: " + configFile.getAbsolutePath());
     }
 
     /*public void init () {

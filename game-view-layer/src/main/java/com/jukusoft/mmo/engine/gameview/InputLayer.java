@@ -117,7 +117,7 @@ public class InputLayer implements SubSystem {
                 }
             } else {
                 Log.w(CONTROLLER_TAG, "auto generating of controller mappings is disabled.");
-                JavaFXUtils.showErrorDialog(I.tr("Error!"), I.tr("Controller unbekannt! Für diesen Controller existieren derzeit keine Mappings!"));
+                JavaFXUtils.showErrorDialog(I.tr("Error!"), I.tr("Unknown controller! There doesn't exists any mappings for this controller, yet!"));
 
                 return;
             }
