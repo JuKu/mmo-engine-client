@@ -205,6 +205,9 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
         this.addSubSystems(this);
 
         Platform.runOnUIThread(() -> {
+            //initialize subsystems in main thread
+            this.subSystems.iterator().forEachRemaining(system -> system.value.onInit());
+
             this.initialized = true;
 
             if (this.multiThreadingMode) {
@@ -253,9 +256,6 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
                 this.gameLogicThread.setName("game-logic-thread");
                 this.gameLogicThread.start();
             }
-
-            //initialize subsystems in main thread
-            this.subSystems.iterator().forEachRemaining(system -> system.value.onInit());
         });
     }
 
