@@ -15,8 +15,6 @@ public class InputManager {
 
     public InputManager() {
         this.inputMultiplexer = new InputMultiplexer();
-
-        this.setGdxInputProcessor();
     }
 
     public void setGdxInputProcessor () {

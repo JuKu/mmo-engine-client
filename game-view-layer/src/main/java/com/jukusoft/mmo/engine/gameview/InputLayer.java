@@ -12,6 +12,7 @@ import com.jukusoft.mmo.engine.applayer.utils.FilePath;
 import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
 import com.jukusoft.mmo.engine.gameview.input.InputManager;
 import com.jukusoft.mmo.engine.gameview.input.KeyboardInputProcessor;
+import com.jukusoft.mmo.engine.gameview.input.controller.ControllerMapper;
 import com.jukusoft.mmo.engine.gameview.input.controller.MappingGenerator;
 import com.jukusoft.mmo.engine.shared.client.events.input.PlayerMoveEvent;
 import com.jukusoft.mmo.engine.shared.events.Events;
@@ -56,6 +57,8 @@ public class InputLayer implements SubSystem {
         event.y = this.playerMoveDirection.y;
         event.speed = (event.x != 0 || event.y != 0) ? this.playerMoveDirection.z : 0f;
 
+        System.err.println("fire input event: (" + event.x + ", " + event.y + ", " + event.speed + ")");
+
         //fire event
         Events.queueEvent(event);
     }
@@ -71,31 +74,31 @@ public class InputLayer implements SubSystem {
         this.manager.clear();
     }
 
-    protected void initControllers () {if (Config.getBool(CONTROLLER_TAG, "enabled")) {
-        //check for connected controllers
-        int connectedControllers = 0;
+    protected void initControllers () {
+        if (Config.getBool(CONTROLLER_TAG, "enabled")) {
+            //check for connected controllers
+            int connectedControllers = 0;
 
-        for (Controller controller : Controllers.getControllers()) {
-            Log.i(CONTROLLER_TAG, "controller detected: " + controller.getName());
-            connectedControllers++;
+            for (Controller controller : Controllers.getControllers()) {
+                Log.i(CONTROLLER_TAG, "controller detected: " + controller.getName());
+                connectedControllers++;
 
-            //initialize controller
-            this.initController(controller);
-        }
-
-        Log.i(CONTROLLER_TAG, connectedControllers + " controller(s) detected.");
-
-        Controllers.addListener(new ControllerAdapter() {
-            @Override
-            public void connected(Controller controller) {
-                Log.i(CONTROLLER_TAG, "new controller detected: " + controller.getName());
-                initController(controller);
+                //initialize controller
+                this.initController(controller);
             }
-        });
-    } else {
-        Log.i(CONTROLLER_TAG, "controller support is disabled.");
-    }
 
+            Log.i(CONTROLLER_TAG, connectedControllers + " controller(s) detected.");
+
+            Controllers.addListener(new ControllerAdapter() {
+                @Override
+                public void connected(Controller controller) {
+                    Log.i(CONTROLLER_TAG, "new controller detected: " + controller.getName());
+                    initController(controller);
+                }
+            });
+        } else {
+            Log.i(CONTROLLER_TAG, "controller support is disabled.");
+        }
     }
 
     protected void initController (Controller controller) {
@@ -131,14 +134,34 @@ public class InputLayer implements SubSystem {
             JavaFXUtils.showExceptionDialog(I.tr("Error!"), I.tr("Coulnd't load keyDownMapping for controller!"), e);
         }
 
+        //create new controller mapper
+        ControllerMapper controllerMapper = null;
+
+        //load controller
+        try {
+            controllerMapper = new ControllerMapper(this.playerMoveDirection, new File(mappingFile));
+        } catch (IOException e) {
+            Log.w(CONTROLLER_TAG, "IOException while loading controller mapping: ", e);
+        }
+
+        final ControllerMapper controllerMapper1 = controllerMapper;
+
         //https://github.com/MrStahlfelge/gdx-controllerutils/tree/master/core-mapping
 
         controller.addListener(new ControllerAdapter() {
             @Override
             public void disconnected(Controller controller) {
                 Log.i(CONTROLLER_TAG, "controller disconnected: " + controller.getName());
+
+                //dispose controller mapper
+                controllerMapper1.dispose();
             }
         });
+
+        //controller.setAccelerometerSensitivity(1);
+
+        //add controller mapper
+        controller.addListener(controllerMapper);
     }
 
 }

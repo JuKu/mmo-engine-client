@@ -1,8 +1,6 @@
-package com.jukusoft.mmo.engine.gameview.input;
+package com.jukusoft.mmo.engine.gameview.input.binding;
 
 import com.badlogic.gdx.Input;
-import com.carrotsearch.hppc.IntObjectHashMap;
-import com.carrotsearch.hppc.IntObjectMap;
 import com.carrotsearch.hppc.ObjectObjectHashMap;
 import com.carrotsearch.hppc.ObjectObjectMap;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
@@ -13,6 +11,7 @@ import org.ini4j.Profile;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Map;
 
 public class InputMapper {
 
@@ -81,10 +80,12 @@ public class InputMapper {
         this.bindings = new KeyBinding[highestValue];
 
         //iterate through keys
-        for (String key : section.keySet()) {
+        for (Map.Entry<String,String> entry : section.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+
             //find variable and get value
             Field field = null;
-            String value = section.get(key);
 
             try {
                 field = cls.getDeclaredField(key);
