@@ -1,5 +1,6 @@
 package com.jukusoft.mmo.engine.gameview.input.controller;
 
+import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.math.Vector3;
 import com.jukusoft.mmo.engine.applayer.config.Config;
@@ -120,6 +121,23 @@ public class ControllerMapper extends ControllerAdapter {
 
     private int getInt (String key, Profile.Section section) {
         return Integer.parseInt(section.get(key));
+    }
+
+    @Override
+    public boolean axisMoved (Controller controller, int axisIndex, float value) {
+        //correct value, because controller doesn't return 0
+        if (Math.abs(value) <= 0.000f) {
+            value = 0;//0.000015259022
+        }
+
+        if (axisIndex == L_STICK_VERTICAL_AXIS) {
+            System.err.println("axisMoved (" + axisIndex + "): " + value);
+            playerMoveDirection.x = value * this.invertLStickVerticalAxis;
+        } else if (axisIndex == L_STICK_HORIZONTAL_AXIS) {
+            playerMoveDirection.y = value * this.invertLStickHorizontalAxis;
+        }
+
+        return false;
     }
 
     /**

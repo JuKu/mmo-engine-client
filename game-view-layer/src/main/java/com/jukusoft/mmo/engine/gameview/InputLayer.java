@@ -57,7 +57,7 @@ public class InputLayer implements SubSystem {
         event.y = this.playerMoveDirection.y;
         event.speed = (event.x != 0 || event.y != 0) ? this.playerMoveDirection.z : 0f;
 
-        System.err.println("fire input event: (" + event.x + ", " + event.y + ", " + event.speed + ")");
+        //System.err.println("fire input event: (" + event.x + ", " + event.y + ", " + event.speed + ")");
 
         //fire event
         Events.queueEvent(event);
