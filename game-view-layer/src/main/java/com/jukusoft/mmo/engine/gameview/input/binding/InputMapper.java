@@ -110,8 +110,6 @@ public class InputMapper {
                 Log.e(LOG_TAG, "IllegalAccessException while get keyboard binding '" + key + "': ", e);
             }
         }
-
-        //TODO: add code here
     }
 
     public void registerTemplate (String actionType, KeyBinding binding) {
