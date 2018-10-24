@@ -56,8 +56,8 @@ public class SelectServerScreen implements IScreen {
         this.logoPath = Config.get("SelectServer", "logo");
 
         //create skin
-        String atlasFile = Config.get("UI.Skin", "atlas");
-        String jsonFile = Config.get("UI.Skin", "json");
+        String atlasFile = Config.get("UISkin", "atlas");
+        String jsonFile = Config.get("UISkin", "json");
         Log.v("SelectServerScreen", "create skin, atlas file: " + atlasFile + ", json file: " + jsonFile);
         this.skin = SkinFactory.createSkin(jsonFile);
 

@@ -36,6 +36,10 @@ msgstr "Updater"
 msgid "Couldn't generate auto keyDownMapping for controller!"
 msgstr "Couldn't generate auto keyDownMapping for controller!"
 
+#: file InputLayer.java line 135
+msgid "Unknown controller! There doesn't exists any mappings for this controller, yet!"
+msgstr "Unknown controller! There doesn't exists any mappings for this controller, yet!"
+
 #: file InputLayer.java line 146
 msgid "Coulnd't load keyDownMapping for controller!"
 msgstr "Coulnd't load keyDownMapping for controller!"
