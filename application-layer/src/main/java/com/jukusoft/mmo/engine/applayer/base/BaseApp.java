@@ -301,7 +301,7 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
             long endTime = System.currentTimeMillis();
             long diffTime = endTime - startTime;
 
-            if (diffTime > 15) {
+            if (diffTime > 16) {
                 Log.w("Gameloop", "Rendering gameloop required more than 16ms to render!");
             }
         }

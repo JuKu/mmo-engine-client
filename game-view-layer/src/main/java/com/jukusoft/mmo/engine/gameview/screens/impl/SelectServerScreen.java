@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.network.ServerManager;
+import com.jukusoft.mmo.engine.applayer.utils.FilePath;
 import com.jukusoft.mmo.engine.applayer.utils.SkinFactory;
 import com.jukusoft.mmo.engine.applayer.version.Version;
 import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
@@ -52,12 +53,12 @@ public class SelectServerScreen implements IScreen {
     public void onStart(ScreenManager<IScreen> screenManager) {
         this.screenManager = screenManager;
 
-        this.bgPath = Config.get("SelectServer", "background");
-        this.logoPath = Config.get("SelectServer", "logo");
+        this.bgPath = FilePath.parse(Config.get("SelectServer", "background"));
+        this.logoPath = FilePath.parse(Config.get("SelectServer", "logo"));
 
         //create skin
-        String atlasFile = Config.get("UISkin", "atlas");
-        String jsonFile = Config.get("UISkin", "json");
+        String atlasFile = FilePath.parse(Config.get("UISkin", "atlas"));
+        String jsonFile = FilePath.parse(Config.get("UISkin", "json"));
         Log.v("SelectServerScreen", "create skin, atlas file: " + atlasFile + ", json file: " + jsonFile);
         this.skin = SkinFactory.createSkin(jsonFile);
 
