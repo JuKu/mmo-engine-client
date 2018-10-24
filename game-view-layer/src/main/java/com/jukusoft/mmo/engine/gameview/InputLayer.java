@@ -3,6 +3,7 @@ package com.jukusoft.mmo.engine.gameview;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.config.Config;
@@ -30,6 +31,9 @@ public class InputLayer implements SubSystem {
     //player input
     protected final Vector3 playerMoveDirection = new Vector3(0, 0, 1);//z coordinate is movement speed in percent (0 - 1)
 
+    //vector to calculate speed
+    protected final Vector2 tmpVec = new Vector2(0, 0);
+
     @Override
     public void onInit() {
         Log.i("Input", "initializing input devices");
@@ -51,13 +55,21 @@ public class InputLayer implements SubSystem {
 
     @Override
     public void onGameloop() {
+        //calculate speed
+        this.tmpVec.set(playerMoveDirection.x, playerMoveDirection.y);
+        float lengthVec = this.tmpVec.len();
+
+        //max length in circle is 1
+        lengthVec = lengthVec > 1f ? 1f : lengthVec;
+
+        //set speed
+        playerMoveDirection.z = lengthVec;
+
         //create new event from memory pool
         PlayerMoveEvent event = Pools.get(PlayerMoveEvent.class);
         event.x = this.playerMoveDirection.x;
         event.y = this.playerMoveDirection.y;
         event.speed = (event.x != 0 || event.y != 0) ? this.playerMoveDirection.z : 0f;
-
-        //System.err.println("fire input event: (" + event.x + ", " + event.y + ", " + event.speed + ")");
 
         //fire event
         Events.queueEvent(event);
@@ -157,8 +169,6 @@ public class InputLayer implements SubSystem {
                 controllerMapper1.dispose();
             }
         });
-
-        //controller.setAccelerometerSensitivity(1);
 
         //add controller mapper
         controller.addListener(controllerMapper);

@@ -66,6 +66,7 @@ public class KeyboardInputProcessor extends InputAdapter {
             @Override
             public boolean keyDown(int keycode) {
                 direction.x = -1;
+
                 return true;
             }
 
@@ -84,6 +85,7 @@ public class KeyboardInputProcessor extends InputAdapter {
             @Override
             public boolean keyDown(int keycode) {
                 direction.x = 1;
+
                 return true;
             }
 
@@ -102,6 +104,7 @@ public class KeyboardInputProcessor extends InputAdapter {
             @Override
             public boolean keyDown(int keycode) {
                 direction.y = 1;
+
                 return true;
             }
 
@@ -120,6 +123,7 @@ public class KeyboardInputProcessor extends InputAdapter {
             @Override
             public boolean keyDown(int keycode) {
                 direction.y = -1;
+
                 return true;
             }
 
