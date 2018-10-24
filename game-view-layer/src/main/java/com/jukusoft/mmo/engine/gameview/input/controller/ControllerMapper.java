@@ -2,6 +2,7 @@ package com.jukusoft.mmo.engine.gameview.input.controller;
 
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
@@ -50,9 +51,6 @@ public class ControllerMapper extends ControllerAdapter {
     protected final float invertLStickHorizontalAxis;
     protected final float invertRStickVerticalAxis;
     protected final float invertRStickHorizontalAxis;
-
-    //because controller's doesn't returns 0, this is the equivalent 0 value
-    protected static final float CONTROLLER_CONST_ZERO = 1.5259022E-5f;
 
     protected final Vector3 playerMoveDirection;
 
@@ -128,7 +126,7 @@ public class ControllerMapper extends ControllerAdapter {
     @Override
     public boolean axisMoved (Controller controller, int axisIndex, float value) {
         //correct value, because controller doesn't return 0
-        if (value == CONTROLLER_CONST_ZERO) {
+        if (Math.abs(MathUtils.roundPositive(value)) == 0) {
             value = 0;
         }
 
