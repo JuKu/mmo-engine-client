@@ -34,6 +34,9 @@ public class InputLayer implements SubSystem {
     //vector to calculate speed
     protected final Vector2 tmpVec = new Vector2(0, 0);
 
+    //initialization flag
+    protected boolean initialized = false;
+
     @Override
     public void onInit() {
         Log.i("Input", "initializing input devices");
@@ -51,10 +54,16 @@ public class InputLayer implements SubSystem {
 
         //add input processor for game logic
         this.manager.add(this.keyboardInputProcessor);
+
+        this.initialized = true;
     }
 
     @Override
     public void onGameloop() {
+        if (!this.initialized) {
+            return;
+        }
+
         //calculate speed
         this.tmpVec.set(playerMoveDirection.x, playerMoveDirection.y);
         float lengthVec = this.tmpVec.len();
