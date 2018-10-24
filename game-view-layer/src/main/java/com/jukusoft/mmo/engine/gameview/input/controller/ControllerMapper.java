@@ -17,6 +17,7 @@ import java.io.IOException;
 public class ControllerMapper extends ControllerAdapter {
 
     protected static final String LOG_TAG = "ControllerMapper";
+    protected static final String CONTROLLER_SECTION = "Controller";
 
     /**
     * mappings
@@ -92,10 +93,10 @@ public class ControllerMapper extends ControllerAdapter {
         this.R_STICK_HORIZONTAL_AXIS = getInt("R_STICK_HORIZONTAL_AXIS", section);
 
         //get options
-        this.invertLStickVerticalAxis = Config.getBool("Controller", "invertLStickVerticalAxis") ? -1 : 1;
-        this.invertLStickHorizontalAxis = Config.getBool("Controller", "invertLStickHorizontalAxis") ? -1 : 1;
-        this.invertRStickVerticalAxis = Config.getBool("Controller", "invertRStickVerticalAxis") ? -1 : 1;
-        this.invertRStickHorizontalAxis = Config.getBool("Controller", "invertRStickHorizontalAxis") ? -1 : 1;
+        this.invertLStickVerticalAxis = Config.getBool(CONTROLLER_SECTION, "invertLStickVerticalAxis") ? -1 : 1;
+        this.invertLStickHorizontalAxis = Config.getBool(CONTROLLER_SECTION, "invertLStickHorizontalAxis") ? -1 : 1;
+        this.invertRStickVerticalAxis = Config.getBool(CONTROLLER_SECTION, "invertRStickVerticalAxis") ? -1 : 1;
+        this.invertRStickHorizontalAxis = Config.getBool(CONTROLLER_SECTION, "invertRStickHorizontalAxis") ? -1 : 1;
     }
 
     /**
@@ -118,9 +119,7 @@ public class ControllerMapper extends ControllerAdapter {
         String sectionName = "Mapping" + osName;
 
         Log.v(LOG_TAG, "load section: " + sectionName);
-        Profile.Section section = ini.get(sectionName);
-
-        return section;
+        return ini.get(sectionName);
     }
 
     private int getInt (String key, Profile.Section section) {
