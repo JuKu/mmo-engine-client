@@ -48,6 +48,12 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
 
     protected final GameTime gameTime = GameTime.getInstance();
 
+    protected final Version version;
+
+    public BaseApp (Version version) {
+        this.version = version;
+    }
+
     @Override
     public void create() {
         //load logger config
@@ -64,14 +70,25 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
         try {
             Log.i("Startup", "Started Game Engine.");
 
+            //set global version
+            Version.setInstance(this.version);
+
             //print game engine version information
-            Utils.printSection("Game Engine");
-            Version version = new Version(BaseApp.class);
+            Utils.printSection("Game Version");
             Log.i(VERSION_TAG, "Version: " + version.getVersion());
             Log.i(VERSION_TAG, "Build: " + version.getRevision());
             Log.i(VERSION_TAG, "Build JDK: " + version.getBuildJdk());
             Log.i(VERSION_TAG, "Build Time: " + version.getBuildTime());
             Log.i(VERSION_TAG, "Vendor ID: " + (!version.getVendor().equals("n/a") ? version.getVendor() : version.getVendorID()));
+
+            //print game engine version information
+            Utils.printSection("Game Engine");
+            Version version1 = new Version(BaseApp.class);
+            Log.i(VERSION_TAG, "Version: " + version1.getVersion());
+            Log.i(VERSION_TAG, "Build: " + version1.getRevision());
+            Log.i(VERSION_TAG, "Build JDK: " + version1.getBuildJdk());
+            Log.i(VERSION_TAG, "Build Time: " + version1.getBuildTime());
+            Log.i(VERSION_TAG, "Vendor ID: " + (!version1.getVendor().equals("n/a") ? version1.getVendor() : version1.getVendorID()));
 
             //print libGDX version
             Utils.printSection("libGDX");
@@ -327,6 +344,10 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
     @Override
     public void removeSubSystem (SubSystem system) {
         this.subSystems.remove(this.subSystems.lastIndexOf(system));
+    }
+
+    protected Version getVersion () {
+        return this.version;
     }
 
     protected abstract void addSubSystems (SubSystemManager manager);

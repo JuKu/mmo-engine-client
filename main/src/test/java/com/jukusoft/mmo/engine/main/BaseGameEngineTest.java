@@ -8,12 +8,12 @@ public class BaseGameEngineTest {
 
     @Test
     public void testConstructor () {
-        new BaseGameEngine();
+        new BaseGameEngine(null);
     }
 
     @Test
     public void testAddSubSystems () {
-        BaseGameEngine engine = new BaseGameEngine();
+        BaseGameEngine engine = new BaseGameEngine(null);
         engine.addSubSystems(Mockito.mock(SubSystemManager.class));
     }
 

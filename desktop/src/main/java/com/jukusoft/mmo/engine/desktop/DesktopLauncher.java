@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.utils.Utils;
+import com.jukusoft.mmo.engine.applayer.version.Version;
 import com.jukusoft.mmo.engine.desktop.config.WindowConfig;
 import com.jukusoft.mmo.engine.main.BaseGameEngine;
 
@@ -36,7 +37,7 @@ public class DesktopLauncher {
         windowConfig.fillConfig(config);
 
         // start game
-        new Lwjgl3Application(new BaseGameEngine(), config);
+        new Lwjgl3Application(new BaseGameEngine(new Version(DesktopLauncher.class)), config);
 
         //list currently active threads
         Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
