@@ -1,12 +1,15 @@
 package com.jukusoft.mmo.engine.cli.impl;
 
+import com.jukusoft.mmo.engine.applayer.version.Version;
 import com.jukusoft.mmo.engine.cli.CLICommand;
+import com.jukusoft.mmo.engine.cli.CommandLineInterface;
 
 public class VersionCmd implements CLICommand {
 
     @Override
     public String execute(String command, String[] args) {
-        return "not implemented yet!";
+        Version version = new Version(CommandLineInterface.class);
+        return "CLI Version " + version.getFullVersion();
     }
 
     @Override
