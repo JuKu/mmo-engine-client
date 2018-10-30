@@ -57,7 +57,7 @@ public class CommandLineInterface implements Runnable {
         });
 
         JScrollPane sp = new JScrollPane(ta, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        sp.add(textField);
+        //sp.add(textField);
 
         p.add(sp, BorderLayout.NORTH);
         p.add(textField, BorderLayout.SOUTH);
