@@ -15,6 +15,7 @@
 		<module>main</module>
 		<module>desktop</module>
 		<module>shared-library</module>
+		<module>cli</module>
 	</modules>
 
 	<name>MMO Game Engine - Client</name>

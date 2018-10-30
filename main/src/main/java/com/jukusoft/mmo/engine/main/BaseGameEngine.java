@@ -1,6 +1,7 @@
 package com.jukusoft.mmo.engine.main;
 
 import com.jukusoft.mmo.engine.applayer.base.BaseApp;
+import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.applayer.subsystem.EventProcessor;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystemManager;
 import com.jukusoft.mmo.engine.applayer.version.Version;
@@ -29,6 +30,20 @@ public class BaseGameEngine extends BaseApp {
 
         //add game-view-layer
         manager.addSubSystem(new HumanView(), false);
+
+        //start command line interface, if it is integrated
+        try {
+            Class<?> cls = Class.forName("com.jukusoft.mmo.engine.cli.CommandLineInterface");
+            Runnable runnable = (Runnable) cls.newInstance();
+            Thread thread = new Thread(runnable);
+            thread.setName("CLI");
+            thread.start();
+            Log.i("CLI", "command line interface started.");
+        } catch (ClassNotFoundException e) {
+            Log.i("CLI", "command line interface not integrated.");
+        } catch (IllegalAccessException | InstantiationException e) {
+            Log.w("CLI", "Coulnd't create CLI: ", e);
+        }
     }
 
 }
