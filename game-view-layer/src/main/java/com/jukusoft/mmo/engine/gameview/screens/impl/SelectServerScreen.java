@@ -185,7 +185,7 @@ public class SelectServerScreen implements IScreen {
 
     @Override
     public void onResize(int width, int height) {
-        System.out.println("onResize: " + width + "x" + height);
+        Log.d("SelectServer", "onResize: " + width + "x" + height);
 
         stage.getViewport().setScreenWidth(width);
         stage.getViewport().setScreenHeight(height);
