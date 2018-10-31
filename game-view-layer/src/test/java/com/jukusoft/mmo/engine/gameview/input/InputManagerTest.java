@@ -69,4 +69,10 @@ public class InputManagerTest extends GameUnitTest {
         manager.add(processor);
     }
 
+    @Test
+    public void testSetGdxInputProcessor () {
+        InputManager manager = new InputManager();
+        manager.setGdxInputProcessor();
+    }
+
 }
