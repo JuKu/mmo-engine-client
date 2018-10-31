@@ -2,7 +2,12 @@ package com.jukusoft.mmo.engine.cli;
 
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.cli.impl.FireEventCmd;
+import com.jukusoft.mmo.engine.cli.impl.ListEventsCmd;
+import com.jukusoft.mmo.engine.cli.impl.TakeScreenshotCmd;
 import com.jukusoft.mmo.engine.cli.impl.VersionCmd;
+import com.jukusoft.mmo.engine.shared.client.events.input.PlayerMoveEvent;
+import com.jukusoft.mmo.engine.shared.client.events.input.TakeScreenshotEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +20,9 @@ public class CommandLineInterface implements Runnable {
 
     //map with all commands
     protected static Map<String,CLICommand> commands = new HashMap<>();
+
+    //map with events, which can be fired
+    protected Map<String,Class<?>> eventTypes = new HashMap<>();
 
     @Override
     public void run() {
@@ -32,7 +40,7 @@ public class CommandLineInterface implements Runnable {
         JPanel p = new JPanel(new BorderLayout());
         p.setSize(600, 400);
 
-        JTextArea ta = new JTextArea("CLI started!\nEnter 'help' to show a list with all available commands.\n\n", 10, 50);
+        JTextArea ta = new JTextArea("CLI started!\nType 'help' to show a list with all available commands.\n\n", 10, 50);
         ta.setEditable(false);
 
         JTextField textField = new JTextField("");
@@ -86,7 +94,15 @@ public class CommandLineInterface implements Runnable {
             }
         });
 
+        //register available commands
         registerCommand("version", new VersionCmd());
+        registerCommand("listEvents", new ListEventsCmd(this.eventTypes));
+        registerCommand("fireEvent", new FireEventCmd(this.eventTypes));
+        registerCommand("takeScreenshot", new TakeScreenshotCmd());
+
+        //register events, which can be fired
+        eventTypes.put("PlayerMoveEvent", PlayerMoveEvent.class);
+        eventTypes.put("TakeScreenshotEvent", TakeScreenshotEvent.class);
     }
 
     protected String process (String command, String[] args) {
