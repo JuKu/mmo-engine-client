@@ -2,6 +2,7 @@ package com.jukusoft.mmo.engine.gameview.assetmanager;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.util.ArrayList;
@@ -183,6 +184,10 @@ public class GameAssetManager {
 
     public float getProgress () {
         return this.assetManager.getProgress();
+    }
+
+    public Array<String> listLoadedAssets () {
+        return assetManager.getAssetNames();
     }
 
 }

@@ -20,6 +20,12 @@
 
 		<dependency>
 			<groupId>com.jukusoft</groupId>
+			<artifactId>mmo-engine-client-game-view-layer</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jukusoft</groupId>
 			<artifactId>shared-commons-library</artifactId>
 			<version>${project.version}</version>
 		</dependency>

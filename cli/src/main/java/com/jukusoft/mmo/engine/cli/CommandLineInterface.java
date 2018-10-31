@@ -2,10 +2,7 @@ package com.jukusoft.mmo.engine.cli;
 
 import com.jukusoft.mmo.engine.applayer.config.Config;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
-import com.jukusoft.mmo.engine.cli.impl.FireEventCmd;
-import com.jukusoft.mmo.engine.cli.impl.ListEventsCmd;
-import com.jukusoft.mmo.engine.cli.impl.TakeScreenshotCmd;
-import com.jukusoft.mmo.engine.cli.impl.VersionCmd;
+import com.jukusoft.mmo.engine.cli.impl.*;
 import com.jukusoft.mmo.engine.shared.client.events.input.PlayerMoveEvent;
 import com.jukusoft.mmo.engine.shared.client.events.input.TakeScreenshotEvent;
 import com.jukusoft.mmo.engine.shared.events.EventData;
@@ -99,6 +96,7 @@ public class CommandLineInterface implements Runnable {
         registerCommand("listEvents", new ListEventsCmd(this.eventTypes));
         registerCommand("fireEvent", new FireEventCmd(this.eventTypes));
         registerCommand("takeScreenshot", new TakeScreenshotCmd());
+        registerCommand("listLoadedAssets", new ListLoadedAssetsCmd());
 
         //register events, which can be fired
         registerEvent(PlayerMoveEvent.class);

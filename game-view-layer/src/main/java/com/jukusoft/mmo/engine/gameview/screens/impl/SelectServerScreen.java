@@ -20,6 +20,9 @@ import com.jukusoft.mmo.engine.applayer.version.Version;
 import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
 import com.jukusoft.mmo.engine.gameview.screens.IScreen;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
+import com.jukusoft.mmo.engine.shared.client.events.network.SelectServerEvent;
+import com.jukusoft.mmo.engine.shared.events.Events;
+import com.jukusoft.mmo.engine.shared.memory.Pools;
 
 public class SelectServerScreen implements IScreen {
 
@@ -98,10 +101,17 @@ public class SelectServerScreen implements IScreen {
             TextButton button = new TextButton(server.title + (server.online ? "" : " (offline)"), this.skin);
             button.addListener(new ClickListener() {
                 @Override
-                public void clicked (InputEvent event, float x, float y) {
+                public void clicked (InputEvent event1, float x, float y) {
                     if (button.isDisabled()) return;
 
+                    //check, if server is online
+                    if (!server.online) return;
+
                     Log.i("SelectServer", "select server: " + server.ip + ":" + server.port);
+
+                    //fire event to select server
+                    SelectServerEvent event = Pools.get(SelectServerEvent.class);
+                    Events.queueEvent(event);
 
                     //select server
                     /*ServerManager.getInstance().setSelectServer(server);
