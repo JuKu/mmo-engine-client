@@ -18,6 +18,10 @@ addons:
     organization: "jukusoft"
     #jukusoft, juku-github
 
+#don't do a shallow clone (for sonarqube)
+git:
+  depth: 9999999
+
 script:
   - mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 #  - mvn clean verify
