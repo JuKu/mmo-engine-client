@@ -8,11 +8,10 @@ import com.jukusoft.mmo.engine.cli.impl.TakeScreenshotCmd;
 import com.jukusoft.mmo.engine.cli.impl.VersionCmd;
 import com.jukusoft.mmo.engine.shared.client.events.input.PlayerMoveEvent;
 import com.jukusoft.mmo.engine.shared.client.events.input.TakeScreenshotEvent;
+import com.jukusoft.mmo.engine.shared.events.EventData;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,10 +42,11 @@ public class CommandLineInterface implements Runnable {
         JTextArea ta = new JTextArea("CLI started!\nType 'help' to show a list with all available commands.\n\n", 10, 50);
         ta.setEditable(false);
 
+        JScrollPane sp = new JScrollPane(ta, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
         JTextField textField = new JTextField("");
         textField.addActionListener(e -> {
             String text = textField.getText();
-            //System.err.println("on enter: " + text);
             ta.append("> " + text + "\n");
 
             //process command
@@ -61,11 +61,11 @@ public class CommandLineInterface implements Runnable {
 
             ta.append(process(command, args) + "\n");
 
+            //scroll down
+            ta.setCaretPosition(ta.getDocument().getLength());
+
             textField.setText("");
         });
-
-        JScrollPane sp = new JScrollPane(ta, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        //sp.add(textField);
 
         p.add(sp, BorderLayout.NORTH);
         p.add(textField, BorderLayout.SOUTH);
@@ -82,7 +82,7 @@ public class CommandLineInterface implements Runnable {
                 StringBuilder sb = new StringBuilder();
 
                 for (Map.Entry<String,CLICommand> entry : commands.entrySet()) {
-                    sb.append(entry.getKey() + " - " + entry.getValue().getDescription() + "\n");
+                    sb.append(" - " + entry.getKey() + (entry.getValue().getParams().isEmpty() ? "" : " " + entry.getValue().getParams()) + " - " + entry.getValue().getDescription() + "\n");
                 }
 
                 return sb.toString();
@@ -101,8 +101,12 @@ public class CommandLineInterface implements Runnable {
         registerCommand("takeScreenshot", new TakeScreenshotCmd());
 
         //register events, which can be fired
-        eventTypes.put("PlayerMoveEvent", PlayerMoveEvent.class);
-        eventTypes.put("TakeScreenshotEvent", TakeScreenshotEvent.class);
+        registerEvent(PlayerMoveEvent.class);
+        registerEvent(TakeScreenshotEvent.class);
+    }
+
+    protected void registerEvent (Class<? extends EventData> cls) {
+        eventTypes.put(cls.getSimpleName(), cls);
     }
 
     protected String process (String command, String[] args) {

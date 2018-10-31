@@ -2,13 +2,10 @@ package com.jukusoft.mmo.engine.cli.impl;
 
 import com.jukusoft.mmo.engine.applayer.logger.Log;
 import com.jukusoft.mmo.engine.cli.CLICommand;
-import com.jukusoft.mmo.engine.shared.client.events.input.PlayerMoveEvent;
-import com.jukusoft.mmo.engine.shared.client.events.input.TakeScreenshotEvent;
 import com.jukusoft.mmo.engine.shared.events.EventData;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class FireEventCmd implements CLICommand {
@@ -49,4 +46,8 @@ public class FireEventCmd implements CLICommand {
         return "fires an event";
     }
 
+    @Override
+    public String getParams() {
+        return "EVENT_CLASS [PARAMS]";
+    }
 }

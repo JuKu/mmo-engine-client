@@ -6,4 +6,8 @@ public interface CLICommand {
 
     public String getDescription ();
 
+    public default String getParams () {
+        return "";
+    }
+
 }

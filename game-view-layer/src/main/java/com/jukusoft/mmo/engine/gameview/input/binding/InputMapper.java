@@ -4,7 +4,6 @@ import com.badlogic.gdx.Input;
 import com.carrotsearch.hppc.ObjectObjectHashMap;
 import com.carrotsearch.hppc.ObjectObjectMap;
 import com.jukusoft.mmo.engine.applayer.logger.Log;
-import com.jukusoft.mmo.engine.gameview.input.binding.KeyBinding;
 import org.ini4j.Ini;
 import org.ini4j.Profile;
 

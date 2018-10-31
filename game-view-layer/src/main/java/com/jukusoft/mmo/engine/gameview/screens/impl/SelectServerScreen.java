@@ -20,11 +20,6 @@ import com.jukusoft.mmo.engine.applayer.version.Version;
 import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
 import com.jukusoft.mmo.engine.gameview.screens.IScreen;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
-import org.ini4j.Ini;
-import org.ini4j.Profile;
-
-import java.io.File;
-import java.io.IOException;
 
 public class SelectServerScreen implements IScreen {
 
@@ -221,7 +216,7 @@ public class SelectServerScreen implements IScreen {
 
     @Override
     public void update(ScreenManager<IScreen> screenManager) {
-
+        //
     }
 
     @Override
