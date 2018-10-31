@@ -6,6 +6,7 @@ import com.jukusoft.mmo.engine.shared.events.EventData;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
 
+import java.lang.reflect.Field;
 import java.util.Map;
 
 public class FireEventCmd implements CLICommand {
@@ -34,7 +35,40 @@ public class FireEventCmd implements CLICommand {
 
         EventData event = (EventData) Pools.get(cls);
 
-        //TODO: parse params
+        for (int i = 1; i < args.length; i++) {
+            String[] array = args[i].split("=");
+
+            if (array.length != 2) {
+                return "Invalid array length, parameters has to be set in this form 'fireEvent EVENT_CLASS param1=value1 param2=value2'!";
+            }
+
+            String key = array[0];
+            String value = array[1];
+
+            try {
+                Field field = cls.getField(key);
+                field.setAccessible(true);
+
+                switch (field.getType().getSimpleName().toLowerCase()) {
+                    case "int":
+                    case "integer":
+                        field.set(event, Integer.parseInt(value));
+                        break;
+
+                    case "float":
+                        field.set(event, Float.parseFloat(value));
+                        break;
+
+                    default:
+                        field.set(event, value);
+                        break;
+                }
+            } catch (NoSuchFieldException e) {
+                return "Invalid parameter '" + key + "' (class doesn't contains such a field)!";
+            } catch (IllegalAccessException e) {
+                return "IllegalAccessException was thrown.";
+            }
+        }
 
         Events.queueEvent(event);
 
