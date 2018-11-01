@@ -23,6 +23,19 @@
 			<artifactId>shared-commons-library</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<!-- vert.x binary serializer -->
+		<dependency>
+			<groupId>com.jukusoft</groupId>
+			<artifactId>vertx-binary-serializer</artifactId>
+			<version>${vertx.serializer.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jukusoft</groupId>
+			<artifactId>vertx-binary-serializer-connection</artifactId>
+			<version>${vertx.serializer.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
