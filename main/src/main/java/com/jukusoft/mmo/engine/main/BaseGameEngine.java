@@ -8,6 +8,7 @@ import com.jukusoft.mmo.engine.applayer.version.Version;
 import com.jukusoft.mmo.engine.gameview.HumanView;
 import com.jukusoft.mmo.engine.gameview.InputLayer;
 import com.jukusoft.mmo.engine.logic.GameLogicLayer;
+import com.jukusoft.mmo.engine.network.NetworkView;
 import com.jukusoft.mmo.engine.shared.events.Events;
 
 public class BaseGameEngine extends BaseApp {
@@ -24,6 +25,9 @@ public class BaseGameEngine extends BaseApp {
         //add event processors for UI and logic events
         manager.addSubSystem(new EventProcessor(Events.UI_THREAD, 10), false);
         manager.addSubSystem(new EventProcessor(Events.LOGIC_THREAD, 10), true);
+
+        //add network layer
+        manager.addSubSystem(new NetworkView(), true);
 
         //add game-logic-layer
         manager.addSubSystem(new GameLogicLayer(), true);
