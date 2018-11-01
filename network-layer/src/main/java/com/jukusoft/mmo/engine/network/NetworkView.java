@@ -6,17 +6,17 @@ public class NetworkView implements SubSystem {
 
     @Override
     public void onInit() {
-
+        //
     }
 
     @Override
     public void onGameloop() {
-
+        //
     }
 
     @Override
     public void onShutdown() {
-
+        //
     }
 
 }
