@@ -1,5 +1,7 @@
 package com.jukusoft.mmo.engine.shared.events;
 
+import com.jukusoft.mmo.engine.shared.client.ClientEvents;
+
 /**
 * class to queue and trigger events like EventManager, but in thread safe
  *
@@ -7,12 +9,13 @@ package com.jukusoft.mmo.engine.shared.events;
 */
 public class Events {
 
-    protected static final int NUM_THREADS = 2;
+    protected static final int NUM_THREADS = 3;
     protected static EventManager[] managers;
 
     //thread IDs
     public static final int UI_THREAD = 0;
     public static final int LOGIC_THREAD = 1;
+    public static final int NETWORK_THREAD = 2;
 
     protected Events () {
         //
@@ -53,6 +56,10 @@ public class Events {
 
         //process events
         managers[threadID].update(maxMillis);
+    }
+
+    public static void addListener (int threadID, ClientEvents event, EventListener listener) {
+        Events.addListener(threadID, event.getID(), listener);
     }
 
     public static void addListener (int threadID, int typeID, EventListener listener) {
