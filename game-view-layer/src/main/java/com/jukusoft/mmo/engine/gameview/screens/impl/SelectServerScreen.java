@@ -109,8 +109,26 @@ public class SelectServerScreen implements IScreen {
 
                     Log.i("SelectServer", "select server: " + server.ip + ":" + server.port);
 
+                    button.setDisabled(true);
+                    button.setText("Connecting...");
+
+                    //invalidate, because size has changed
+                    button.invalidate();
+
+                    //hide all other buttons
+                    for (int k = 0; k < buttons.length; k++) {
+                        TextButton btn = buttons[k];
+
+                        //only hide all other buttons, not this button itself
+                        if (btn != button) {
+                            btn.setVisible(false);
+                        }
+                    }
+
                     //fire event to select server
                     SelectServerEvent event = Pools.get(SelectServerEvent.class);
+                    event.ip = server.ip;
+                    event.port = server.port;
                     Events.queueEvent(event);
 
                     //select server
