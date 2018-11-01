@@ -18,6 +18,8 @@ public class NetworkView implements SubSystem {
 
     @Override
     public void onInit() {
+        Log.i(LOG_TAG, "initialize network layer.");
+
         //create new network client
         Log.i(LOG_TAG, "create tcp client...");
         this.netClient = new TCPClient();
