@@ -134,23 +134,6 @@ public class SelectServerScreen implements IScreen {
                     //select server
                     /*ServerManager.getInstance().setSelectServer(server);
 
-                    //disable button
-                    button.setDisabled(true);
-                    button.setText("Connecting...");
-
-                    //invalidate, because size has changed
-                    button.invalidate();
-
-                    //hide all other buttons
-                    for (int k = 0; k < buttons.length; k++) {
-                        TextButton btn = buttons[k];
-
-                        //only hide all other buttons, not this button itself
-                        if (btn != button) {
-                            btn.setVisible(false);
-                        }
-                    }
-
                     //connect to server
                     ServerManager.getInstance().connect(success -> {
                         if (success) {

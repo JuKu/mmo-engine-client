@@ -10,12 +10,13 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<modules>
 		<module>application-layer</module>
+		<module>shared-library</module>
 		<module>game-logic-layer</module>
 		<module>game-view-layer</module>
 		<module>main</module>
 		<module>desktop</module>
-		<module>shared-library</module>
 		<module>cli</module>
+		<module>network-layer</module>
 	</modules>
 
 	<name>MMO Game Engine - Client</name>
