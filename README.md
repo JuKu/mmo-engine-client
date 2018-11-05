@@ -19,6 +19,7 @@ Another try to build a mmo game client.
   - **Application Layer** (hardware & os - mainly platform-dependent things and core)
   - **Game Logic Layer** (game logic)
   - **Game View Layer** (game presentation - renderer & sound, also networking belongs to game view)
+      * **Network Layer**
   - **Main** & **Desktop** (application startup)
   
 All this maven modules are dependencies from **main module** which are called from desktop module.
