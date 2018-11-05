@@ -36,6 +36,10 @@ Additional modules:
   - assets (Work in Progress directory for artists, will not be copied into zip archiv)
   - config (configuration files for game engine - but no game specific configuration files!)
   
+## Flow Chart
+
+![Flowchart](./docs/Flowchart.png)
+  
 ## Build ZIP archiv
 
 Maven:
