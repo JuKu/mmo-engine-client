@@ -23,15 +23,15 @@ public class NetworkView implements SubSystem {
         //create new network client
         Log.i(LOG_TAG, "create tcp client...");
         this.netClient = new TCPClient();
-        this.netClient.setThreadPoolSize(Config.getInt("Network", "eventThreads"), Config.getInt("Network", "workerThreads"));
-        this.netClient.setDelay(Config.getInt("Network", "sendDelay"), Config.getInt("Network", "receiveDelay"));
+        this.netClient.setThreadPoolSize(Config.getInt(LOG_TAG, "eventThreads"), Config.getInt(LOG_TAG, "workerThreads"));
+        this.netClient.setDelay(Config.getInt(LOG_TAG, "sendDelay"), Config.getInt(LOG_TAG, "receiveDelay"));
         this.netClient.init();
 
         Log.i(LOG_TAG, "register event listeners...");
 
         //register event listeners
         Events.addListener(Events.NETWORK_THREAD, ClientEvents.SELECT_SERVER, (EventListener<SelectServerEvent>) event -> {
-            Log.d("Network", "player selected server (ip: " + event.ip + ", port: " + event.port + ").");
+            Log.d(LOG_TAG, "player selected server (ip: " + event.ip + ", port: " + event.port + ").");
         });
     }
 

@@ -45,14 +45,16 @@ public class SelectServerScreen implements IScreen {
 
     protected TextButton[] buttons;
 
+    protected static final String SECTION_NAME = "SelectServer";
+
     //https://github.com/libgdx/libgdx/wiki/Hiero
 
     @Override
     public void onStart(ScreenManager<IScreen> screenManager) {
         this.screenManager = screenManager;
 
-        this.bgPath = FilePath.parse(Config.get("SelectServer", "background"));
-        this.logoPath = FilePath.parse(Config.get("SelectServer", "logo"));
+        this.bgPath = FilePath.parse(Config.get(SECTION_NAME, "background"));
+        this.logoPath = FilePath.parse(Config.get(SECTION_NAME, "logo"));
 
         //create skin
         String atlasFile = FilePath.parse(Config.get("UISkin", "atlas"));
@@ -107,7 +109,7 @@ public class SelectServerScreen implements IScreen {
                     //check, if server is online
                     if (!server.online) return;
 
-                    Log.i("SelectServer", "select server: " + server.ip + ":" + server.port);
+                    Log.i(SECTION_NAME, "select server: " + server.ip + ":" + server.port);
 
                     button.setDisabled(true);
                     button.setText("Connecting...");
@@ -196,7 +198,7 @@ public class SelectServerScreen implements IScreen {
 
     @Override
     public void onResize(int width, int height) {
-        Log.d("SelectServer", "onResize: " + width + "x" + height);
+        Log.d(SECTION_NAME, "onResize: " + width + "x" + height);
 
         stage.getViewport().setScreenWidth(width);
         stage.getViewport().setScreenHeight(height);
