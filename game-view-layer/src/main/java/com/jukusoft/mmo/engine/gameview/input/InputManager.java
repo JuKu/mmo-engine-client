@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.Array;
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 
 public class InputManager {
 

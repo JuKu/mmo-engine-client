@@ -5,17 +5,17 @@ import com.badlogic.gdx.Gdx;
 import com.carrotsearch.hppc.ObjectArrayList;
 import com.carrotsearch.hppc.procedures.ObjectProcedure;
 import com.jukusoft.i18n.I;
-import com.jukusoft.mmo.engine.applayer.config.Config;
+import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.applayer.init.Initializer;
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.splashscreen.SplashScreen;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystemManager;
 import com.jukusoft.mmo.engine.applayer.time.GameTime;
-import com.jukusoft.mmo.engine.applayer.utils.FilePath;
+import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
-import com.jukusoft.mmo.engine.applayer.utils.Platform;
-import com.jukusoft.mmo.engine.applayer.utils.Utils;
+import com.jukusoft.mmo.engine.shared.utils.Platform;
+import com.jukusoft.mmo.engine.shared.utils.Utils;
 import com.jukusoft.mmo.engine.applayer.version.Version;
 
 import java.io.File;
@@ -58,7 +58,7 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
     public void create() {
         //load logger config
         try {
-            Config.load(Gdx.files.absolute("./config/logger.cfg"));
+            Config.load(Gdx.files.absolute("./config/logger.cfg").file());
 
             //initialize logger
             Log.init();

@@ -1,6 +1,6 @@
 package com.jukusoft.mmo.engine.applayer.version;
 
-import com.jukusoft.mmo.engine.applayer.utils.JarUtils;
+import com.jukusoft.mmo.engine.shared.utils.JarUtils;
 
 import java.io.File;
 import java.io.IOException;

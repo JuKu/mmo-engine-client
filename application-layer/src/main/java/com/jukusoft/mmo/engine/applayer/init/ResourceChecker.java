@@ -1,9 +1,11 @@
 package com.jukusoft.mmo.engine.applayer.init;
 
 import com.badlogic.gdx.Gdx;
-import com.jukusoft.mmo.engine.applayer.config.Config;
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.config.Config;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.utils.*;
+import com.jukusoft.mmo.engine.shared.utils.FilePath;
+import com.jukusoft.mmo.engine.shared.utils.Utils;
 
 import java.io.File;
 

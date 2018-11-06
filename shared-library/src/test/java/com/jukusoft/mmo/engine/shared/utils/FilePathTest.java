@@ -1,5 +1,6 @@
-package com.jukusoft.mmo.engine.applayer.utils;
+package com.jukusoft.mmo.engine.shared.utils;
 
+import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,15 +1,11 @@
 package com.jukusoft.mmo.engine.applayer.script.lua;
 
-import com.badlogic.gdx.Gdx;
-import com.jukusoft.i18n.I;
-import com.jukusoft.mmo.engine.applayer.config.Config;
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.config.Config;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.script.ScriptEngine;
-import com.jukusoft.mmo.engine.applayer.script.exception.ScriptExecutionException;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
 import com.jukusoft.mmo.engine.applayer.time.GameTime;
-import com.jukusoft.mmo.engine.applayer.utils.FilePath;
-import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
+import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import net.sandius.rembulan.StateContext;
 import net.sandius.rembulan.Table;
 import net.sandius.rembulan.Variable;
@@ -18,7 +14,6 @@ import net.sandius.rembulan.env.RuntimeEnvironments;
 import net.sandius.rembulan.exec.CallException;
 import net.sandius.rembulan.exec.CallPausedException;
 import net.sandius.rembulan.exec.DirectCallExecutor;
-import net.sandius.rembulan.impl.DefaultTable;
 import net.sandius.rembulan.impl.StateContexts;
 import net.sandius.rembulan.lib.impl.StandardLibrary;
 import net.sandius.rembulan.load.ChunkLoader;

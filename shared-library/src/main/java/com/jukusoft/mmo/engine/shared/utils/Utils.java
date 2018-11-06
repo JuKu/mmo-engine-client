@@ -1,6 +1,6 @@
-package com.jukusoft.mmo.engine.applayer.utils;
+package com.jukusoft.mmo.engine.shared.utils;
 
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 
 public class Utils {
 

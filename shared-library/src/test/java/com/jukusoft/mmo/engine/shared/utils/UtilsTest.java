@@ -1,5 +1,6 @@
-package com.jukusoft.mmo.engine.applayer.utils;
+package com.jukusoft.mmo.engine.shared.utils;
 
+import com.jukusoft.mmo.engine.shared.utils.Utils;
 import org.junit.Test;
 
 public class UtilsTest {

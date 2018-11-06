@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.jukusoft.mmo.engine.applayer.config.Config;
-import com.jukusoft.mmo.engine.applayer.utils.FilePath;
+import com.jukusoft.mmo.engine.shared.config.Config;
+import com.jukusoft.mmo.engine.shared.utils.FilePath;
 
 public class SplashScreen {
 

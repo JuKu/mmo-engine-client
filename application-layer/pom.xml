@@ -112,7 +112,6 @@
 			<artifactId>rhino</artifactId>
 			<version>${js.rhino.version}</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>

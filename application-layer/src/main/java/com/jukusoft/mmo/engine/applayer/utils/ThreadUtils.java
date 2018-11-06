@@ -1,6 +1,6 @@
 package com.jukusoft.mmo.engine.applayer.utils;
 
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import javafx.application.Platform;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -33,7 +33,7 @@ public class ThreadUtils {
     public static void executeOnUIThreadAndWait (Runnable runnable) {
         AtomicBoolean b = new AtomicBoolean(false);
 
-        com.jukusoft.mmo.engine.applayer.utils.Platform.runOnUIThread(() -> {
+        com.jukusoft.mmo.engine.shared.utils.Platform.runOnUIThread(() -> {
             runnable.run();
 
             b.set(true);

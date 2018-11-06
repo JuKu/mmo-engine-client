@@ -1,6 +1,6 @@
 package com.jukusoft.mmo.engine.applayer.script.lua;
 
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptExecutionException;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
 import net.sandius.rembulan.ByteString;

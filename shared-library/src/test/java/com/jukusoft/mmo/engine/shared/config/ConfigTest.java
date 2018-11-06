@@ -1,6 +1,5 @@
-package com.jukusoft.mmo.engine.applayer.config;
+package com.jukusoft.mmo.engine.shared.config;
 
-import com.badlogic.gdx.files.FileHandle;
 import org.junit.Test;
 
 import java.io.File;
@@ -31,7 +30,7 @@ public class ConfigTest {
         assertEquals(1.2f, Config.getFloat("Logger", "testFloat"), 0.0001f);
     }
 
-    @Test
+    /*@Test
     public void testLoadFileHandle () throws IOException {
         Config.load(new FileHandle("../config/junit-logger.cfg"));
     }
@@ -39,7 +38,7 @@ public class ConfigTest {
     @Test (expected = IllegalStateException.class)
     public void testLoadFileWithDir () throws IOException {
         Config.load(new FileHandle("../"));
-    }
+    }*/
 
     @Test (expected = IllegalStateException.class)
     public void testGetNotExistentOption () {

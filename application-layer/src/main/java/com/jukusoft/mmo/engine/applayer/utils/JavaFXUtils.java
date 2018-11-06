@@ -1,6 +1,6 @@
 package com.jukusoft.mmo.engine.applayer.utils;
 
-import com.jukusoft.mmo.engine.applayer.config.Config;
+import com.jukusoft.mmo.engine.shared.config.Config;
 import javafx.application.Application;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.Alert;

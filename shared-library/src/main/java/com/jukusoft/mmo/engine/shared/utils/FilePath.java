@@ -1,4 +1,4 @@
-package com.jukusoft.mmo.engine.applayer.utils;
+package com.jukusoft.mmo.engine.shared.utils;
 
 public class FilePath {
 

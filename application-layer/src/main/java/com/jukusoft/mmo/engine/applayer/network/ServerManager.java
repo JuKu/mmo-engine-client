@@ -1,6 +1,6 @@
 package com.jukusoft.mmo.engine.applayer.network;
 
-import com.jukusoft.mmo.engine.applayer.utils.FileUtils;
+import com.jukusoft.mmo.engine.shared.utils.FileUtils;
 import com.jukusoft.mmo.engine.applayer.utils.SocketUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;

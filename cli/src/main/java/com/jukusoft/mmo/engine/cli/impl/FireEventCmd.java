@@ -1,6 +1,6 @@
 package com.jukusoft.mmo.engine.cli.impl;
 
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.cli.CLICommand;
 import com.jukusoft.mmo.engine.shared.events.EventData;
 import com.jukusoft.mmo.engine.shared.events.Events;

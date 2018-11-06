@@ -1,8 +1,8 @@
 package com.jukusoft.mmo.engine.gameview.input.controller;
 
-import com.jukusoft.mmo.engine.applayer.logger.Log;
-import com.jukusoft.mmo.engine.applayer.utils.FileUtils;
-import com.jukusoft.mmo.engine.applayer.utils.PlatformUtils;
+import com.jukusoft.mmo.engine.shared.logger.Log;
+import com.jukusoft.mmo.engine.shared.utils.FileUtils;
+import com.jukusoft.mmo.engine.shared.utils.PlatformUtils;
 
 import java.io.File;
 import java.io.IOException;

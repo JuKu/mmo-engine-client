@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.carrotsearch.hppc.ObjectArrayList;
 import com.carrotsearch.hppc.ObjectStack;
-import com.jukusoft.mmo.engine.applayer.utils.Platform;
+import com.jukusoft.mmo.engine.shared.utils.Platform;
 import com.jukusoft.mmo.engine.gameview.screens.IScreen;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenNotFoundException;

@@ -2,11 +2,11 @@ package com.jukusoft.mmo.engine.applayer.script.lua;
 
 import com.carrotsearch.hppc.ObjectObjectHashMap;
 import com.carrotsearch.hppc.ObjectObjectMap;
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.script.IScriptEngine;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptExecutionException;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
-import com.jukusoft.mmo.engine.applayer.utils.FileUtils;
+import com.jukusoft.mmo.engine.shared.utils.FileUtils;
 import net.sandius.rembulan.StateContext;
 import net.sandius.rembulan.Table;
 import net.sandius.rembulan.Variable;

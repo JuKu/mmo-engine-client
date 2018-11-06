@@ -1,8 +1,9 @@
 package com.jukusoft.mmo.engine.applayer.utils;
 
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
-import com.jukusoft.mmo.engine.applayer.config.Cache;
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.config.Cache;
+import com.jukusoft.mmo.engine.shared.logger.Log;
+import com.jukusoft.mmo.engine.shared.utils.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

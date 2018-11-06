@@ -1,9 +1,8 @@
-package com.jukusoft.mmo.engine.applayer.config;
+package com.jukusoft.mmo.engine.shared.config;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.carrotsearch.hppc.ObjectObjectHashMap;
 import com.carrotsearch.hppc.ObjectObjectMap;
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import org.ini4j.Ini;
 import org.ini4j.Profile;
 
@@ -21,10 +20,6 @@ public class Config {
 
     protected Config () {
         //
-    }
-
-    public static void load (FileHandle file) throws IOException {
-        Config.load(file.file());
     }
 
     public static void load (File file) throws IOException {

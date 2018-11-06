@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.jukusoft.mmo.engine.shared.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package com.jukusoft.mmo.engine.network;
 
-import com.jukusoft.mmo.engine.applayer.config.Config;
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.config.Config;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.client.events.network.SelectServerEvent;

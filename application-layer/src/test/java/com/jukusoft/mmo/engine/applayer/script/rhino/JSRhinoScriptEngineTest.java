@@ -1,17 +1,16 @@
 package com.jukusoft.mmo.engine.applayer.script.rhino;
 
-import com.jukusoft.mmo.engine.applayer.config.Config;
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.config.Config;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.script.ScriptEngine;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
-import com.jukusoft.mmo.engine.applayer.utils.FilePath;
+import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import net.sandius.rembulan.exec.CallException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mozilla.javascript.EcmaError;
 import org.mozilla.javascript.EvaluatorException;
-import org.mozilla.javascript.Undefined;
 
 import java.io.File;
 

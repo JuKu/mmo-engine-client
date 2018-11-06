@@ -17,18 +17,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: file Initializer.java line 96
+#: file Initializer.java line 98
 msgid "Server Error!"
 msgstr "Server Error!"
 
-#: file Initializer.java line 133
 #: file InputLayer.java line 144
 #: file InputLayer.java line 155
 #: file InputLayer.java line 140
+#: file Initializer.java line 135
 msgid "Error!"
 msgstr "Error!"
 
-#: file Initializer.java line 171
+#: file Initializer.java line 173
 msgid "Updater"
 msgstr "Updater"
 

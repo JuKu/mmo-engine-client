@@ -1,7 +1,7 @@
-package com.jukusoft.mmo.engine.applayer.logger;
+package com.jukusoft.mmo.engine.shared.logger;
 
-import com.jukusoft.mmo.engine.applayer.config.Config;
-import com.jukusoft.mmo.engine.applayer.utils.FilePath;
+import com.jukusoft.mmo.engine.shared.config.Config;
+import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import org.mozilla.javascript.ScriptableObject;
 
 import java.io.File;

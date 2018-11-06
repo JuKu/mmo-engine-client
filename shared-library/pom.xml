@@ -30,6 +30,27 @@
 			<artifactId>gdx-collections</artifactId>
 			<version>${gdx.collections.version}</version>
 		</dependency>
+
+		<!-- ini4j -->
+		<dependency>
+			<groupId>org.ini4j</groupId>
+			<artifactId>ini4j</artifactId>
+			<version>${ini4j.version}</version>
+		</dependency>
+
+		<!-- org.json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>${org.json.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.mozilla/rhino -->
+		<dependency>
+			<groupId>org.mozilla</groupId>
+			<artifactId>rhino</artifactId>
+			<version>${js.rhino.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

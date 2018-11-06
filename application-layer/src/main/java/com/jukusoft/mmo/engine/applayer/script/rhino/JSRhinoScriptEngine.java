@@ -3,15 +3,14 @@ package com.jukusoft.mmo.engine.applayer.script.rhino;
 import com.carrotsearch.hppc.ObjectObjectHashMap;
 import com.carrotsearch.hppc.ObjectObjectMap;
 import com.jukusoft.i18n.I;
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.script.IScriptEngine;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
 import com.jukusoft.mmo.engine.applayer.utils.ExceptionUtils;
-import com.jukusoft.mmo.engine.applayer.utils.FileUtils;
+import com.jukusoft.mmo.engine.shared.utils.FileUtils;
 import org.mozilla.javascript.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;

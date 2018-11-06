@@ -1,6 +1,6 @@
-package com.jukusoft.mmo.engine.applayer.logger;
+package com.jukusoft.mmo.engine.shared.logger;
 
-import com.jukusoft.mmo.engine.applayer.config.Config;
+import com.jukusoft.mmo.engine.shared.config.Config;
 
 import java.io.File;
 import java.io.FileNotFoundException;

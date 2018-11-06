@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jukusoft.mmo.engine.applayer.time.GameTime;
-import com.jukusoft.mmo.engine.applayer.utils.PlatformUtils;
+import com.jukusoft.mmo.engine.shared.utils.PlatformUtils;
 import com.jukusoft.mmo.engine.gameview.camera.impl.Shake1CameraModification;
 import com.jukusoft.mmo.engine.gameview.camera.impl.Shake2CameraModification;
 import com.jukusoft.mmo.engine.gameview.camera.impl.Shake3CameraModification;

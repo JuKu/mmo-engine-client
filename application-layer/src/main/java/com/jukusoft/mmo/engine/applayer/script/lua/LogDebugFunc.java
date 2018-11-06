@@ -1,6 +1,6 @@
 package com.jukusoft.mmo.engine.applayer.script.lua;
 
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import net.sandius.rembulan.ByteString;
 import net.sandius.rembulan.impl.NonsuspendableFunctionException;
 import net.sandius.rembulan.runtime.AbstractFunction2;

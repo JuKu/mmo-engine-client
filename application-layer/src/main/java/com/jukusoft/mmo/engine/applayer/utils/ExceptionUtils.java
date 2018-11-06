@@ -1,6 +1,6 @@
 package com.jukusoft.mmo.engine.applayer.utils;
 
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
 
 public class ExceptionUtils {

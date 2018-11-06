@@ -1,10 +1,9 @@
 package com.jukusoft.mmo.engine.gameview.screens.impl;
 
-import com.jukusoft.mmo.engine.applayer.utils.Platform;
+import com.jukusoft.mmo.engine.shared.utils.Platform;
 import com.jukusoft.mmo.engine.gameview.GameUnitTest;
 import com.jukusoft.mmo.engine.gameview.screens.*;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
 

@@ -1,7 +1,7 @@
-package com.jukusoft.mmo.engine.applayer.config;
+package com.jukusoft.mmo.engine.shared.config;
 
-import com.jukusoft.mmo.engine.applayer.logger.Log;
-import com.jukusoft.mmo.engine.applayer.utils.FileUtils;
+import com.jukusoft.mmo.engine.shared.logger.Log;
+import com.jukusoft.mmo.engine.shared.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;

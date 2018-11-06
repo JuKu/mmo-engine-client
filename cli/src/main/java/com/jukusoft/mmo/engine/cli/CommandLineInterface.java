@@ -1,7 +1,7 @@
 package com.jukusoft.mmo.engine.cli;
 
-import com.jukusoft.mmo.engine.applayer.config.Config;
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.config.Config;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.cli.impl.*;
 import com.jukusoft.mmo.engine.shared.client.events.input.PlayerMoveEvent;
 import com.jukusoft.mmo.engine.shared.client.events.input.TakeScreenshotEvent;

@@ -1,6 +1,6 @@
 package com.jukusoft.mmo.engine.logic;
 
-import com.jukusoft.mmo.engine.applayer.logger.Log;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
 
 public class GameLogicLayer implements SubSystem {

@@ -1,11 +1,9 @@
-package com.jukusoft.mmo.engine.applayer.config;
+package com.jukusoft.mmo.engine.shared.config;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import com.jukusoft.mmo.engine.shared.config.Cache;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
