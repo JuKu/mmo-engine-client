@@ -11,6 +11,11 @@
 
 	<artifactId>mmo-engine-client-game-view-layer</artifactId>
 
+	<properties>
+		<!-- don't deploy all modules to maven central, only shared-commons-library -->
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+
 	<dependencies>
 		<!-- application (hardware & os) layer -->
 		<dependency>

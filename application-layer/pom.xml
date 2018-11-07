@@ -11,6 +11,11 @@
 
 	<artifactId>mmo-engine-client-application-layer</artifactId>
 
+	<properties>
+		<!-- don't deploy all modules to maven central, only shared-commons-library -->
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+
 	<dependencies>
 		<!-- High Performance Primitive Collections for Java, https://github.com/carrotsearch/hppc -->
 		<dependency>
