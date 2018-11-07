@@ -46,6 +46,8 @@ Additional modules:
 ```bash
 mvn clean install deploy -DuniqueVersion=false
 ```
+
+**Important**! If anything in shared-commons-library was changed, you have to increment version, else proxy server maybe doesn't get the right snapshot.
   
 ## Build ZIP archiv
 
