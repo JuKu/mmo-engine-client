@@ -1,4 +1,4 @@
-package com.jukusoft.mmo.engine.applayer.version;
+package com.jukusoft.mmo.engine.shared.version;
 
 import com.jukusoft.mmo.engine.shared.utils.JarUtils;
 

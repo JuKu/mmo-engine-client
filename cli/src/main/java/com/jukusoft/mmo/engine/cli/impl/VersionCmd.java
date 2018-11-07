@@ -1,6 +1,6 @@
 package com.jukusoft.mmo.engine.cli.impl;
 
-import com.jukusoft.mmo.engine.applayer.version.Version;
+import com.jukusoft.mmo.engine.shared.version.Version;
 import com.jukusoft.mmo.engine.cli.CLICommand;
 import com.jukusoft.mmo.engine.cli.CommandLineInterface;
 

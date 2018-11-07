@@ -16,7 +16,7 @@ import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
 import com.jukusoft.mmo.engine.shared.utils.Platform;
 import com.jukusoft.mmo.engine.shared.utils.Utils;
-import com.jukusoft.mmo.engine.applayer.version.Version;
+import com.jukusoft.mmo.engine.shared.version.Version;
 
 import java.io.File;
 import java.io.FileNotFoundException;

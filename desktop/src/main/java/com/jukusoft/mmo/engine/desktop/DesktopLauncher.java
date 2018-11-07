@@ -5,7 +5,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.utils.Utils;
-import com.jukusoft.mmo.engine.applayer.version.Version;
+import com.jukusoft.mmo.engine.shared.version.Version;
 import com.jukusoft.mmo.engine.desktop.config.WindowConfig;
 import com.jukusoft.mmo.engine.main.BaseGameEngine;
 

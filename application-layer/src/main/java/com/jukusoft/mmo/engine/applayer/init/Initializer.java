@@ -12,7 +12,7 @@ import com.jukusoft.mmo.engine.applayer.script.ScriptEngine;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptExecutionException;
 import com.jukusoft.mmo.engine.applayer.script.exception.ScriptLoadException;
 import com.jukusoft.mmo.engine.applayer.utils.*;
-import com.jukusoft.mmo.engine.applayer.version.Version;
+import com.jukusoft.mmo.engine.shared.version.Version;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import com.jukusoft.mmo.engine.shared.utils.Utils;

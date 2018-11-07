@@ -4,7 +4,7 @@ import com.jukusoft.mmo.engine.applayer.base.BaseApp;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.subsystem.EventProcessor;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystemManager;
-import com.jukusoft.mmo.engine.applayer.version.Version;
+import com.jukusoft.mmo.engine.shared.version.Version;
 import com.jukusoft.mmo.engine.gameview.HumanView;
 import com.jukusoft.mmo.engine.gameview.InputLayer;
 import com.jukusoft.mmo.engine.logic.GameLogicLayer;
