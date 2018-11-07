@@ -41,6 +41,12 @@ Additional modules:
 
 ![Flowchart](./docs/Flowchart.png)
   
+## Deploy shared-commons-library
+
+```bash
+mvn clean install deploy -DuniqueVersion=false
+```
+  
 ## Build ZIP archiv
 
 Maven:
