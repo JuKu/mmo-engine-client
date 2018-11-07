@@ -20,6 +20,8 @@ public class LogWriter implements Runnable {
     protected final boolean printToConsole;
     protected final boolean writeToFile;
 
+    protected static LogListener logListener = null;
+
     protected LogWriter (final File file, final ConcurrentLinkedQueue<String> loggingQueue) {
         this.file = file;
         this.loggingQueue = loggingQueue;
@@ -34,6 +36,16 @@ public class LogWriter implements Runnable {
             } catch (IOException | IllegalStateException e) {
                 Log.w(LOG_WRITER_TAG, "Exception while creating new log file: ", e);
             }
+        }
+
+        //set dummy log listener, if not listener was set
+        if (logListener == null) {
+            logListener = new LogListener() {
+                @Override
+                public void log(String str) {
+                    //do anything here
+                }
+            };
         }
     }
 
@@ -59,6 +71,7 @@ public class LogWriter implements Runnable {
                     str += System.lineSeparator();
 
                     fop.write(str.getBytes());
+                    logListener.log(str);
 
                     if (printToConsole) {
                         System.out.println(str.substring(0, str.length() - System.lineSeparator().length()));
@@ -86,6 +99,7 @@ public class LogWriter implements Runnable {
                         str += System.lineSeparator();
 
                         fop.write(str.getBytes());
+                        logListener.log(str);
 
                         if (printToConsole) {
                             System.out.println(str.substring(0, str.length() - System.lineSeparator().length()));
@@ -101,6 +115,10 @@ public class LogWriter implements Runnable {
         } catch (IOException e) {
             Log.w(LOG_WRITER_TAG, "IOException while write to log file: " + file.getAbsolutePath(), e);
         }
+    }
+
+    public static void attachListener (LogListener listener) {
+        LogWriter.logListener = listener;
     }
 
 }
