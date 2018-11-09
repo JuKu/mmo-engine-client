@@ -12,6 +12,7 @@ import com.jukusoft.mmo.engine.shared.messages.PublicKeyRequest;
 import com.jukusoft.mmo.engine.shared.messages.PublicKeyResponse;
 import com.jukusoft.mmo.engine.shared.utils.EncryptionUtils;
 import com.jukusoft.vertx.connection.clientserver.*;
+import com.jukusoft.vertx.serializer.TypeLookup;
 import com.jukusoft.vertx.serializer.exceptions.NetworkException;
 
 public class NetworkView implements SubSystem {
@@ -68,6 +69,10 @@ public class NetworkView implements SubSystem {
                 Events.queueEvent(Pools.get(ConnectionFailedEvent.class));
             }
         });
+
+        //register message types first
+        TypeLookup.register(PublicKeyRequest.class);
+        TypeLookup.register(PublicKeyResponse.class);
 
         //register message listeners
         this.netClient.handlers().register(PublicKeyResponse.class, (MessageHandler<PublicKeyResponse, RemoteConnection>) (msg, conn) -> {
