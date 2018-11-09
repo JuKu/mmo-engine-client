@@ -14,7 +14,7 @@ import java.security.PublicKey;
 public class PublicKeyResponse implements SerializableObject {
 
     @SBytes
-    protected final byte[] publicKeyBytes;
+    protected byte[] publicKeyBytes;
 
     public PublicKeyResponse (PublicKey publicKey) {
         //convert public key to byte array
