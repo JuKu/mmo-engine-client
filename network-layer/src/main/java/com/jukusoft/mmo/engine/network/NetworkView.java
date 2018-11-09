@@ -1,5 +1,7 @@
 package com.jukusoft.mmo.engine.network;
 
+import com.jukusoft.mmo.engine.shared.client.events.network.ConnectionEstablishedEvent;
+import com.jukusoft.mmo.engine.shared.client.events.network.ConnectionFailedEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
@@ -7,7 +9,10 @@ import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.client.events.network.SelectServerEvent;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
+import com.jukusoft.mmo.engine.shared.memory.Pools;
+import com.jukusoft.mmo.engine.shared.messages.PublicKeyRequest;
 import com.jukusoft.vertx.connection.clientserver.Client;
+import com.jukusoft.vertx.connection.clientserver.ServerData;
 import com.jukusoft.vertx.connection.clientserver.TCPClient;
 
 public class NetworkView implements SubSystem {
@@ -32,6 +37,26 @@ public class NetworkView implements SubSystem {
         //register event listeners
         Events.addListener(Events.NETWORK_THREAD, ClientEvents.SELECT_SERVER, (EventListener<SelectServerEvent>) event -> {
             Log.d(LOG_TAG, "player selected server (ip: " + event.ip + ", port: " + event.port + ").");
+            Log.i(LOG_TAG, "try to connect to proxy server now...");
+
+            //open network connection
+            this.netClient.connect(new ServerData(event.ip, event.port), res -> {
+                if (res.succeeded()) {
+                    Log.i(LOG_TAG, "proxy connection (ip: " + event.ip + ", port: " + event.port + ") established.");
+
+                    //fire connection established successfully event
+                    Events.queueEvent(Pools.get(ConnectionEstablishedEvent.class));
+
+                    //request RSA public key
+                    Log.i(LOG_TAG, "request RSA public key for encryption now.");
+                    this.netClient.send(Pools.get(PublicKeyRequest.class));
+                } else {
+                    Log.i(LOG_TAG, "proxy connection (ip: " + event.ip + ", port: " + event.port + ") failed.");
+
+                    //fire connection failed event
+                    Events.queueEvent(Pools.get(ConnectionFailedEvent.class));
+                }
+            });
         });
     }
 

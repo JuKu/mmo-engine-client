@@ -11,7 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.config.Config;
+import com.jukusoft.mmo.engine.shared.events.EventData;
+import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.network.ServerManager;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
@@ -114,6 +117,30 @@ public class SelectServerScreen implements IScreen {
                     button.setDisabled(true);
                     button.setText("Connecting...");
 
+                    //add listener for connection established successful event
+                    Events.addListener(Events.UI_THREAD, ClientEvents.CONNECTION_ESTABLISHED, eventData -> {
+                        button.setText("Wait...");
+                    });
+
+                    //add listener for connection failed event
+                    Events.addListener(Events.UI_THREAD, ClientEvents.CONNECTION_FAILED, eventData -> {
+                        button.setDisabled(false);
+                        button.setText(server.title + " (OFFLINE!)");
+
+                        //invalidate button, because size has changed
+                        button.invalidate();
+
+                        //show all other buttons
+                        for (int k = 0; k < buttons.length; k++) {
+                            TextButton btn = buttons[k];
+
+                            //only hide all other buttons, not this button itself
+                            if (btn != button) {
+                                btn.setVisible(true);
+                            }
+                        }
+                    });
+
                     //invalidate, because size has changed
                     button.invalidate();
 
@@ -132,36 +159,6 @@ public class SelectServerScreen implements IScreen {
                     event.ip = server.ip;
                     event.port = server.port;
                     Events.queueEvent(event);
-
-                    //select server
-                    /*ServerManager.getInstance().setSelectServer(server);
-
-                    //connect to server
-                    ServerManager.getInstance().connect(success -> {
-                        if (success) {
-                            Platform.runOnUIThread(() -> {
-                                LocalLogger.print("connection established successfully, go to login screen now.");
-
-                                //go to login screen
-                                screenManager.leaveAllAndEnter(Screens.LOGIN_SCREEN);
-                            });
-                        } else {
-                            button.setText(server.title + " (Not reachable)");
-
-                            //invalidate, because size has changed
-                            button.invalidate();
-
-                            //show all other buttons
-                            for (int k = 0; k < buttons.length; k++) {
-                                TextButton btn = buttons[k];
-
-                                //only hide all other buttons, not this button itself
-                                if (btn != button) {
-                                    btn.setVisible(true);
-                                }
-                            }
-                        }
-                    });*/
                 }
             });
 
