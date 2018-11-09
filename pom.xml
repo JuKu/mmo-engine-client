@@ -82,7 +82,7 @@
 		<!-- libGDX markup language -->
 		<gdx-lml.version>1.9.1.9.6</gdx-lml.version>
 
-		<vertx.serializer.version>1.0.0</vertx.serializer.version>
+		<vertx.serializer.version>1.0.2</vertx.serializer.version>
 
 		<!-- ini4j parser -->
 		<ini4j.version>0.5.4</ini4j.version>
