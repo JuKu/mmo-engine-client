@@ -6,7 +6,8 @@ public enum ClientEvents {
     TAKE_SCREENSHOT(2),
     SELECT_SERVER(3),
     CONNECTION_ESTABLISHED(4),
-    CONNECTION_FAILED(5);
+    CONNECTION_FAILED(5),
+    CONNECTION_LOST(6);
 
     private final int id;
 

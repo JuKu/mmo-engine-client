@@ -2,6 +2,7 @@ package com.jukusoft.mmo.engine.network;
 
 import com.jukusoft.mmo.engine.shared.client.events.network.ConnectionEstablishedEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.ConnectionFailedEvent;
+import com.jukusoft.mmo.engine.shared.client.events.network.ConnectionLostEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
@@ -31,6 +32,9 @@ public class NetworkView implements SubSystem {
         this.netClient.setThreadPoolSize(Config.getInt(LOG_TAG, "eventThreads"), Config.getInt(LOG_TAG, "workerThreads"));
         this.netClient.setDelay(Config.getInt(LOG_TAG, "sendDelay"), Config.getInt(LOG_TAG, "receiveDelay"));
         this.netClient.init();
+
+        //set endHandler to fire an event if connection to proxy server was lost
+        this.netClient.setOnConnectionClosedHandler(() -> Events.queueEvent(Pools.get(ConnectionLostEvent.class)));
 
         Log.i(LOG_TAG, "register event listeners...");
 
