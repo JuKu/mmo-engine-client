@@ -11,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
+import com.jukusoft.mmo.engine.shared.client.events.network.ConnectionReadyEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.events.EventData;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
@@ -49,6 +51,8 @@ public class SelectServerScreen implements IScreen {
     protected TextButton[] buttons;
 
     protected static final String SECTION_NAME = "SelectServer";
+
+    protected EventListener<ConnectionReadyEvent> connectionReadyEventEventListener = null;
 
     //https://github.com/libgdx/libgdx/wiki/Hiero
 
@@ -183,6 +187,15 @@ public class SelectServerScreen implements IScreen {
 
         //set input processor
         Gdx.input.setInputProcessor(stage);
+
+        //create new event listener for connection ready event
+        this.connectionReadyEventEventListener = event -> {
+            //goto login screen
+            this.screenManager.leaveAllAndEnter(Screens.LOGIN_SCREEN);
+        };
+
+        //register event listener for connection ready event
+        Events.addListener(Events.UI_THREAD, ClientEvents.CONNECTION_READY, this.connectionReadyEventEventListener);
     }
 
     @Override

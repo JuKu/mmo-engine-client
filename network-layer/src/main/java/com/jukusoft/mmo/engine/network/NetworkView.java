@@ -1,20 +1,17 @@
 package com.jukusoft.mmo.engine.network;
 
-import com.jukusoft.mmo.engine.shared.client.events.network.ConnectionEstablishedEvent;
-import com.jukusoft.mmo.engine.shared.client.events.network.ConnectionFailedEvent;
-import com.jukusoft.mmo.engine.shared.client.events.network.ConnectionLostEvent;
+import com.jukusoft.mmo.engine.shared.client.events.network.*;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
-import com.jukusoft.mmo.engine.shared.client.events.network.SelectServerEvent;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.messages.PublicKeyRequest;
-import com.jukusoft.vertx.connection.clientserver.Client;
-import com.jukusoft.vertx.connection.clientserver.ServerData;
-import com.jukusoft.vertx.connection.clientserver.TCPClient;
+import com.jukusoft.mmo.engine.shared.messages.PublicKeyResponse;
+import com.jukusoft.mmo.engine.shared.utils.EncryptionUtils;
+import com.jukusoft.vertx.connection.clientserver.*;
 import com.jukusoft.vertx.serializer.exceptions.NetworkException;
 
 public class NetworkView implements SubSystem {
@@ -70,6 +67,16 @@ public class NetworkView implements SubSystem {
                 //fire connection failed event
                 Events.queueEvent(Pools.get(ConnectionFailedEvent.class));
             }
+        });
+
+        //register message listeners
+        this.netClient.handlers().register(PublicKeyResponse.class, (MessageHandler<PublicKeyResponse, RemoteConnection>) (msg, conn) -> {
+            //initialize EncryptionUtils with received RSA public key
+            EncryptionUtils.init(msg.getPublicKey());
+
+            //fires events
+            Events.queueEvent(Pools.get(PublicKeyReceivedEvent.class));
+            Events.queueEvent(Pools.get(ConnectionReadyEvent.class));
         });
     }
 
