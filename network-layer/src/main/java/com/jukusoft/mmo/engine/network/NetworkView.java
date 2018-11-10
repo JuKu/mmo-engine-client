@@ -112,12 +112,7 @@ public class NetworkView implements SubSystem {
                 LoginResponseEvent event1 = Pools.get(LoginResponseEvent.class);
                 event1.loginResponse = LoginResponseEvent.LOGIN_RESPONSE.CLIENT_ERROR;
                 Events.queueEvent(event1);
-
-                return;
             }
-
-            //send login request to proxy server
-            this.netClient.send(loginRequest);
         });
 
         //register message types first
