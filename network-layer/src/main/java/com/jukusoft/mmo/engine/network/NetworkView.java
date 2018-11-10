@@ -10,16 +10,26 @@ import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.messages.PublicKeyRequest;
 import com.jukusoft.mmo.engine.shared.messages.PublicKeyResponse;
+import com.jukusoft.mmo.engine.shared.messages.RTTRequest;
+import com.jukusoft.mmo.engine.shared.messages.RTTResponse;
 import com.jukusoft.mmo.engine.shared.utils.EncryptionUtils;
 import com.jukusoft.vertx.connection.clientserver.*;
 import com.jukusoft.vertx.serializer.TypeLookup;
 import com.jukusoft.vertx.serializer.exceptions.NetworkException;
+import io.vertx.core.buffer.Buffer;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class NetworkView implements SubSystem {
 
     protected static final String LOG_TAG = "Network";
 
     protected Client netClient = null;
+
+    protected int rttInterval = 100;
+    protected AtomicBoolean rttMsgReceived = new AtomicBoolean(true);
+    protected AtomicLong lastRttTime = new AtomicLong(0);
 
     @Override
     public void onInit() {
@@ -48,6 +58,9 @@ public class NetworkView implements SubSystem {
                     if (res.succeeded()) {
                         Log.i(LOG_TAG, "proxy connection (ip: " + event.ip + ", port: " + event.port + ") established.");
 
+                        //set RTT timer to activate ping detection
+                        this.setRttTimer();
+
                         //fire connection established successfully event
                         Events.queueEvent(Pools.get(ConnectionEstablishedEvent.class));
 
@@ -73,6 +86,8 @@ public class NetworkView implements SubSystem {
         //register message types first
         TypeLookup.register(PublicKeyRequest.class);
         TypeLookup.register(PublicKeyResponse.class);
+        TypeLookup.register(RTTRequest.class);
+        TypeLookup.register(RTTResponse.class);
 
         //register message listeners
         this.netClient.handlers().register(PublicKeyResponse.class, (MessageHandler<PublicKeyResponse, RemoteConnection>) (msg, conn) -> {
@@ -86,6 +101,49 @@ public class NetworkView implements SubSystem {
             Events.queueEvent(Pools.get(PublicKeyReceivedEvent.class));
             Events.queueEvent(Pools.get(ConnectionReadyEvent.class));
         });
+
+        //get rtt interval
+        this.rttInterval = Config.getInt("Network", "rttInterval");
+
+        //register message listener for RTT (round trip time) to detect ping
+        this.netClient.handlers().register(RTTResponse.class, (MessageHandler<RTTResponse, RemoteConnection>) (msg, conn) -> {
+            //get current timestamp
+            long now = System.currentTimeMillis();
+
+            //calculate rtt & ping
+            long rtt = now - this.lastRttTime.get();
+            long ping = rtt / 2;
+
+            //fire event to notify subsystems about ping change
+            PingChangedEvent event = Pools.get(PingChangedEvent.class);
+            event.ping = (int) ping;
+            Events.queueEvent(event);
+
+            //reset flag
+            this.rttMsgReceived.set(true);
+        });
+    }
+
+    /**
+     * determine round-trip-time
+     */
+    protected void executeRTTCheck () {
+        //check, if a rtt message was already sended and no response received
+        if (!this.rttMsgReceived.get()) {
+            return;
+        }
+
+        this.rttMsgReceived.set(false);
+
+        //set current timestamp
+        lastRttTime.set(System.currentTimeMillis());
+
+        //send rtt request message to proxy server
+        this.netClient.send(Pools.get(RTTRequest.class));
+    }
+
+    protected void setRttTimer () {
+        this.netClient.setPeriodic(this.rttInterval, timerID -> executeRTTCheck());
     }
 
     @Override
