@@ -9,7 +9,9 @@ public enum ClientEvents {
     CONNECTION_FAILED(5),
     CONNECTION_LOST(6),
     PUBLIC_KEY_RECEIVED(7),
-    CONNECTION_READY(8);
+    CONNECTION_READY(8),
+    PING_CHANGED(9),
+    LOGIN_REQUEST(10);
 
     private final int id;
 

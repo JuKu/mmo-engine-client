@@ -1,5 +1,6 @@
 package com.jukusoft.mmo.engine.shared.events;
 
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
 import org.mini2Dx.gdx.utils.Array;
 import org.mini2Dx.gdx.utils.AtomicQueue;
@@ -88,7 +89,7 @@ public class EventManager {
                     remainingEvents++;
                 }
 
-                System.err.println("Couldn't process all events in one update() call, remaining events: " + remainingEvents);
+                Log.d("Events", "[" + this.name + "] Couldn't process all events in one update() call, remaining events: " + remainingEvents);
                 break;
             }
         }

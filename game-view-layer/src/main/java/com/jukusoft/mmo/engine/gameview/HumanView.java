@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.jukusoft.mmo.engine.applayer.utils.FPSManager;
+import com.jukusoft.mmo.engine.gameview.screens.impl.LoginScreen;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
 import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
@@ -29,6 +31,9 @@ public class HumanView implements SubSystem {
     //asset manager
     GameAssetManager assetManager = GameAssetManager.getInstance();
 
+    //fps manager
+    protected final FPSManager fps = FPSManager.getInstance();
+
     @Override
     public void onInit() {
         Log.i("GameView", "initialize game-view-layer.");
@@ -43,6 +48,7 @@ public class HumanView implements SubSystem {
 
         //add screens
         this.screenManager.addScreen(Screens.SELECT_SERVER_SCREEN, new SelectServerScreen());
+        this.screenManager.addScreen(Screens.LOGIN_SCREEN, new LoginScreen());
 
         this.screenManager.leaveAllAndEnter(Screens.SELECT_SERVER_SCREEN);
 
@@ -51,6 +57,12 @@ public class HumanView implements SubSystem {
 
     @Override
     public void onGameloop() {
+        //update FPS
+        fps.setFPS(Gdx.graphics.getFramesPerSecond());
+
+        //show FPS warning, if neccessary
+        fps.showWarningIfNeccessary();
+
         //clear OpenGL buffer
         Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

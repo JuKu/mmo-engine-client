@@ -79,6 +79,9 @@ public class NetworkView implements SubSystem {
             //initialize EncryptionUtils with received RSA public key
             EncryptionUtils.init(msg.getPublicKey());
 
+            Log.d(LOG_TAG, "received public key response.");
+            Log.i(LOG_TAG, "network layer is ready now.");
+
             //fires events
             Events.queueEvent(Pools.get(PublicKeyReceivedEvent.class));
             Events.queueEvent(Pools.get(ConnectionReadyEvent.class));
