@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -93,6 +94,12 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
             //print libGDX version
             Utils.printSection("libGDX");
             Log.i("libGDX", "libGDX Version: " + com.badlogic.gdx.Version.VERSION);
+
+            //print netty & vert.x versions
+            /*Utils.printSection("Netty & Vert.x");
+            for (Map.Entry<String, io.netty.util.Version> entry : io.netty.util.Version.identify().entrySet()) {
+                Log.d("Netty", "version '" + entry.getKey() + "': " + entry.getValue().artifactVersion());
+            }*/
 
             //print java version
             Utils.printSection("Java Version");

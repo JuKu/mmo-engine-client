@@ -16,6 +16,7 @@ import com.jukusoft.mmo.engine.shared.utils.EncryptionUtils;
 import com.jukusoft.vertx.connection.clientserver.*;
 import com.jukusoft.vertx.serializer.TypeLookup;
 import com.jukusoft.vertx.serializer.exceptions.NetworkException;
+import io.netty.util.Version;
 import io.vertx.core.buffer.Buffer;
 
 import java.util.concurrent.atomic.AtomicBoolean;
