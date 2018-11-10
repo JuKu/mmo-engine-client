@@ -13,8 +13,10 @@ import com.jukusoft.mmo.engine.applayer.utils.SkinFactory;
 import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
 import com.jukusoft.mmo.engine.gameview.screens.IScreen;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
+import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.client.events.init.LoginRequestEvent;
+import com.jukusoft.mmo.engine.shared.client.events.init.LoginResponseEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.events.EventData;
@@ -210,42 +212,35 @@ public class LoginScreen implements IScreen {
                 loginEvent.username = username;
                 loginEvent.password = password;
                 Events.queueEvent(loginEvent);
-
-                //try to login
-                /*LoginManager.getInstance().login(username, password, (LoginManager.LOGIN_RESPONSE res) -> {
-                    Platform.runOnUIThread(() -> {
-                        //first check, if public key is available
-                        if (!EncryptionUtils.isInitialized()) {
-                            hintLabel.setText(" No RSA public key received, wait some seconds and click again... ");
-                            hintLabel.setVisible(true);
-                            return;
-                        }
-
-                        if (res == LoginManager.LOGIN_RESPONSE.NO_SERVER) {
-                            //go back to server selection
-                            screenManager.leaveAllAndEnter(Screens.SELECT_SERVER_SCREEN);
-                        } else if (res == LoginManager.LOGIN_RESPONSE.CLIENT_ERROR) {
-                            hintLabel.setText(" Client Error! ");
-                            hintLabel.setVisible(true);
-                            return;
-                        } else if (res == LoginManager.LOGIN_RESPONSE.WRONG_CREDENTIALS) {
-                            hintLabel.setText(" Wrong credentials! ");
-                            hintLabel.setVisible(true);
-                            return;
-                        } else if (res == LoginManager.LOGIN_RESPONSE.SUCCESSFUL) {
-                            hintLabel.setVisible(false);
-
-                            //go to character selection screen
-                            screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
-                        }
-                    });
-                });*/
             }
         });
         stage.addActor(loginButton);
 
         //set input processor
         Gdx.input.setInputProcessor(stage);
+
+        //add event listener to handle login response events
+        Events.addListener(Events.UI_THREAD, ClientEvents.LOGIN_RESPONSE, (EventListener<LoginResponseEvent>) event -> {
+            LoginResponseEvent.LOGIN_RESPONSE res = event.loginResponse;
+
+            if (res == LoginResponseEvent.LOGIN_RESPONSE.NO_SERVER) {
+                //go back to server selection
+                screenManager.leaveAllAndEnter(Screens.SELECT_SERVER_SCREEN);
+            } else if (res == LoginResponseEvent.LOGIN_RESPONSE.CLIENT_ERROR) {
+                hintLabel.setText(" Client Error! ");
+                hintLabel.setVisible(true);
+                return;
+            } else if (res == LoginResponseEvent.LOGIN_RESPONSE.WRONG_CREDENTIALS) {
+                hintLabel.setText(" Wrong credentials! ");
+                hintLabel.setVisible(true);
+                return;
+            } else if (res == LoginResponseEvent.LOGIN_RESPONSE.SUCCESSFUL) {
+                hintLabel.setVisible(false);
+
+                //go to character selection screen
+                screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
+            }
+        });
     }
 
     @Override

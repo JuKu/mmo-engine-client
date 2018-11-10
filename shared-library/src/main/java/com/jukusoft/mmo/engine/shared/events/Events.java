@@ -25,7 +25,7 @@ public class Events {
         managers = new EventManager[NUM_THREADS];
 
         for (int i = 0; i < NUM_THREADS; i++) {
-            managers[i] = new EventManager("event manager #" + i + ".", false);
+            managers[i] = new EventManager("event manager #" + i + "", false);
         }
     }
 
