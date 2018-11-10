@@ -120,6 +120,8 @@ public class NetworkView implements SubSystem {
         TypeLookup.register(PublicKeyResponse.class);
         TypeLookup.register(RTTRequest.class);
         TypeLookup.register(RTTResponse.class);
+        TypeLookup.register(LoginRequest.class);
+        TypeLookup.register(LoginResponse.class);
 
         //register message listeners
         this.netClient.handlers().register(PublicKeyResponse.class, (MessageHandler<PublicKeyResponse, RemoteConnection>) (msg, conn) -> {

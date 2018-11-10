@@ -35,6 +35,12 @@ public class Config {
             throw new IllegalStateException("config file '" + file.getAbsolutePath() + "' isn't a file!");
         }
 
+        //skip files with ".example." and "travis" in filename
+        if (file.getName().contains(".example.") || file.getName().contains("travis")) {
+            Log.v("Config", "skip example config file: " + file.getAbsolutePath());
+            return;
+        }
+
         Ini ini = new Ini(file);
 
         //import all sections
