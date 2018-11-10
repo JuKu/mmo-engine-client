@@ -1,5 +1,7 @@
 package com.jukusoft.mmo.engine.network;
 
+import com.jukusoft.mmo.engine.shared.client.events.init.LoginRequestEvent;
+import com.jukusoft.mmo.engine.shared.client.events.init.LoginResponseEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.*;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.logger.Log;
@@ -8,16 +10,14 @@ import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
-import com.jukusoft.mmo.engine.shared.messages.PublicKeyRequest;
-import com.jukusoft.mmo.engine.shared.messages.PublicKeyResponse;
-import com.jukusoft.mmo.engine.shared.messages.RTTRequest;
-import com.jukusoft.mmo.engine.shared.messages.RTTResponse;
+import com.jukusoft.mmo.engine.shared.messages.*;
 import com.jukusoft.mmo.engine.shared.utils.EncryptionUtils;
 import com.jukusoft.vertx.connection.clientserver.*;
 import com.jukusoft.vertx.serializer.TypeLookup;
 import com.jukusoft.vertx.serializer.exceptions.NetworkException;
 import io.netty.util.Version;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.json.JsonObject;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class NetworkView implements SubSystem {
 
     protected static final String LOG_TAG = "Network";
+    protected static final String LOGIN_TAG = "Login";
 
     protected Client netClient = null;
 
@@ -84,6 +85,41 @@ public class NetworkView implements SubSystem {
             }
         });
 
+        //register event listener for login request events
+        Events.addListener(Events.NETWORK_THREAD, ClientEvents.LOGIN_REQUEST, (EventListener<LoginRequestEvent>) event -> {
+            Log.i(LOG_TAG, "login request event received from UI.");
+
+            JsonObject json = new JsonObject();
+            json.put("username", event.username);
+            json.put("password", event.password);
+
+            LoginRequest loginRequest = new LoginRequest();
+
+            //encrypt message
+            try {
+                Log.i(LOGIN_TAG, "encrypt login credentials.");
+
+                EncryptionUtils.encrypt(json.encode());
+                loginRequest.encryptedData = EncryptionUtils.encrypt(json.encode());
+
+                //send login credentials to server
+                Log.i(LOGIN_TAG, "send login request to server...");
+                this.netClient.send(loginRequest);
+            } catch (Exception e) {
+                Log.e(LOGIN_TAG, "encryption of login credentials failed!", e);
+
+                //fire event with login response, so that UI can show this error on HUD
+                LoginResponseEvent event1 = Pools.get(LoginResponseEvent.class);
+                event1.loginResponse = LoginResponseEvent.LOGIN_RESPONSE.CLIENT_ERROR;
+                Events.queueEvent(event1);
+
+                return;
+            }
+
+            //send login request to proxy server
+            this.netClient.send(loginRequest);
+        });
+
         //register message types first
         TypeLookup.register(PublicKeyRequest.class);
         TypeLookup.register(PublicKeyResponse.class);
@@ -122,6 +158,13 @@ public class NetworkView implements SubSystem {
 
             //reset flag
             this.rttMsgReceived.set(true);
+        });
+
+        //register message listener for login response
+        this.netClient.handlers().register(LoginResponse.class, (MessageHandler<LoginResponse, RemoteConnection>) (msg, conn) -> {
+            Log.i(LOGIN_TAG, "login response received.");
+
+            //
         });
     }
 
