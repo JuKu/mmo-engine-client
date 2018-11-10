@@ -23,6 +23,10 @@ public class Config {
     }
 
     public static void load (File file) throws IOException {
+        load(file, true);
+    }
+
+    public static void load (File file, boolean skipExampleConfig) throws IOException {
         Objects.requireNonNull(file, "config file cannot be null.");
 
         Log.i("Config", "Load Config: " + file.getAbsolutePath().replace("\\", "/"));
@@ -36,7 +40,7 @@ public class Config {
         }
 
         //skip files with ".example." and "travis" in filename
-        if (file.getName().contains(".example.") || file.getName().contains("travis")) {
+        if ((file.getName().contains(".example.") || file.getName().contains("travis")) && skipExampleConfig) {
             Log.v("Config", "skip example config file: " + file.getAbsolutePath());
             return;
         }
