@@ -125,4 +125,11 @@ public class Config {
         values.put(section + "." + key, value);
     }
 
+    /**
+    * clear all values in in-memory config cache
+    */
+    public static void clear () {
+        values.clear();
+    }
+
 }
