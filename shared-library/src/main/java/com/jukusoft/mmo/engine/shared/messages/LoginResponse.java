@@ -8,9 +8,9 @@ import com.jukusoft.vertx.serializer.annotations.*;
 public class LoginResponse implements SerializableObject {
 
     @SInteger
-    protected int userID = 0;
+    public int userID = 0;
 
-    @SBytes
-    protected byte[] usernameEncrypted = new byte[0];
+    @SString(maxCharacters = 20)
+    public String username = "";
 
 }

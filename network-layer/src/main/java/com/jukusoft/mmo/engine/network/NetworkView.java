@@ -161,7 +161,25 @@ public class NetworkView implements SubSystem {
         this.netClient.handlers().register(LoginResponse.class, (MessageHandler<LoginResponse, RemoteConnection>) (msg, conn) -> {
             Log.i(LOGIN_TAG, "login response received.");
 
-            //
+            int userID = msg.userID;
+
+            if (userID > 0) {
+                //login was successfully
+
+                //fire an event to notify subsystems
+                LoginResponseEvent event = Pools.get(LoginResponseEvent.class);
+                event.loginResponse = LoginResponseEvent.LOGIN_RESPONSE.SUCCESSFUL;
+                event.username = msg.username;
+                Events.queueEvent(event);
+            } else {
+                //login failed
+
+                //fire an event to notify subsystems
+                LoginResponseEvent event = Pools.get(LoginResponseEvent.class);
+                event.loginResponse = LoginResponseEvent.LOGIN_RESPONSE.WRONG_CREDENTIALS;
+                event.username = "Guest";
+                Events.queueEvent(event);
+            }
         });
     }
 
