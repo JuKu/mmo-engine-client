@@ -93,7 +93,7 @@ public class NetworkView implements SubSystem {
             json.put("username", event.username);
             json.put("password", event.password);
 
-            LoginRequest loginRequest = new LoginRequest();
+            LoginRequest loginRequest = Pools.get(LoginRequest.class);
 
             //encrypt message
             try {
@@ -165,19 +165,27 @@ public class NetworkView implements SubSystem {
 
             if (userID > 0) {
                 //login was successfully
+                Log.i(LOGIN_TAG, "login successfully!");
 
                 //fire an event to notify subsystems
                 LoginResponseEvent event = Pools.get(LoginResponseEvent.class);
                 event.loginResponse = LoginResponseEvent.LOGIN_RESPONSE.SUCCESSFUL;
-                event.username = msg.username;
                 Events.queueEvent(event);
-            } else {
-                //login failed
+            } else if (userID == 0) {
+                //login failed because credentials are wrong
+                Log.i(LOGIN_TAG, "login failed, user credentials are wrong.");
 
                 //fire an event to notify subsystems
                 LoginResponseEvent event = Pools.get(LoginResponseEvent.class);
                 event.loginResponse = LoginResponseEvent.LOGIN_RESPONSE.WRONG_CREDENTIALS;
-                event.username = "Guest";
+                Events.queueEvent(event);
+            } else {
+                //internal server error
+                Log.i(LOGIN_TAG, "login failed, caused by internal server error.");
+
+                //fire an event to notify subsystems
+                LoginResponseEvent event = Pools.get(LoginResponseEvent.class);
+                event.loginResponse = LoginResponseEvent.LOGIN_RESPONSE.INTERNAL_SERVER_ERROR;
                 Events.queueEvent(event);
             }
         });

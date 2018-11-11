@@ -16,6 +16,11 @@ public class LoginResponseEvent extends EventData {
          */
         CLIENT_ERROR,
 
+        /**
+        * internal server error, e.q. on decryption
+        */
+        INTERNAL_SERVER_ERROR,
+
         WRONG_CREDENTIALS,
 
         SUCCESSFUL
@@ -23,7 +28,7 @@ public class LoginResponseEvent extends EventData {
 
     public LOGIN_RESPONSE loginResponse = null;
 
-    public String username = "Guest";
+    //public String username = "Guest";
 
     @Override
     public int getEventType() {
