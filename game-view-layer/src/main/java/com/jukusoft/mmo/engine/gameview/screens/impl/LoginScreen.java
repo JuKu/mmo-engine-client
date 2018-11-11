@@ -239,10 +239,13 @@ public class LoginScreen implements IScreen {
                 hintLabel.setVisible(true);
                 return;
             } else if (res == LoginResponseEvent.LOGIN_RESPONSE.SUCCESSFUL) {
-                hintLabel.setVisible(false);
+                hintLabel.setText(" Success! Wait... ");
+                hintLabel.setVisible(true);
+
+                //wait for character list
 
                 //go to character selection screen
-                screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
+                //screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
             }
         });
     }
