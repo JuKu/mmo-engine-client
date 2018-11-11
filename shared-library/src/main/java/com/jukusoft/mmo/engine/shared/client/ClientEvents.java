@@ -12,7 +12,8 @@ public enum ClientEvents {
     CONNECTION_READY(8),
     PING_CHANGED(9),
     LOGIN_REQUEST(10),
-    LOGIN_RESPONSE(11);
+    LOGIN_RESPONSE(11),
+    CHARACTER_LIST_RECEIVED(12);
 
     private final int id;
 

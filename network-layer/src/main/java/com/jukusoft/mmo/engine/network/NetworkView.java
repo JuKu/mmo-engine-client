@@ -1,5 +1,6 @@
 package com.jukusoft.mmo.engine.network;
 
+import com.jukusoft.mmo.engine.shared.client.events.init.CharacterListReceivedEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.LoginRequestEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.LoginResponseEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.*;
@@ -122,6 +123,8 @@ public class NetworkView implements SubSystem {
         TypeLookup.register(RTTResponse.class);
         TypeLookup.register(LoginRequest.class);
         TypeLookup.register(LoginResponse.class);
+        TypeLookup.register(CharacterListRequest.class);
+        TypeLookup.register(CharacterListResponse.class);
 
         //register message listeners
         this.netClient.handlers().register(PublicKeyResponse.class, (MessageHandler<PublicKeyResponse, RemoteConnection>) (msg, conn) -> {
@@ -192,6 +195,18 @@ public class NetworkView implements SubSystem {
                 event.loginResponse = LoginResponseEvent.LOGIN_RESPONSE.INTERNAL_SERVER_ERROR;
                 Events.queueEvent(event);
             }
+        });
+
+        //register message listener for character list response
+        this.netClient.handlers().register(CharacterListResponse.class, (MessageHandler<CharacterListResponse, RemoteConnection>) (msg, conn) -> {
+            Log.i(LOGIN_TAG, "character list received.");
+
+            //fire event
+            CharacterListReceivedEvent event = Pools.get(CharacterListReceivedEvent.class);
+
+            //TODO: add list
+
+            Events.queueEvent(event);
         });
     }
 
