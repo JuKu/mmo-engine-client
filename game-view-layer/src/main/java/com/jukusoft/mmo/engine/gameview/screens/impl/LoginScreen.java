@@ -234,6 +234,10 @@ public class LoginScreen implements IScreen {
                 hintLabel.setText(" Wrong credentials! ");
                 hintLabel.setVisible(true);
                 return;
+            } else if (res == LoginResponseEvent.LOGIN_RESPONSE.INTERNAL_SERVER_ERROR) {
+                hintLabel.setText(" Internal Server Error! ");
+                hintLabel.setVisible(true);
+                return;
             } else if (res == LoginResponseEvent.LOGIN_RESPONSE.SUCCESSFUL) {
                 hintLabel.setVisible(false);
 
