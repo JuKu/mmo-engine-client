@@ -167,12 +167,14 @@ public class NetworkView implements SubSystem {
                 //login was successfully
                 Log.i(LOGIN_TAG, "login successfully!");
 
-                //TODO: request character list
-
                 //fire an event to notify subsystems
                 LoginResponseEvent event = Pools.get(LoginResponseEvent.class);
                 event.loginResponse = LoginResponseEvent.LOGIN_RESPONSE.SUCCESSFUL;
                 Events.queueEvent(event);
+
+                //request character list
+                CharacterListRequest req = Pools.get(CharacterListRequest.class);
+                this.netClient.send(req);
             } else if (userID == 0) {
                 //login failed because credentials are wrong
                 Log.i(LOGIN_TAG, "login failed, user credentials are wrong.");
