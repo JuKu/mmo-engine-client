@@ -248,6 +248,8 @@ public class LoginScreen implements IScreen {
         });
 
         Events.addListener(Events.UI_THREAD, ClientEvents.CHARACTER_LIST_RECEIVED, (EventListener<CharacterListReceivedEvent>) event -> {
+            Log.i(LOG_TAG, "character list event received.");
+
             //set slots in select character screen
             ((SelectCharacterScreen) screenManager.getScreenByName(Screens.CHARACTER_SELECTION)).setSlots(event.slots);
 

@@ -23,12 +23,14 @@ import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
+import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import com.jukusoft.mmo.engine.shared.version.Version;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class SelectCharacterScreen implements IScreen {
 
@@ -74,6 +76,8 @@ public class SelectCharacterScreen implements IScreen {
     protected Button[] slots = new Button[Config.getInt("Game", "maxSlots")];
 
     protected int ping = 0;
+    protected CharacterSlot[] slotArray = null;
+    protected static final int MAX_CHARACTER_SLOTS = 5;
 
     @Override
     public void onStart(ScreenManager<IScreen> screenManager) {
@@ -230,7 +234,7 @@ public class SelectCharacterScreen implements IScreen {
 
         float startY = (height - 100) / 2f + 200f;
 
-        for (int i = 0; i < this.slots.length; i++) {
+        for (int i = 0; i < MAX_CHARACTER_SLOTS; i++) {
             if (this.slots[i] == null) {
                 continue;
             }
@@ -246,7 +250,9 @@ public class SelectCharacterScreen implements IScreen {
      * this method is called if character list response was received from proxy server
     */
     protected void init (CharacterSlot[] slots) {
-        for (int i = 0; i < this.slots.length; i++) {
+        Log.v("SelectCharacterScreen", "init slots, length: " + slots.length);
+
+        for (int i = 0; i < MAX_CHARACTER_SLOTS; i++) {
             Drawable drawable = new TextureRegionDrawable(new TextureRegion(this.slotBG, this.slotBG.getWidth(), this.slotBG.getHeight()));
             Drawable drawable_hover = new TextureRegionDrawable(new TextureRegion(this.slotBGHover, this.slotBG.getWidth(), this.slotBG.getHeight()));
 
@@ -341,15 +347,15 @@ public class SelectCharacterScreen implements IScreen {
         //set fps
         this.fpsLabel.setText("FPS: " + FPSManager.getInstance().getFPS());
 
-        /*if (!loaded) {
-            if (game.getCharacterSlots().isLoaded()) {
-                init(game.getCharacterSlots().getSlots());
+        if (!loaded) {
+            if (this.slotArray != null) {
+                init(this.slotArray);
 
                 loaded = true;
             } else {
                 return;
             }
-        }*/
+        }
     }
 
     @Override
@@ -360,7 +366,8 @@ public class SelectCharacterScreen implements IScreen {
     }
 
     public void setSlots (List<CharacterSlot> slots) {
-        //TODO: add code here
+        this.slotArray = slots.toArray(new CharacterSlot[MAX_CHARACTER_SLOTS]);
+        this.loaded = false;
     }
     
 }
