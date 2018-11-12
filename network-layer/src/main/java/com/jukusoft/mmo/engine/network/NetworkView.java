@@ -13,13 +13,14 @@ import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.messages.*;
 import com.jukusoft.mmo.engine.shared.utils.EncryptionUtils;
+import com.jukusoft.mmo.engine.shared.version.Version;
 import com.jukusoft.vertx.connection.clientserver.*;
 import com.jukusoft.vertx.serializer.TypeLookup;
 import com.jukusoft.vertx.serializer.exceptions.NetworkException;
-import io.netty.util.Version;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -93,6 +94,19 @@ public class NetworkView implements SubSystem {
             JsonObject json = new JsonObject();
             json.put("username", event.username);
             json.put("password", event.password);
+
+            Version version = Version.getInstance();
+            Objects.requireNonNull(version);
+
+            //add version information
+            JsonObject versionJson = new JsonObject();
+            versionJson.put("version", version.getVersion());
+            versionJson.put("revision", version.getRevision());
+            versionJson.put("build_time", version.getBuildTime());
+            versionJson.put("vendor", version.getVendor());
+            versionJson.put("vendorID", version.getVendorID());
+            versionJson.put("full_version", version.getFullVersion());
+            json.put("version", versionJson);
 
             LoginRequest loginRequest = Pools.get(LoginRequest.class);
 
