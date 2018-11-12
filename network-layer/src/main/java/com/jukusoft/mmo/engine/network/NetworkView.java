@@ -1,6 +1,7 @@
 package com.jukusoft.mmo.engine.network;
 
 import com.jukusoft.mmo.engine.shared.client.events.init.CharacterListReceivedEvent;
+import com.jukusoft.mmo.engine.shared.client.events.init.CreateCharacterEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.LoginRequestEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.LoginResponseEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.*;
@@ -130,6 +131,18 @@ public class NetworkView implements SubSystem {
                 event1.loginResponse = LoginResponseEvent.LOGIN_RESPONSE.CLIENT_ERROR;
                 Events.queueEvent(event1);
             }
+        });
+
+        //register event listener for create character events
+        Events.addListener(Events.NETWORK_THREAD, ClientEvents.CREATE_CHARACTER, (EventListener<CreateCharacterEvent>) event -> {
+            Log.i(LOGIN_TAG, "received create character event.");
+
+            Objects.requireNonNull(event.character);
+
+            //create and send request to proxy server
+            CreateCharacterRequest request = Pools.get(CreateCharacterRequest.class);
+            request.jsonStr = event.character.toJson().encode();
+            this.netClient.send(request);
         });
 
         //register message types first

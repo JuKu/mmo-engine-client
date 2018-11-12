@@ -114,4 +114,8 @@ public class CharacterSlot {
         return new CharacterSlot(cid, name, gender, skinColor, hairColor, hairStyle, beart);
     }
 
+    public static CharacterSlot create (String name, GENDER gender, String skinColor, String hairColor, String hairStyle, String beart) {
+        return new CharacterSlot(Integer.MAX_VALUE, name, gender, skinColor, hairColor, hairStyle, beart);
+    }
+
 }

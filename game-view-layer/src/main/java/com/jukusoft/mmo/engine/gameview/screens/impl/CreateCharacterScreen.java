@@ -16,12 +16,14 @@ import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
 import com.jukusoft.mmo.engine.gameview.screens.IScreen;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
+import com.jukusoft.mmo.engine.shared.client.events.init.CreateCharacterEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
+import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import com.jukusoft.mmo.engine.shared.version.Version;
 
@@ -206,6 +208,13 @@ public class CreateCharacterScreen implements IScreen {
 
                 //reset loaded character slot list, because a new character will be added
                 //game.getCharacterSlots().reset();
+
+                CharacterSlot character = CharacterSlot.create(name, (maleCheckBox.isChecked() ? CharacterSlot.GENDER.MALE : CharacterSlot.GENDER.FEMALE), TEXT_DEFAULT, TEXT_DEFAULT, TEXT_DEFAULT, TEXT_DEFAULT);
+
+                //create and fire event
+                CreateCharacterEvent createEvent = Pools.get(CreateCharacterEvent.class);
+                createEvent.character = character;
+                Events.queueEvent(createEvent);
 
                 //try to create character on server
                 /*CharacterSlot character = CharacterSlot.create(name, (maleCheckBox.isChecked() ? CharacterSlot.GENDER.MALE : CharacterSlot.GENDER.FEMALE), TEXT_DEFAULT, TEXT_DEFAULT, TEXT_DEFAULT, TEXT_DEFAULT);
