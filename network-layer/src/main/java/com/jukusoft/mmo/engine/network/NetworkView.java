@@ -139,6 +139,8 @@ public class NetworkView implements SubSystem {
 
             Objects.requireNonNull(event.character);
 
+            Log.i(LOGIN_TAG, "send create character request to proxy server...");
+
             //create and send request to proxy server
             CreateCharacterRequest request = Pools.get(CreateCharacterRequest.class);
             request.jsonStr = event.character.toJson().encode();
