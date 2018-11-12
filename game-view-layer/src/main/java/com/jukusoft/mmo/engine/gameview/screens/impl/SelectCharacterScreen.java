@@ -27,10 +27,7 @@ import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import com.jukusoft.mmo.engine.shared.version.Version;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 public class SelectCharacterScreen implements IScreen {
 
