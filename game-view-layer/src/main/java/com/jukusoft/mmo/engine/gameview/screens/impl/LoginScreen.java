@@ -15,6 +15,7 @@ import com.jukusoft.mmo.engine.gameview.screens.IScreen;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
 import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
+import com.jukusoft.mmo.engine.shared.client.events.init.CharacterListReceivedEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.LoginRequestEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.LoginResponseEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
@@ -243,10 +244,15 @@ public class LoginScreen implements IScreen {
                 hintLabel.setVisible(true);
 
                 //wait for character list
-
-                //go to character selection screen
-                //screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
             }
+        });
+
+        Events.addListener(Events.UI_THREAD, ClientEvents.CHARACTER_LIST_RECEIVED, (EventListener<CharacterListReceivedEvent>) event -> {
+            //set slots in select character screen
+            ((SelectCharacterScreen) screenManager.getScreenByName(Screens.CHARACTER_SELECTION)).setSlots(event.slots);
+
+            //go to character selection screen
+            screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
         });
     }
 

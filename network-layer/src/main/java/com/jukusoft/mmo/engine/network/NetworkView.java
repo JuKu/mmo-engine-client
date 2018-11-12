@@ -5,6 +5,7 @@ import com.jukusoft.mmo.engine.shared.client.events.init.LoginRequestEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.LoginResponseEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.*;
 import com.jukusoft.mmo.engine.shared.config.Config;
+import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
@@ -18,6 +19,7 @@ import com.jukusoft.vertx.connection.clientserver.*;
 import com.jukusoft.vertx.serializer.TypeLookup;
 import com.jukusoft.vertx.serializer.exceptions.NetworkException;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
 import java.util.Objects;
@@ -215,11 +217,25 @@ public class NetworkView implements SubSystem {
         this.netClient.handlers().register(CharacterListResponse.class, (MessageHandler<CharacterListResponse, RemoteConnection>) (msg, conn) -> {
             Log.i(LOGIN_TAG, "character list received.");
 
-            //fire event
+            //get json
+            JsonObject json = new JsonObject(msg.jsonStr);
+            JsonArray array = json.getJsonArray("slots");
+
+            //create event
             CharacterListReceivedEvent event = Pools.get(CharacterListReceivedEvent.class);
+            event.slots.clear();
 
-            //TODO: add list
+            for (int i = 0; i < array.size(); i++) {
+                JsonObject json1 = array.getJsonObject(i);
 
+                //convert to character slot
+                CharacterSlot slot = CharacterSlot.createFromJson(json1.getInteger("cid"), json1.getString("name"), json1);
+
+                //add slot to list
+                event.slots.add(slot);
+            }
+
+            //fire event
             Events.queueEvent(event);
         });
     }

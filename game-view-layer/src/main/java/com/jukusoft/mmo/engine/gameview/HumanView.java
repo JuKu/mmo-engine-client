@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.jukusoft.mmo.engine.applayer.utils.FPSManager;
 import com.jukusoft.mmo.engine.gameview.screens.impl.LoginScreen;
+import com.jukusoft.mmo.engine.gameview.screens.impl.SelectCharacterScreen;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
 import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
@@ -49,6 +50,7 @@ public class HumanView implements SubSystem {
         //add screens
         this.screenManager.addScreen(Screens.SELECT_SERVER_SCREEN, new SelectServerScreen());
         this.screenManager.addScreen(Screens.LOGIN_SCREEN, new LoginScreen());
+        this.screenManager.addScreen(Screens.CHARACTER_SELECTION, new SelectCharacterScreen());
 
         this.screenManager.leaveAllAndEnter(Screens.SELECT_SERVER_SCREEN);
 
