@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.utils.FPSManager;
 import com.jukusoft.mmo.engine.applayer.utils.SkinFactory;
 import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
@@ -65,6 +66,7 @@ public class LoginScreen implements IScreen {
     protected TextField usernameTextField = null;
     protected TextField passwordTextField = null;
     protected TextButton loginButton = null;
+    protected TextButton registButton = null;
 
     protected int ping = 0;
 
@@ -179,7 +181,7 @@ public class LoginScreen implements IScreen {
         this.passwordTextField.setMessageText("Password");
         stage.addActor(passwordTextField);
 
-        this.loginButton = new TextButton("Login", this.skin);
+        this.loginButton = new TextButton(I.tr("Login"), this.skin);
         this.loginButton.addListener(new ClickListener() {
             @Override
             public void clicked (InputEvent event, float x, float y) {
@@ -216,6 +218,16 @@ public class LoginScreen implements IScreen {
             }
         });
         stage.addActor(loginButton);
+
+        this.registButton = new TextButton(I.tr("Register"), this.skin);
+        this.registButton.addListener(new ClickListener() {
+            @Override
+            public void clicked (InputEvent event, float x, float y) {
+                hintLabel.setText("Sry, Registration is not implemented yet!");
+                hintLabel.setVisible(true);
+            }
+        });
+        stage.addActor(registButton);
 
         //set input processor
         Gdx.input.setInputProcessor(stage);
@@ -306,11 +318,16 @@ public class LoginScreen implements IScreen {
         loginButton.setX((width - loginButton.getWidth()) / 2);
         loginButton.setY(startY - 100);
 
+        registButton.setWidth(250);
+        registButton.setX((width - registButton.getWidth()) / 2);
+        registButton.setY(startY - 150);
+
         //invalidate widgets, because width and height was changed
         usernameTextField.invalidate();
         passwordTextField.invalidate();
         hintLabel.invalidate();
         loginButton.invalidate();
+        registButton.invalidate();
     }
 
     @Override
