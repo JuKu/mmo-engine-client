@@ -19,12 +19,14 @@ import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
 import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.client.events.init.CharacterListReceivedEvent;
+import com.jukusoft.mmo.engine.shared.client.events.init.EnterGameWorldEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
+import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import com.jukusoft.mmo.engine.shared.version.Version;
 
@@ -305,7 +307,23 @@ public class SelectCharacterScreen implements IScreen {
                 this.slots[i].addListener(new ClickListener() {
                     @Override
                     public void clicked (InputEvent event, float x, float y) {
-                        //TODO: fire event
+                        Log.v("SelectCharacter", "select character button clicked.");
+
+                        //disable button and set text
+                        ((TextButton) SelectCharacterScreen.this.slots[slotID]).setText("Wait...");
+                        SelectCharacterScreen.this.slots[slotID].setDisabled(true);
+
+                        //fire event
+                        EnterGameWorldEvent event1 = Pools.get(EnterGameWorldEvent.class);
+                        event1.cid = slots[slotID].getCID();
+                        Events.queueEvent(event1);
+
+                        //hide all other buttons buttons
+                        for (int i = 0; i < MAX_CHARACTER_SLOTS; i++) {
+                            if (i != slotID) {
+                                (SelectCharacterScreen.this.slots[i]).setVisible(false);
+                            }
+                        }
 
                         //select character
                         /*game.getCharacterSlots().selectCharacterSlot(slots[slotID], res -> {

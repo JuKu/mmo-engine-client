@@ -152,6 +152,16 @@ public class NetworkView implements SubSystem {
             this.netClient.send(request);
         });
 
+        //register event listener for create character events
+        Events.addListener(Events.NETWORK_THREAD, ClientEvents.ENTER_GAME_WORLD, (EventListener<EnterGameWorldEvent>) event -> {
+            Log.i(LOGIN_TAG, "send request to enter game world with character ID " + event.cid + "...");
+
+            //create and send request to proxy server
+            EnterGameWorldRequest request = Pools.get(EnterGameWorldRequest.class);
+            request.cid = event.cid;
+            this.netClient.send(request);
+        });
+
         //register message types first
         TypeLookup.register(PublicKeyRequest.class);
         TypeLookup.register(PublicKeyResponse.class);

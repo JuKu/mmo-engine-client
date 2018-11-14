@@ -16,7 +16,8 @@ public enum ClientEvents {
     CHARACTER_LIST_RECEIVED(12),
     TEST_ERROR(13),
     CREATE_CHARACTER(14),
-    CREATE_CHARACTER_RESPONSE(15);
+    CREATE_CHARACTER_RESPONSE(15),
+    ENTER_GAME_WORLD(16);
 
     private final int id;
 
