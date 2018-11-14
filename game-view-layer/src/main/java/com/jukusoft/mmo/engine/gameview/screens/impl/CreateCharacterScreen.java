@@ -126,6 +126,8 @@ public class CreateCharacterScreen implements IScreen {
                 createButton.setText(TEXT_CREATE);
                 createButton.setDisabled(false);
             } else if (res == CreateCharacterResponse.CREATE_CHARACTER_RESULT.SUCCESS) {
+                Log.i(LOG_TAG, "create character successfully.");
+
                 //character was created, go back to character screen
                 Platform.runOnUIThread(() -> screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION));
             }
