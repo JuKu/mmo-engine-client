@@ -1,0 +1,6 @@
+{
+	"default": {
+		"vertexShader": "libgdx/vertexShader.glsl",
+		"pixelShader": "libgdx/defaultPixelShader.glsl"
+	}
+}
