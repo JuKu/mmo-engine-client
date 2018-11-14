@@ -19,6 +19,8 @@ public class EncryptionUtils {
 
     /**
     * set public key
+     *
+     * @param pubKey RSA public key to encrypt data
     */
     public static void init (PublicKey pubKey) {
         EncryptionUtils.pubKey = pubKey;

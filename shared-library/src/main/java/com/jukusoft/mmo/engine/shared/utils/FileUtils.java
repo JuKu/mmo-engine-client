@@ -38,7 +38,7 @@ public class FileUtils {
      * @param encoding
      *            file encoding
      *
-     * @throws IOException
+     * @throws IOException if there are problems with file I/O
      *
      * @return content of file as string
      */
@@ -70,7 +70,7 @@ public class FileUtils {
      * @param charset
      *            encoding of file
      *
-     * @throws IOException
+     * @throws IOException if there are problems with file I/O
      *
      * @return list of lines from file
      */
@@ -100,7 +100,7 @@ public class FileUtils {
      * @param encoding
      *            file encoding
      *
-     * @throws IOException
+     * @throws IOException if file couldn't written
      */
     public static void writeFile(String path, String content, Charset encoding) throws IOException {
         if (path == null) {
@@ -172,6 +172,10 @@ public class FileUtils {
 
     /**
     * removes ../ from path
+     *
+     * @param path path where ../ should be replaced
+     *
+     * @return string without ../ (resolved)
     */
     protected static String removeDoubleDotInDir(String path) {
         if (path == null) {

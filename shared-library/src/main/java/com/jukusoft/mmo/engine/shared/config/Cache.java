@@ -41,6 +41,8 @@ public class Cache {
 
     /**
     * initialize cache
+     *
+     * @param path cache directory path
     */
     public static void init (String path) {
         instance = new Cache(path);
