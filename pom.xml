@@ -7,7 +7,7 @@
     <groupId>com.jukusoft</groupId>
     <artifactId>mmo-engine-client</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.11-SNAPSHOT</version>
+	<version>0.0.12-SNAPSHOT</version>
 	<modules>
 		<module>application-layer</module>
 		<module>shared-library</module>
