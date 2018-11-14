@@ -28,4 +28,8 @@ public class CreateCharacterResponse implements SerializableObject {
         this.resultCode = result.ordinal();
     }
 
+    public void setResultCode(int resultCode) {
+        this.resultCode = resultCode;
+    }
+
 }

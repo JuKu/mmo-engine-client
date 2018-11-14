@@ -15,8 +15,10 @@ import com.jukusoft.mmo.engine.applayer.utils.SkinFactory;
 import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
 import com.jukusoft.mmo.engine.gameview.screens.IScreen;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
+import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.client.events.init.CreateCharacterEvent;
+import com.jukusoft.mmo.engine.shared.client.events.init.CreateCharacterResponseEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
@@ -24,7 +26,9 @@ import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
+import com.jukusoft.mmo.engine.shared.messages.CreateCharacterResponse;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
+import com.jukusoft.mmo.engine.shared.utils.Platform;
 import com.jukusoft.mmo.engine.shared.version.Version;
 
 public class CreateCharacterScreen implements IScreen {
@@ -84,6 +88,47 @@ public class CreateCharacterScreen implements IScreen {
         //register event listener to update ping
         Events.addListener(Events.UI_THREAD, ClientEvents.PING_CHANGED, (EventListener<PingChangedEvent>) event -> {
             this.ping = event.ping;
+        });
+
+        Events.addListener(Events.UI_THREAD, ClientEvents.CREATE_CHARACTER_RESPONSE, (EventListener<CreateCharacterResponseEvent>) event -> {
+            CreateCharacterResponse.CREATE_CHARACTER_RESULT res = event.resultCode;
+
+            if (res == CreateCharacterResponse.CREATE_CHARACTER_RESULT.DUPLICATE_NAME) {
+                //character name already exists on server
+                hintLabel.setText(" Error! Character name already exists!");
+                hintLabel.setVisible(true);
+                hintLabel.invalidate();
+
+                createButton.setText(TEXT_CREATE);
+                createButton.setDisabled(false);
+            } else if (res == CreateCharacterResponse.CREATE_CHARACTER_RESULT.INVALIDE_NAME) {
+                //server error
+                hintLabel.setText(" Invalide character name! Only A-Z, a-z and 0-9 is allowed.");
+                hintLabel.setVisible(true);
+                hintLabel.invalidate();
+
+                createButton.setText(TEXT_CREATE);
+                createButton.setDisabled(false);
+            } else if (res == CreateCharacterResponse.CREATE_CHARACTER_RESULT.SERVER_ERROR) {
+                //server error
+                hintLabel.setText(" Server Error!");
+                hintLabel.setVisible(true);
+                hintLabel.invalidate();
+
+                createButton.setText(TEXT_CREATE);
+                createButton.setDisabled(false);
+            } else if (res == CreateCharacterResponse.CREATE_CHARACTER_RESULT.CLIENT_ERROR) {
+                //server error
+                hintLabel.setText(" Client Error!");
+                hintLabel.setVisible(true);
+                hintLabel.invalidate();
+
+                createButton.setText(TEXT_CREATE);
+                createButton.setDisabled(false);
+            } else if (res == CreateCharacterResponse.CREATE_CHARACTER_RESULT.SUCCESS) {
+                //character was created, go back to character screen
+                Platform.runOnUIThread(() -> screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION));
+            }
         });
     }
 

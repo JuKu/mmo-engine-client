@@ -1,9 +1,6 @@
 package com.jukusoft.mmo.engine.network;
 
-import com.jukusoft.mmo.engine.shared.client.events.init.CharacterListReceivedEvent;
-import com.jukusoft.mmo.engine.shared.client.events.init.CreateCharacterEvent;
-import com.jukusoft.mmo.engine.shared.client.events.init.LoginRequestEvent;
-import com.jukusoft.mmo.engine.shared.client.events.init.LoginResponseEvent;
+import com.jukusoft.mmo.engine.shared.client.events.init.*;
 import com.jukusoft.mmo.engine.shared.client.events.network.*;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
@@ -163,6 +160,8 @@ public class NetworkView implements SubSystem {
         TypeLookup.register(LoginResponse.class);
         TypeLookup.register(CharacterListRequest.class);
         TypeLookup.register(CharacterListResponse.class);
+        TypeLookup.register(CreateCharacterRequest.class);
+        TypeLookup.register(CreateCharacterResponse.class);
 
         //register message listeners
         this.netClient.handlers().register(PublicKeyResponse.class, (MessageHandler<PublicKeyResponse, RemoteConnection>) (msg, conn) -> {
@@ -258,6 +257,15 @@ public class NetworkView implements SubSystem {
             }
 
             //fire event
+            Events.queueEvent(event);
+        });
+
+        this.netClient.handlers().register(CreateCharacterResponse.class, (MessageHandler<CreateCharacterResponse, RemoteConnection>) (msg, conn) -> {
+            Log.i(LOGIN_TAG, "create character response received.");
+
+            //fire event
+            CreateCharacterResponseEvent event = Pools.get(CreateCharacterResponseEvent.class);
+            event.resultCode = msg.getResult();
             Events.queueEvent(event);
         });
     }
