@@ -43,3 +43,11 @@ msgstr "Unknown controller! There doesn't exists any mappings for this controlle
 #: file InputLayer.java line 155
 msgid "Coulnd't load keyDownMapping for controller!"
 msgstr "Coulnd't load keyDownMapping for controller!"
+
+#: file LoginScreen.java line 184
+msgid "Login"
+msgstr "Login"
+
+#: file LoginScreen.java line 222
+msgid "Register"
+msgstr "Register"

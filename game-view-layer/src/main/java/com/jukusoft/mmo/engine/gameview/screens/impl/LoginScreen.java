@@ -33,6 +33,7 @@ import org.ini4j.Profile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class LoginScreen implements IScreen {
 
@@ -69,6 +70,7 @@ public class LoginScreen implements IScreen {
     protected TextButton registButton = null;
 
     protected int ping = 0;
+    protected long loginStartTimestamp = 0;
 
     @Override
     public void onStart(ScreenManager<IScreen> screenManager) {
@@ -210,6 +212,8 @@ public class LoginScreen implements IScreen {
                 hintLabel.setText("Login...");
                 hintLabel.setVisible(true);
 
+                loginStartTimestamp = System.currentTimeMillis();
+
                 //fire event so network layer will try to login user
                 LoginRequestEvent loginEvent = Pools.get(LoginRequestEvent.class);
                 loginEvent.username = username;
@@ -235,6 +239,10 @@ public class LoginScreen implements IScreen {
         //add event listener to handle login response events
         Events.addListener(Events.UI_THREAD, ClientEvents.LOGIN_RESPONSE, (EventListener<LoginResponseEvent>) event -> {
             LoginResponseEvent.LOGIN_RESPONSE res = event.loginResponse;
+
+            long loginEndTimestamp = System.currentTimeMillis();
+            long diffTime = loginEndTimestamp - loginStartTimestamp;
+            Log.v(LOG_TAG, "login process takes " + diffTime + "ms");
 
             if (res == LoginResponseEvent.LOGIN_RESPONSE.NO_SERVER) {
                 //go back to server selection

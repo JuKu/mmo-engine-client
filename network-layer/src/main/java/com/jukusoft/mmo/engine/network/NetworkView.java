@@ -122,7 +122,14 @@ public class NetworkView implements SubSystem {
 
                 //send login credentials to server
                 Log.i(LOGIN_TAG, "send login request to server...");
+
+                long startTime = System.currentTimeMillis();
+
                 this.netClient.send(loginRequest);
+
+                long endTime = System.currentTimeMillis();
+                long diffTime = endTime - startTime;
+                Log.v(LOGIN_TAG, "login request serialization takes " + diffTime + "ms");
             } catch (Exception e) {
                 Log.e(LOGIN_TAG, "encryption of login credentials failed!", e);
 
