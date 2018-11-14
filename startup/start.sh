@@ -1,1 +1,1 @@
-java -jar mmo-engine-client-desktop-0.0.12-SNAPSHOT.jar --permit-illegal-access
+java -jar mmo-engine-client-desktop-0.0.13-SNAPSHOT.jar --permit-illegal-access
