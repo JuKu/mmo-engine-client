@@ -267,6 +267,10 @@ public class NetworkView implements SubSystem {
             CreateCharacterResponseEvent event = Pools.get(CreateCharacterResponseEvent.class);
             event.resultCode = msg.getResult();
             Events.queueEvent(event);
+
+            //request character list
+            CharacterListRequest req = Pools.get(CharacterListRequest.class);
+            this.netClient.send(req);
         });
     }
 

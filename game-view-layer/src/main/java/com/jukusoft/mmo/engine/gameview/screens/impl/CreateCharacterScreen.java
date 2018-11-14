@@ -17,6 +17,7 @@ import com.jukusoft.mmo.engine.gameview.screens.IScreen;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
 import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
+import com.jukusoft.mmo.engine.shared.client.events.init.CharacterListReceivedEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.CreateCharacterEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.CreateCharacterResponseEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
@@ -128,9 +129,22 @@ public class CreateCharacterScreen implements IScreen {
             } else if (res == CreateCharacterResponse.CREATE_CHARACTER_RESULT.SUCCESS) {
                 Log.i(LOG_TAG, "create character successfully.");
 
+                //character created successfully!
+                hintLabel.setText(" Success!");
+                hintLabel.setVisible(true);
+                hintLabel.invalidate();
+
                 //character was created, go back to character screen
                 Platform.runOnUIThread(() -> screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION));
             }
+        });
+
+        Events.addListener(Events.UI_THREAD, ClientEvents.CHARACTER_LIST_RECEIVED, (EventListener<CharacterListReceivedEvent>) event -> {
+            //set slots in select character screen
+            ((SelectCharacterScreen) screenManager.getScreenByName(Screens.CHARACTER_SELECTION)).setSlots(event.slots);
+
+            //go to character selection screen
+            screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
         });
     }
 
@@ -262,47 +276,6 @@ public class CreateCharacterScreen implements IScreen {
                 CreateCharacterEvent createEvent = Pools.get(CreateCharacterEvent.class);
                 createEvent.character = character;
                 Events.queueEvent(createEvent);
-
-                //try to create character on server
-                /*CharacterSlot character = CharacterSlot.create(name, (maleCheckBox.isChecked() ? CharacterSlot.GENDER.MALE : CharacterSlot.GENDER.FEMALE), TEXT_DEFAULT, TEXT_DEFAULT, TEXT_DEFAULT, TEXT_DEFAULT);
-                game.getCharacterSlots().createCharacter(character, res -> {
-                    if (res == CharacterSlots.CREATE_CHARACTER_RESULT.DUPLICATE_NAME) {
-                        //character name already exists on server
-                        hintLabel.setText(" Error! Character name already exists!");
-                        hintLabel.setVisible(true);
-                        hintLabel.invalidate();
-
-                        createButton.setText(TEXT_CREATE);
-                        createButton.setDisabled(false);
-                    } else if (res == CharacterSlots.CREATE_CHARACTER_RESULT.INVALIDE_NAME) {
-                        //server error
-                        hintLabel.setText(" Invalide character name! Only A-Z, a-z and 0-9 is allowed.");
-                        hintLabel.setVisible(true);
-                        hintLabel.invalidate();
-
-                        createButton.setText(TEXT_CREATE);
-                        createButton.setDisabled(false);
-                    } else if (res == CharacterSlots.CREATE_CHARACTER_RESULT.SERVER_ERROR) {
-                        //server error
-                        hintLabel.setText(" Server Error!");
-                        hintLabel.setVisible(true);
-                        hintLabel.invalidate();
-
-                        createButton.setText(TEXT_CREATE);
-                        createButton.setDisabled(false);
-                    } else if (res == CharacterSlots.CREATE_CHARACTER_RESULT.CLIENT_ERROR) {
-                        //server error
-                        hintLabel.setText(" Client Error!");
-                        hintLabel.setVisible(true);
-                        hintLabel.invalidate();
-
-                        createButton.setText(TEXT_CREATE);
-                        createButton.setDisabled(false);
-                    } else if (res == CharacterSlots.CREATE_CHARACTER_RESULT.SUCCESS) {
-                        //character was created, go back to character screen
-                        Platform.runOnUIThread(() -> screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION));
-                    }
-                });*/
             }
         });
         stage.addActor(createButton);
