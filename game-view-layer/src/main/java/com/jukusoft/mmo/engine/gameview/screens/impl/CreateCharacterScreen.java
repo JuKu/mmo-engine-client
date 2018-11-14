@@ -135,16 +135,8 @@ public class CreateCharacterScreen implements IScreen {
                 hintLabel.invalidate();
 
                 //character was created, go back to character screen
-                Platform.runOnUIThread(() -> screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION));
+                screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
             }
-        });
-
-        Events.addListener(Events.UI_THREAD, ClientEvents.CHARACTER_LIST_RECEIVED, (EventListener<CharacterListReceivedEvent>) event -> {
-            //set slots in select character screen
-            ((SelectCharacterScreen) screenManager.getScreenByName(Screens.CHARACTER_SELECTION)).setSlots(event.slots);
-
-            //go to character selection screen
-            screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
         });
     }
 

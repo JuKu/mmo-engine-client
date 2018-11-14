@@ -16,6 +16,7 @@ import com.jukusoft.mmo.engine.shared.version.Version;
 import com.jukusoft.vertx.connection.clientserver.*;
 import com.jukusoft.vertx.serializer.TypeLookup;
 import com.jukusoft.vertx.serializer.exceptions.NetworkException;
+import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -268,9 +269,15 @@ public class NetworkView implements SubSystem {
             event.resultCode = msg.getResult();
             Events.queueEvent(event);
 
-            //request character list
-            CharacterListRequest req = Pools.get(CharacterListRequest.class);
-            this.netClient.send(req);
+            if (msg.getResult() == CreateCharacterResponse.CREATE_CHARACTER_RESULT.SUCCESS) {
+                this.netClient.setTimer(50l, event1 -> {
+                    Log.v("Network", "request character list.");
+
+                    //request character list
+                    CharacterListRequest req = Pools.get(CharacterListRequest.class);
+                    netClient.send(req);
+                });
+            }
         });
     }
 

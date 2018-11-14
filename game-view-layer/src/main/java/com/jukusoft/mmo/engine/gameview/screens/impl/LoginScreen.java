@@ -263,11 +263,12 @@ public class LoginScreen implements IScreen {
                 hintLabel.setText(" Success! Wait... ");
                 hintLabel.setVisible(true);
 
-                //wait for character list
+                //go to character selection screen
+                screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
             }
         });
 
-        Events.addListener(Events.UI_THREAD, ClientEvents.CHARACTER_LIST_RECEIVED, (EventListener<CharacterListReceivedEvent>) event -> {
+        /*Events.addListener(Events.UI_THREAD, ClientEvents.CHARACTER_LIST_RECEIVED, (EventListener<CharacterListReceivedEvent>) event -> {
             Log.i(LOG_TAG, "character list event received.");
 
             //set slots in select character screen
@@ -275,7 +276,7 @@ public class LoginScreen implements IScreen {
 
             //go to character selection screen
             screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
-        });
+        });*/
     }
 
     @Override

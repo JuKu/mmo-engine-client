@@ -18,6 +18,7 @@ import com.jukusoft.mmo.engine.gameview.screens.IScreen;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
 import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
+import com.jukusoft.mmo.engine.shared.client.events.init.CharacterListReceivedEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
@@ -28,6 +29,7 @@ import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import com.jukusoft.mmo.engine.shared.version.Version;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SelectCharacterScreen implements IScreen {
 
@@ -96,6 +98,13 @@ public class SelectCharacterScreen implements IScreen {
         Events.addListener(Events.UI_THREAD, ClientEvents.PING_CHANGED, (EventListener<PingChangedEvent>) event -> {
             this.ping = event.ping;
         });
+
+        Events.addListener(Events.UI_THREAD, ClientEvents.CHARACTER_LIST_RECEIVED, (EventListener<CharacterListReceivedEvent>) event -> {
+            Log.i("Login", "character list event received.");
+
+            //set slots in select character screen
+            this.setSlots(event.slots);
+        });
     }
 
     @Override
@@ -110,6 +119,7 @@ public class SelectCharacterScreen implements IScreen {
 
         //create skin
         this.skin = SkinFactory.createSkin(this.skinJsonFile);
+        Objects.requireNonNull(this.skin);
 
         this.skin2 = SkinFactory.createSkin("./data/misc/skins/libgdx/uiskin.json");
         this.skin3 = SkinFactory.createSkin("./data/misc/skins/libgdx/uiskin.json");
