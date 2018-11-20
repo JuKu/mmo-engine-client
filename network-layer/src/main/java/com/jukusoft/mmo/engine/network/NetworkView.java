@@ -173,6 +173,8 @@ public class NetworkView implements SubSystem {
         TypeLookup.register(CharacterListResponse.class);
         TypeLookup.register(CreateCharacterRequest.class);
         TypeLookup.register(CreateCharacterResponse.class);
+        TypeLookup.register(EnterGameWorldRequest.class);
+        TypeLookup.register(EnterGameWorldResponse.class);
 
         //register message listeners
         this.netClient.handlers().register(PublicKeyResponse.class, (MessageHandler<PublicKeyResponse, RemoteConnection>) (msg, conn) -> {
