@@ -34,6 +34,9 @@ public class LogWriter implements Runnable {
                     throw new IllegalStateException("Cannot create new log file '" + file.getAbsolutePath() + "'! Maybe wrong file permissions?");
                 }
             } catch (IOException | IllegalStateException e) {
+                System.err.println("Exception while creating new log file: " + e.getLocalizedMessage());
+                e.printStackTrace();
+
                 Log.w(LOG_WRITER_TAG, "Exception while creating new log file: ", e);
             }
         }
