@@ -9,7 +9,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.0.15-SNAPSHOT\n"
+"Project-Id-Version: 0.0.16-SNAPSHOT\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Auto generated file\n"
 "Language: en\n"
