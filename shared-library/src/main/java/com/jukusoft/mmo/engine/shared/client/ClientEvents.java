@@ -17,7 +17,8 @@ public enum ClientEvents {
     TEST_ERROR(13),
     CREATE_CHARACTER(14),
     CREATE_CHARACTER_RESPONSE(15),
-    ENTER_GAME_WORLD(16);
+    ENTER_GAME_WORLD(16),
+    ENTERED_GAME_WORLD(17);
 
     private final int id;
 

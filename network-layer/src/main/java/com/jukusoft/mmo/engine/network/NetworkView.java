@@ -16,8 +16,6 @@ import com.jukusoft.mmo.engine.shared.version.Version;
 import com.jukusoft.vertx.connection.clientserver.*;
 import com.jukusoft.vertx.serializer.TypeLookup;
 import com.jukusoft.vertx.serializer.exceptions.NetworkException;
-import io.vertx.core.Handler;
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
@@ -153,7 +151,7 @@ public class NetworkView implements SubSystem {
         });
 
         //register event listener for create character events
-        Events.addListener(Events.NETWORK_THREAD, ClientEvents.ENTER_GAME_WORLD, (EventListener<EnterGameWorldEvent>) event -> {
+        Events.addListener(Events.NETWORK_THREAD, ClientEvents.ENTER_GAME_WORLD, (EventListener<EnterGameWorldRequestEvent>) event -> {
             Log.i(LOGIN_TAG, "send request to enter game world with character ID " + event.cid + "...");
 
             //create and send request to proxy server
@@ -290,6 +288,17 @@ public class NetworkView implements SubSystem {
                     netClient.send(req);
                 });
             }
+        });
+
+        this.netClient.handlers().register(EnterGameWorldResponse.class, (MessageHandler<EnterGameWorldResponse, RemoteConnection>) (msg, conn) -> {
+            Log.i(LOGIN_TAG, "received EnterGameWorldResponse.");
+
+            EnterGameWorldResponseEvent event = Pools.get(EnterGameWorldResponseEvent.class);
+
+            //TODO: fire event
+            Events.queueEvent(event);
+
+            throw new UnsupportedOperationException("method isn't implemented yet.");
         });
     }
 

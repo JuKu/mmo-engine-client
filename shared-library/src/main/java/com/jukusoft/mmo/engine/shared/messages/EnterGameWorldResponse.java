@@ -1,11 +1,12 @@
 package com.jukusoft.mmo.engine.shared.messages;
 
 import com.jukusoft.vertx.serializer.SerializableObject;
-import com.jukusoft.vertx.serializer.annotations.MessageType;
-import com.jukusoft.vertx.serializer.annotations.ProtocolVersion;
-import com.jukusoft.vertx.serializer.annotations.SInteger;
+import com.jukusoft.vertx.serializer.annotations.*;
+import io.vertx.core.json.JsonArray;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @MessageType(type = 0x01, extendedType = 0x06)
@@ -49,6 +50,46 @@ public class EnterGameWorldResponse implements SerializableObject {
 
     @SInteger
     protected int resultCodeID = 0;
+
+    @SInteger
+    public int cid = 0;
+
+    @SString(maxCharacters = 64)
+    public String username = "";
+
+    @SString(maxCharacters = Integer.MAX_VALUE)
+    protected String groupsJson = "";
+
+    /**
+    * set groups and convert them to internal json array to use for serializer
+     *
+     * @param groups list with all permission group names user belongs to
+    */
+    public void setGroups (List<String> groups) {
+        JsonArray jsonArray = new JsonArray();
+
+        for (String groupName : groups) {
+            jsonArray.add(groupName);
+        }
+
+        this.groupsJson = jsonArray.encode();
+    }
+
+    /**
+    * converts json string to list with groups and returns them
+     *
+     * @return list with all permission group names user belongs to
+    */
+    public List<String> listGroups () {
+        JsonArray jsonArray = new JsonArray(groupsJson);
+        List<String> groups = new ArrayList<>();
+
+        for (int i = 0; i < jsonArray.size(); i++) {
+            groups.add(jsonArray.getString(i));
+        }
+
+        return groups;
+    }
 
     public RESULT_CODE getResult() {
         return valueOf(this.resultCodeID);

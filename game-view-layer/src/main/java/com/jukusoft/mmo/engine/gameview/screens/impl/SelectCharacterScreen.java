@@ -19,7 +19,7 @@ import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
 import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.client.events.init.CharacterListReceivedEvent;
-import com.jukusoft.mmo.engine.shared.client.events.init.EnterGameWorldEvent;
+import com.jukusoft.mmo.engine.shared.client.events.init.EnterGameWorldRequestEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
@@ -314,7 +314,7 @@ public class SelectCharacterScreen implements IScreen {
                         SelectCharacterScreen.this.slots[slotID].setDisabled(true);
 
                         //fire event
-                        EnterGameWorldEvent event1 = Pools.get(EnterGameWorldEvent.class);
+                        EnterGameWorldRequestEvent event1 = Pools.get(EnterGameWorldRequestEvent.class);
                         event1.cid = slots[slotID].getCID();
                         Events.queueEvent(event1);
 
