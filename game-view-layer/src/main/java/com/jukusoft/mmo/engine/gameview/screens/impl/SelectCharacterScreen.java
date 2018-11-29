@@ -20,6 +20,7 @@ import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.client.events.init.CharacterListReceivedEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.EnterGameWorldRequestEvent;
+import com.jukusoft.mmo.engine.shared.client.events.init.EnterGameWorldResponseEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
@@ -27,6 +28,7 @@ import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
+import com.jukusoft.mmo.engine.shared.messages.EnterGameWorldResponse;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import com.jukusoft.mmo.engine.shared.version.Version;
 
@@ -36,6 +38,7 @@ import java.util.Objects;
 public class SelectCharacterScreen implements IScreen {
 
     protected static final String SECTION_NAME = "SelectCharacter";
+    protected static final String LOGIN_TAG = "Login";
 
     protected Stage stage = null;
     protected GameAssetManager assetManager = GameAssetManager.getInstance();
@@ -102,10 +105,21 @@ public class SelectCharacterScreen implements IScreen {
         });
 
         Events.addListener(Events.UI_THREAD, ClientEvents.CHARACTER_LIST_RECEIVED, (EventListener<CharacterListReceivedEvent>) event -> {
-            Log.i("Login", "character list event received.");
+            Log.i(LOGIN_TAG, "character list event received.");
 
             //set slots in select character screen
             this.setSlots(event.slots);
+        });
+
+        Events.addListener(Events.UI_THREAD, ClientEvents.ENTERED_GAME_WORLD, (EventListener<EnterGameWorldResponseEvent>) event -> {
+            if (event.resultCode == EnterGameWorldResponse.RESULT_CODE.SUCCESS) {
+                Log.i(LOGIN_TAG, "player entered game world.");
+            } else {
+                //an error occured
+                Log.w(LOGIN_TAG, "Error! Player coulnd't enter game world. cause: " + event.resultCode.name());
+
+                //TODO: show error message on UI
+            }
         });
     }
 
