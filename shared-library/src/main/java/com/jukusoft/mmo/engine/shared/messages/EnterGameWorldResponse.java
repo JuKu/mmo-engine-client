@@ -4,10 +4,7 @@ import com.jukusoft.vertx.serializer.SerializableObject;
 import com.jukusoft.vertx.serializer.annotations.*;
 import io.vertx.core.json.JsonArray;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @MessageType(type = 0x01, extendedType = 0x06)
 @ProtocolVersion(1)
@@ -81,6 +78,15 @@ public class EnterGameWorldResponse implements SerializableObject {
      * @return list with all permission group names user belongs to
     */
     public List<String> listGroups () {
+        //check, if enter game world was successfully, else these attributes aren't available
+        throwExceptionIfNotSuccess();
+
+        Objects.requireNonNull(this.groupsJson);
+
+        if (this.groupsJson.isEmpty()) {
+            throw new IllegalStateException("groupsJson is empty.");
+        }
+
         JsonArray jsonArray = new JsonArray(groupsJson);
         List<String> groups = new ArrayList<>();
 
@@ -89,6 +95,12 @@ public class EnterGameWorldResponse implements SerializableObject {
         }
 
         return groups;
+    }
+
+    protected void throwExceptionIfNotSuccess () {
+        if (this.getResult() != RESULT_CODE.SUCCESS) {
+            throw new IllegalStateException("Cannot use this method, because attribute is only available on SUCCESS.");
+        }
     }
 
     public RESULT_CODE getResult() {

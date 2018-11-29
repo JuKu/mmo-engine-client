@@ -294,11 +294,17 @@ public class NetworkView implements SubSystem {
             Log.i(LOGIN_TAG, "received EnterGameWorldResponse.");
 
             EnterGameWorldResponseEvent event = Pools.get(EnterGameWorldResponseEvent.class);
+            event.resultCode = msg.getResult();
 
-            //TODO: fire event
+            if (msg.getResult() == EnterGameWorldResponse.RESULT_CODE.SUCCESS) {
+                //get additional attributes
+                event.cid = msg.cid;
+                event.username = msg.username;
+                event.groups = msg.listGroups();
+            }
+
+            //fire event
             Events.queueEvent(event);
-
-            throw new UnsupportedOperationException("method isn't implemented yet.");
         });
     }
 
