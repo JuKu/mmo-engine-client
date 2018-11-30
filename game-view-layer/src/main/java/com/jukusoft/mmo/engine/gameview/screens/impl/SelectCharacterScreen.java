@@ -119,6 +119,9 @@ public class SelectCharacterScreen implements IScreen {
                 Log.w(LOGIN_TAG, "Error! Player coulnd't enter game world. cause: " + event.resultCode.name());
 
                 //TODO: show error message on UI
+                this.hintLabel.setText("Error! " + event.resultCode.name() + "\nPlease restart client!");
+                this.hintLabel.setVisible(true);
+                this.hintLabel.invalidate();
             }
         });
     }
