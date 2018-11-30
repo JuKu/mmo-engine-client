@@ -114,6 +114,11 @@ public class SelectCharacterScreen implements IScreen {
         Events.addListener(Events.UI_THREAD, ClientEvents.ENTERED_GAME_WORLD, (EventListener<EnterGameWorldResponseEvent>) event -> {
             if (event.resultCode == EnterGameWorldResponse.RESULT_CODE.SUCCESS) {
                 Log.i(LOGIN_TAG, "player entered game world.");
+
+                //show success message on UI
+                this.hintLabel.setText("Success! Waiting...");
+                this.hintLabel.setVisible(true);
+                this.hintLabel.invalidate();
             } else {
                 //an error occured
                 Log.w(LOGIN_TAG, "Error! Player coulnd't enter game world. cause: " + event.resultCode.name());
