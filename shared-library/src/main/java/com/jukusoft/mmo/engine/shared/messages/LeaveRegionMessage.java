@@ -6,7 +6,7 @@ import com.jukusoft.vertx.serializer.annotations.ProtocolVersion;
 import com.jukusoft.vertx.serializer.annotations.SInteger;
 import com.jukusoft.vertx.serializer.annotations.SLong;
 
-@MessageType(type = 0x01, extendedType = 0x07)
+@MessageType(type = 0x01, extendedType = 0x08)
 @ProtocolVersion(1)
 public class LeaveRegionMessage implements SerializableObject {
 
