@@ -17,10 +17,10 @@ public class JoinRegionMessage implements SerializableObject {
 
     //cluster credentials
     @SString(maxCharacters = Integer.MAX_VALUE)
-    protected String cluster_username = "";
+    public String cluster_username = "";
 
     @SString(maxCharacters = Integer.MAX_VALUE)
-    protected String cluster_password = "";
+    public String cluster_password = "";
 
     //user & character information
     @SInteger
