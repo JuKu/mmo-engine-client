@@ -132,8 +132,11 @@ public class SelectCharacterScreen implements IScreen {
             }
         });
 
-        Events.addListener(Events.UI_THREAD, ClientEvents.LOAD_MAP, (EventListener<LoadMapEvent>) eventData -> {
+        Events.addListener(Events.UI_THREAD, ClientEvents.LOAD_MAP, (EventListener<LoadMapEvent>) event -> {
             Log.i(LOGIN_TAG, "go to map loading screen now...");
+
+            //set region title and enter region loading screen
+            ((LoadRegionScreen) screenManager.getScreenByName(Screens.LOAD_REGION)).setRegion(event.regionID, event.instanceID, event.regionTitle);
             screenManager.leaveAllAndEnter(Screens.LOAD_REGION);
         });
     }

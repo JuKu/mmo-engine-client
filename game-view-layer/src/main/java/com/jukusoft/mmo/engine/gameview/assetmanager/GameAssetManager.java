@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -96,6 +97,12 @@ public class GameAssetManager {
     }
 
     public void load (String path, Class<?> cls) {
+        Objects.requireNonNull(path);
+
+        if (path.isEmpty()) {
+            throw new IllegalArgumentException("path cannot be empty.");
+        }
+
         this.assetManager.load(path, cls);
     }
 

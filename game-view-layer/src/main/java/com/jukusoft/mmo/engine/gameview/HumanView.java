@@ -49,6 +49,7 @@ public class HumanView implements SubSystem {
         this.screenManager.addScreen(Screens.LOGIN_SCREEN, new LoginScreen());
         this.screenManager.addScreen(Screens.CHARACTER_SELECTION, new SelectCharacterScreen());
         this.screenManager.addScreen(Screens.CREATE_CHARACTER, new CreateCharacterScreen());
+        this.screenManager.addScreen(Screens.LOAD_REGION, new LoadRegionScreen());
 
         this.screenManager.leaveAllAndEnter(Screens.SELECT_SERVER_SCREEN);
 
