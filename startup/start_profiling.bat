@@ -1,1 +1,1 @@
-java -jar mmo-engine-client-desktop-0.0.20-SNAPSHOT.jar --permit-illegal-access -Dcom.sun.management.jmxremote
+java -jar mmo-engine-client-desktop-0.0.21-SNAPSHOT-SNAPSHOT.jar --permit-illegal-access -Dcom.sun.management.jmxremote
