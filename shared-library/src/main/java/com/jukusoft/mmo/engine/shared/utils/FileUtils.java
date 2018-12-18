@@ -162,7 +162,7 @@ public class FileUtils {
     public static List<String> listFiles (File dir) throws IOException {
         List<String> relPaths = new ArrayList<>();
 
-        FileUtils.listFiles(new File("../data/junit/list-files"), (file, relFilePath) -> {
+        FileUtils.listFiles(dir, (file, relFilePath) -> {
             relPaths.add(relFilePath);
         });
 
