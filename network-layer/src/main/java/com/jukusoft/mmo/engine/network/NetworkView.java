@@ -1,6 +1,7 @@
 package com.jukusoft.mmo.engine.network;
 
 import com.jukusoft.mmo.engine.shared.client.events.init.*;
+import com.jukusoft.mmo.engine.shared.client.events.load.LoadMapEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.*;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
@@ -173,6 +174,7 @@ public class NetworkView implements SubSystem {
         TypeLookup.register(CreateCharacterResponse.class);
         TypeLookup.register(EnterGameWorldRequest.class);
         TypeLookup.register(EnterGameWorldResponse.class);
+        TypeLookup.register(LoadMapResponse.class);
 
         //register message listeners
         this.netClient.handlers().register(PublicKeyResponse.class, (MessageHandler<PublicKeyResponse, RemoteConnection>) (msg, conn) -> {
@@ -304,6 +306,18 @@ public class NetworkView implements SubSystem {
             }
 
             //fire event
+            Events.queueEvent(event);
+        });
+
+        this.netClient.handlers().register(LoadMapResponse.class, (MessageHandler<LoadMapResponse, RemoteConnection>) (msg, conn) -> {
+            Log.i(LOG_TAG, "received LoadMapResponse.");
+
+            //fire event
+            LoadMapEvent event = Pools.get(LoadMapEvent.class);
+            event.regionID = msg.regionID;
+            event.instanceID = msg.instanceID;
+            event.regionTitle = msg.regionTitle;
+            event.setRequiredMapFiles(msg.listRequiredFiles());
             Events.queueEvent(event);
         });
     }

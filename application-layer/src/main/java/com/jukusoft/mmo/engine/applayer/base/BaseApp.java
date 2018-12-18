@@ -5,13 +5,16 @@ import com.badlogic.gdx.Gdx;
 import com.carrotsearch.hppc.ObjectArrayList;
 import com.carrotsearch.hppc.procedures.ObjectProcedure;
 import com.jukusoft.i18n.I;
+import com.jukusoft.mmo.engine.shared.client.events.init.AllSubSystemsInitializedEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.applayer.init.Initializer;
+import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.splashscreen.SplashScreen;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystemManager;
 import com.jukusoft.mmo.engine.applayer.time.GameTime;
+import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import com.jukusoft.mmo.engine.applayer.utils.JavaFXUtils;
 import com.jukusoft.mmo.engine.shared.utils.Platform;
@@ -245,6 +248,7 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
                     this.extraThreadSubSystems.forEach((ObjectProcedure<? super SubSystem>) system -> system.onInit());
 
                     Log.i(THREADS_TAG, "game-logic-layer subsystems initialized successfully!");
+                    Events.queueEvent(Pools.get(AllSubSystemsInitializedEvent.class));
 
                     //call subsystems which has to be executed in main thread
                     long startTime = 0;

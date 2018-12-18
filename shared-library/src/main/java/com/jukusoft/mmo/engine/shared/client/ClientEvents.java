@@ -18,7 +18,9 @@ public enum ClientEvents {
     CREATE_CHARACTER(14),
     CREATE_CHARACTER_RESPONSE(15),
     ENTER_GAME_WORLD(16),
-    ENTERED_GAME_WORLD(17);
+    ENTERED_GAME_WORLD(17),
+    ALL_SUBSYSTEMS_READY(18),
+    LOAD_MAP(19);
 
     private final int id;
 

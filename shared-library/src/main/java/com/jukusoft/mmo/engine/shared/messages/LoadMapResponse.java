@@ -5,6 +5,9 @@ import com.jukusoft.vertx.serializer.annotations.*;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
 * message which is sended from gameserver to client, so client should load map and switch to map loading screen
 */
@@ -33,6 +36,21 @@ public class LoadMapResponse implements SerializableObject {
         json.put("checksum", checksum);
 
         this.requiredMapFiles.add(json);
+    }
+
+    public Map<String,String> listRequiredFiles () {
+        Map<String,String> filesWithHashes = new HashMap<>();
+
+        for (int i = 0; i < this.requiredMapFiles.size(); i++) {
+            JsonObject json = this.requiredMapFiles.getJsonObject(i);
+
+            String fileName = json.getString("filename");
+            String checksum = json.getString("checksum");
+
+            filesWithHashes.put(fileName, checksum);
+        }
+
+        return filesWithHashes;
     }
 
 }
