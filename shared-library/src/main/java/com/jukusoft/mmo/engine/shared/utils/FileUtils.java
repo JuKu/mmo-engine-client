@@ -9,7 +9,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -133,9 +135,7 @@ public class FileUtils {
     }
 
     public static void recursiveDeleteDirectory (File f, boolean deleteDir) throws IOException {
-        if (f == null) {
-            throw new NullPointerException("file cannot be null.");
-        }
+        Objects.requireNonNull(f, "file cannot be null.");
 
         if (!f.exists()) {
             //we dont have to delete anything
@@ -156,6 +156,40 @@ public class FileUtils {
         //delete directory / file
         if (deleteDir) {
             Files.delete(f.toPath());
+        }
+    }
+
+    public static List<String> listFiles (File dir) throws IOException {
+        List<String> relPaths = new ArrayList<>();
+
+        FileUtils.listFiles(new File("../data/junit/list-files"), (file, relFilePath) -> {
+            relPaths.add(relFilePath);
+        });
+
+        return relPaths;
+    }
+
+    public static void listFiles (File dir, FileListIterator iterator) throws IOException {
+        listFiles(dir, dir, iterator);
+    }
+
+    protected static void listFiles (File dir, File baseDir, FileListIterator iterator) throws IOException {
+        Objects.requireNonNull(dir, "file cannot be null.");
+
+        if (!dir.exists()) {
+            throw new FileNotFoundException("directory doesn't exists: " + dir.getAbsolutePath());
+        }
+
+        if (!dir.isDirectory()) {
+            throw new IllegalArgumentException("dir isn't a directory: " + dir.getAbsolutePath());
+        }
+
+        for (File c : dir.listFiles()) {
+            if (c.isDirectory()) {
+                listFiles(c, baseDir, iterator);
+            } else {
+                iterator.iterate(c, getRelativeFile(c, baseDir).getPath().replace("\\", "/"));
+            }
         }
     }
 
