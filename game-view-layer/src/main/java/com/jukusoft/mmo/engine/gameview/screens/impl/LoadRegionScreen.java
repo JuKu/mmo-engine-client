@@ -120,7 +120,7 @@ public class LoadRegionScreen implements IScreen {
         this.label.invalidate();
 
         // Add the loading bar animation
-        Animation anim = new Animation(0.05f, atlas.findRegions("loading-bar-anim") );
+        Animation anim = new Animation(0.05f, atlas.findRegions("loading-bar-anim"));
         anim.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
         loadingBar = new LoadingBar(anim);
 

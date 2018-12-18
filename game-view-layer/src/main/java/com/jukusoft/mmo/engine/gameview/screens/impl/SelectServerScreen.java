@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
@@ -54,6 +51,8 @@ public class SelectServerScreen implements IScreen {
 
     protected EventListener<ConnectionReadyEvent> connectionReadyEventEventListener = null;
 
+    protected boolean allSubSystemsInitialized = false;
+
     //https://github.com/libgdx/libgdx/wiki/Hiero
 
     @Override
@@ -73,6 +72,16 @@ public class SelectServerScreen implements IScreen {
 
         //create UI stage
         this.stage = new Stage();
+
+        Events.addListener(Events.UI_THREAD, ClientEvents.ALL_SUBSYSTEMS_READY, event -> {
+            this.allSubSystemsInitialized = true;
+
+            //show all buttons
+            for (Button button : buttons) {
+                button.setVisible(true);
+                button.invalidate();
+            }
+        });
     }
 
     @Override
@@ -165,6 +174,9 @@ public class SelectServerScreen implements IScreen {
                     Events.queueEvent(event);
                 }
             });
+
+            //hide button while subsystems are initializing
+            button.setVisible(!this.allSubSystemsInitialized);
 
             button.setDisabled(!server.online);
 
