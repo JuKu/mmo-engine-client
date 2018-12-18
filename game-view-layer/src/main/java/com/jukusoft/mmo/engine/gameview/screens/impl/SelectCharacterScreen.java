@@ -21,9 +21,11 @@ import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.client.events.init.CharacterListReceivedEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.EnterGameWorldRequestEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.EnterGameWorldResponseEvent;
+import com.jukusoft.mmo.engine.shared.client.events.load.LoadMapEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
+import com.jukusoft.mmo.engine.shared.events.EventData;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
@@ -128,6 +130,11 @@ public class SelectCharacterScreen implements IScreen {
                 this.hintLabel.setVisible(true);
                 this.hintLabel.invalidate();
             }
+        });
+
+        Events.addListener(Events.UI_THREAD, ClientEvents.LOAD_MAP, (EventListener<LoadMapEvent>) eventData -> {
+            Log.i(LOGIN_TAG, "go to map loading screen now...");
+            screenManager.leaveAllAndEnter(Screens.LOAD_REGION);
         });
     }
 
