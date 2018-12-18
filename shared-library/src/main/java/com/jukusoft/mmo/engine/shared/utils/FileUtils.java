@@ -1,5 +1,7 @@
 package com.jukusoft.mmo.engine.shared.utils;
 
+import com.jukusoft.mmo.engine.shared.logger.Log;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -149,7 +151,7 @@ public class FileUtils {
             }
         }
 
-        Logger.getAnonymousLogger().log(Level.INFO, "delete directory / file: " + f.getAbsolutePath());
+        Log.d("FileUtils", "delete directory / file: " + f.getAbsolutePath());
 
         //delete directory / file
         if (deleteDir) {
