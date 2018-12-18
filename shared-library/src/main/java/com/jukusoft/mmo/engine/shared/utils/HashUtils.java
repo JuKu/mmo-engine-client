@@ -150,6 +150,8 @@ public class HashUtils {
      *
      * @param file file
      * @return hash
+     *
+     * @throws Exception if hash coulnd't be generated because of missing algorithm
     */
     public static String computeMD5FileHash (File file) throws Exception {
         byte[] b = createFileChecksum(file);

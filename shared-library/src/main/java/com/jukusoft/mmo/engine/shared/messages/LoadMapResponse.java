@@ -1,5 +1,6 @@
 package com.jukusoft.mmo.engine.shared.messages;
 
+import com.jukusoft.vertx.serializer.SerializableObject;
 import com.jukusoft.vertx.serializer.annotations.*;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -9,7 +10,7 @@ import io.vertx.core.json.JsonObject;
 */
 @MessageType(type = 0x02, extendedType = 0x01)
 @ProtocolVersion(1)
-public class LoadMapResponse {
+public class LoadMapResponse implements SerializableObject {
 
     @SLong
     public long regionID = 0;

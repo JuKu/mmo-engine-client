@@ -139,7 +139,7 @@ public class FileUtils {
 
         if (!f.exists()) {
             //we dont have to delete anything
-            Logger.getAnonymousLogger().log(Level.INFO, "Dont need to delete directory, because it doesnt exists: " + f.getAbsolutePath());
+            //Logger.getAnonymousLogger().log(Level.INFO, "Dont need to delete directory, because it doesnt exists: " + f.getAbsolutePath());
 
             return;
         }
@@ -151,7 +151,7 @@ public class FileUtils {
             }
         }
 
-        Log.d("FileUtils", "delete directory / file: " + f.getAbsolutePath());
+        //Log.d("FileUtils", "delete directory / file: " + f.getAbsolutePath());
 
         //delete directory / file
         if (deleteDir) {
