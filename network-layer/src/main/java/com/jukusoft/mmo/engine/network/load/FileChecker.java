@@ -74,7 +74,7 @@ public class FileChecker {
             }
         }
 
-        Log.d(LOG_TAG, "file checker finished.");
+        Log.d(LOG_TAG, "file checker finished (" + invalideFiles.size() + " invalide cached files).");
 
         return invalideFiles;
     }
