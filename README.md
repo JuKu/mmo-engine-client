@@ -49,6 +49,15 @@ mvn clean install deploy -DuniqueVersion=false
 
 **Important**! If anything in shared-commons-library was changed, you have to increment version, else proxy server maybe doesn't get the right snapshot.
   
+## Rebuild texture atlases
+
+**Important**! Textures which will be packed to texture atlases with data/misc/packer/packer.json config file will be cached in temp directory.\
+To rebuild them, you have to clear the cache with this optional parameter:
+
+```text
+--
+```
+  
 ## Build ZIP archiv
 
 Maven:

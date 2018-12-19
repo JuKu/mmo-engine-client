@@ -15,6 +15,12 @@ import java.util.Set;
 public class DesktopLauncher {
 
     public static void main (String[] args) {
+        for (String param : args) {
+            if (param.startsWith("-DclearCache") || param.startsWith("-clearCache")) {
+                System.setProperty("clearCache", "true");
+            }
+        }
+
         //start game
         try {
             start();

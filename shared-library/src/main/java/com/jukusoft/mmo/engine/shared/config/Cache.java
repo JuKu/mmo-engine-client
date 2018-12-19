@@ -33,6 +33,10 @@ public class Cache {
         CACHE_PATH = path;
 
         //create directory, if neccessary
+        this.createRequiredDirs();
+    }
+
+    protected void createRequiredDirs () {
         FileUtils.createWritableDirIfAbsent(CACHE_PATH);
         FileUtils.createWritableDirIfAbsent(CACHE_PATH + "assets/");
         FileUtils.createWritableDirIfAbsent(CACHE_PATH + "security/");
@@ -74,6 +78,7 @@ public class Cache {
 
     public void clear () throws IOException {
         FileUtils.recursiveDeleteDirectory(new File(CACHE_PATH), false);
+        createRequiredDirs();
     }
 
 }

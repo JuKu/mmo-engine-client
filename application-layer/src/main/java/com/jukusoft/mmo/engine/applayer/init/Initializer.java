@@ -33,6 +33,7 @@ public class Initializer implements Runnable {
     protected final String UPDATE_TAG = "Update";
     protected final String SERVERS_TAG = "Servers";
     protected final String SCRIPTS_TAG = "Scripts";
+    protected final String CACHE_TAG = "Cache";
     protected final String TEXTURE_PACKER_TAG = "TexturePacker";
     protected final String SR_SECTION = "SystemRequirements";
 
@@ -118,8 +119,19 @@ public class Initializer implements Runnable {
 
         //initialize Cache
         String cacheDir = FilePath.parse(Config.get("Paths", "tempDir"));
-        Log.i("Cache", "initialize cache: " + new File(cacheDir).getAbsolutePath());
+        Log.i(CACHE_TAG, "initialize cache: " + new File(cacheDir).getAbsolutePath());
         Cache.init(cacheDir);
+
+        if (System.getProperty("clearCache") != null) {
+            Log.i(CACHE_TAG, "clear cache because of program parameter -Dclear.cache=true");
+
+            try {
+                Cache.getInstance().clear();
+            } catch (IOException e) {
+                Log.w(CACHE_TAG, "IOException while clearing cache: ", e);
+                JavaFXUtils.showExceptionDialog(I.tr("Error!"), I.tr("IOException while clearing cache.\nPlease contact developers with the following exception log!"), e);
+            }
+        }
 
         Utils.printSection("Texture Packer");
 
