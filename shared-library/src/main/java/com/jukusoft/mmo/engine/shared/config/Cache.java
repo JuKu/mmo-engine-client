@@ -68,6 +68,10 @@ public class Cache {
         return CACHE_PATH + dirName + "/";
     }
 
+    public String getCacheFilePath (String filePath) {
+        return CACHE_PATH + filePath;
+    }
+
     public void clear () throws IOException {
         FileUtils.recursiveDeleteDirectory(new File(CACHE_PATH), false);
     }

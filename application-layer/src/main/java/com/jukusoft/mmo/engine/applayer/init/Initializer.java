@@ -2,6 +2,7 @@ package com.jukusoft.mmo.engine.applayer.init;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.GLVersion;
+import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.jukusoft.i18n.I;
 import com.jukusoft.mmo.engine.applayer.base.BaseApp;
 import com.jukusoft.mmo.engine.shared.config.Cache;
@@ -21,6 +22,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Initializer implements Runnable {
@@ -31,7 +33,10 @@ public class Initializer implements Runnable {
     protected final String UPDATE_TAG = "Update";
     protected final String SERVERS_TAG = "Servers";
     protected final String SCRIPTS_TAG = "Scripts";
+    protected final String TEXTURE_PACKER_TAG = "TexturePacker";
     protected final String SR_SECTION = "SystemRequirements";
+
+    protected final CountDownLatch texturePackerLatch = new CountDownLatch(1);
 
     public Initializer (BaseApp app) {
         this.app = app;
@@ -116,9 +121,49 @@ public class Initializer implements Runnable {
         Log.i("Cache", "initialize cache: " + new File(cacheDir).getAbsolutePath());
         Cache.init(cacheDir);
 
+        Utils.printSection("Texture Packer");
+
+        if (!new File(Cache.getInstance().getCacheFilePath("assets/loading/loading.pack.atlas")).exists()) {
+            Log.i(TEXTURE_PACKER_TAG, "pack loading assets...");
+            TexturePacker.process(new TexturePacker.Settings(), FilePath.parse("{data.dir}misc/loading"), Cache.getInstance().getCachePath("assets/loading"), "loading.pack");
+        } else {
+            Log.i(TEXTURE_PACKER_TAG, "loading textures are already packed.");
+        }
+
+        Thread thread = new Thread(() -> {
+            Log.d(TEXTURE_PACKER_TAG, "started texture packer thread.");
+
+            try {
+                TexturePackerHelper.packTextures(new File(FilePath.parse("{data.dir}misc/packer/packer.json")));
+                texturePackerLatch.countDown();
+            } catch (IOException e) {
+                Log.e(TEXTURE_PACKER_TAG, "IOException in texure packer: ", e);
+                Log.shutdown();
+
+                //show exception window
+                JavaFXUtils.showExceptionDialog(I.tr("Error!"), I.tr("An error occured in texture packer thread.\nClient Engine will shutdown now.\n\nPlease contact developers and send them the following exception: "), e);
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+
+                System.exit(1);
+            }
+
+            Log.d(TEXTURE_PACKER_TAG, "texture packer thread finished.");
+        });
+        thread.start();
+
+        Utils.printSection("Init");
+
         //initialize event system
         Log.i("Events", "initialize event system");
         Events.init();
+
+        //pack textures into cache, if neccessary
+
 
         //initialize scripting engine
         Log.i(SCRIPTS_TAG, "initialize scripting engine...");
@@ -141,6 +186,16 @@ public class Initializer implements Runnable {
         long timeDiffNs = endTimeNs - startTimeNs;
         long timeDiff = endTime - startTime;
         Log.d(SCRIPTS_TAG, "init script execution took " + timeDiff + "ms (" + timeDiffNs + "ns).");
+
+        Log.d(TEXTURE_PACKER_TAG, "wait for texture packer...");
+
+        try {
+            texturePackerLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Log.i(TEXTURE_PACKER_TAG, "texture packer finished.");
     }
 
     protected void error (String content) {

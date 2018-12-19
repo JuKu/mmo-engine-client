@@ -1,0 +1,10 @@
+{
+	"packs": [
+		{
+			"title": "loading pack",
+			"source_dir": "data/icon",
+			"target_dir": "assets/loading_icons",
+			"pack_name": "test.pack"
+		}
+	]
+}

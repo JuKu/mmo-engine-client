@@ -87,6 +87,12 @@ public class CacheTest {
     }
 
     @Test
+    public void testGetCacheFilePath () {
+        Cache cache = new Cache("../temp/");
+        assertEquals("../temp/test3/test.txt", cache.getCacheFilePath("test3/test.txt"));
+    }
+
+    @Test
     public void testClear () throws IOException {
         //create test directory first
         if (!new File("../temp/junit-test/").exists()) {
