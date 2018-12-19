@@ -17,18 +17,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: file Initializer.java line 98
+#: file Initializer.java line 104
 msgid "Server Error!"
 msgstr "Server Error!"
 
+#: file Initializer.java line 132
 #: file InputLayer.java line 144
 #: file InputLayer.java line 155
+#: file Initializer.java line 192
 #: file InputLayer.java line 140
-#: file Initializer.java line 135
+#: file Initializer.java line 156
 msgid "Error!"
 msgstr "Error!"
 
-#: file Initializer.java line 173
+#: file Initializer.java line 132
+msgid "IOException while clearing cache.\nPlease contact developers with the following exception log!"
+msgstr "IOException while clearing cache.\nPlease contact developers with the following exception log!"
+
+#: file Initializer.java line 156
+msgid "An error occured in texture packer thread.\nClient Engine will shutdown now.\n\nPlease contact developers and send them the following exception: "
+msgstr "An error occured in texture packer thread.\nClient Engine will shutdown now.\n\nPlease contact developers and send them the following exception: "
+
+#: file Initializer.java line 240
 msgid "Updater"
 msgstr "Updater"
 
