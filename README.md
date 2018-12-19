@@ -55,7 +55,7 @@ mvn clean install deploy -DuniqueVersion=false
 To rebuild them, you have to clear the cache with this optional parameter:
 
 ```text
---
+-DclearCache="true"
 ```
   
 ## Build ZIP archiv
