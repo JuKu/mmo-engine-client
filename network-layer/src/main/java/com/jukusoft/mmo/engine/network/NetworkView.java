@@ -1,5 +1,6 @@
 package com.jukusoft.mmo.engine.network;
 
+import com.jukusoft.mmo.engine.network.load.FileChecker;
 import com.jukusoft.mmo.engine.shared.client.events.init.*;
 import com.jukusoft.mmo.engine.shared.client.events.load.LoadMapEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.*;
@@ -20,6 +21,7 @@ import com.jukusoft.vertx.serializer.exceptions.NetworkException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
@@ -319,6 +321,11 @@ public class NetworkView implements SubSystem {
             event.regionTitle = msg.regionTitle;
             event.setRequiredMapFiles(msg.listRequiredFiles());
             Events.queueEvent(event);
+
+            //check required map files
+            List<String> invalideFiles = FileChecker.validateFiles(msg.regionID, msg.instanceID, msg.listRequiredFiles());
+
+            //TODO: request invalide files
         });
     }
 
