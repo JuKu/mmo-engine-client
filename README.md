@@ -66,3 +66,7 @@ mvn clean install
 ```
 
 Then you can find a ZIP Archiv in directory **desktop/target** with all files required for game.
+
+## Special thanks
+
+Great thank you to **Christoph Engelbert** ([noctarius](https://blog.sourceprojects.org/)), **Daniel Ludwig** (code-disaster, [Pathway](http://pathway-game.com)) and **Mario Zechner** (badlogic) for many, many tips!
