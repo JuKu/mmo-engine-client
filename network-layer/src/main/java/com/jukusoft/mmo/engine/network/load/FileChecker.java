@@ -52,6 +52,7 @@ public class FileChecker {
             //check, if file exists in cache
             if (!new File(cachePath).exists()) {
                 Log.d(LOG_TAG, "CACHE MISS of file: " + cachePath);
+                invalideFiles.add(filePath);
             } else {
                 Log.d(LOG_TAG, "CACHE HIT of file: " + cachePath);
 
