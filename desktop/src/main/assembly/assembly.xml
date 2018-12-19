@@ -30,6 +30,9 @@
 		<fileSet>
 			<directory>../data</directory>
 			<outputDirectory>data</outputDirectory>
+			<excludes>
+				<exclude>*junit*</exclude>
+			</excludes>
 		</fileSet>
 
 		<!-- data directory -->
