@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CountDownLatch;
 
 public class LogWriter implements Runnable {
 
@@ -21,20 +22,21 @@ public class LogWriter implements Runnable {
     protected final boolean writeToFile;
 
     protected static LogListener logListener = null;
+    protected CountDownLatch shutdownLatch = null;
 
-    protected LogWriter (final File file, final ConcurrentLinkedQueue<String> loggingQueue) {
+    protected LogWriter (final File file, final ConcurrentLinkedQueue<String> loggingQueue, CountDownLatch shutdownLatch) {
         this.file = file;
         this.loggingQueue = loggingQueue;
         printToConsole = Config.getBool("Logger", "printToConsole");
         writeToFile = Config.getBool("Logger", "writeToFile");
 
-        if (!this.file.exists()) {
+        if (!this.file.exists() && writeToFile) {
             try {
                 if (!this.file.createNewFile()) {
                     throw new IllegalStateException("Cannot create new log file '" + file.getAbsolutePath() + "'! Maybe wrong file permissions?");
                 }
             } catch (IOException | IllegalStateException e) {
-                System.err.println("Exception while creating new log file: " + e.getLocalizedMessage());
+                System.err.println("Exception while creating new log file (" + this.file.getAbsolutePath() + "): " + e.getLocalizedMessage());
                 e.printStackTrace();
 
                 Log.w(LOG_WRITER_TAG, "Exception while creating new log file: ", e);
@@ -50,6 +52,8 @@ public class LogWriter implements Runnable {
                 }
             };
         }
+
+        this.shutdownLatch = shutdownLatch;
     }
 
     @Override
@@ -68,7 +72,10 @@ public class LogWriter implements Runnable {
                     try {
                         Thread.sleep(200);
                     } catch (InterruptedException e) {
-                        //dont do anything
+                        System.err.println("LogWriter thread interrupted while sleeping.");
+
+                        //we do interrupt again, because this exception clears the interrupted flag
+                        Thread.currentThread().interrupt();
                     }
                 } else {
                     str += System.lineSeparator();
@@ -81,6 +88,8 @@ public class LogWriter implements Runnable {
                     }
                 }
             }
+
+            System.err.println("LogWriter thread has interrupted.");
 
             fop.flush();
 
@@ -114,10 +123,16 @@ public class LogWriter implements Runnable {
                 System.err.println("logs are written successfully! Shutdown LogWriter thread now.");
             }
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
             Log.w(LOG_WRITER_TAG, "Couldn't found log file: " + file.getAbsolutePath(), e);
         } catch (IOException e) {
+            e.printStackTrace();
             Log.w(LOG_WRITER_TAG, "IOException while write to log file: " + file.getAbsolutePath(), e);
+        } finally {
+            shutdownLatch.countDown();
         }
+
+        System.err.println("LogWriter shutdown.");
     }
 
     public static void attachListener (LogListener listener) {

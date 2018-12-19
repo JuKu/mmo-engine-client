@@ -10,6 +10,8 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class Log extends ScriptableObject {
 
@@ -65,6 +67,8 @@ public class Log extends ScriptableObject {
 
     protected static final String LOGGER_TAG = "Logger";
 
+    protected static final CountDownLatch shutdownLatch = new CountDownLatch(1);
+
     public static void init () {
         Log.enabled = Config.getBool(LOGGER_TAG, "enabled");
         Log.printToConsole = Config.getBool(LOGGER_TAG, "printToConsole");
@@ -79,7 +83,7 @@ public class Log extends ScriptableObject {
 
             File file = new File(filePath);
 
-            logWriter = new LogWriter(file, loggingQueue);
+            logWriter = new LogWriter(file, loggingQueue, shutdownLatch);
             logWriterThread = new Thread(logWriter);
             logWriterThread.setPriority(Thread.MIN_PRIORITY);
 
@@ -228,6 +232,12 @@ public class Log extends ScriptableObject {
 
     public static void shutdown () {
         logWriterThread.interrupt();
+
+        try {
+            shutdownLatch.await(1000l, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
