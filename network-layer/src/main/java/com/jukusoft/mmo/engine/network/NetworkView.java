@@ -330,10 +330,17 @@ public class NetworkView implements SubSystem {
             List<String> invalideFiles = FileChecker.validateFiles(msg.regionID, msg.instanceID, msg.listRequiredFiles());
             this.filesToDownload = invalideFiles;
 
+            if (filesToDownload.isEmpty()) {
+                Log.d(LOG_TAG, "all region files are up to date.");
+                //TODO: don't request any files, load region instead
+                return;
+            }
+
             //request invalide files to download
+            Log.d(LOG_TAG, "request " + invalideFiles.size() + " invalide files.");
             DownloadRegionFilesRequest request = Pools.get(DownloadRegionFilesRequest.class);
             request.addFiles(invalideFiles);
-            conn.send(request);
+            netClient.send(request);
         });
     }
 
