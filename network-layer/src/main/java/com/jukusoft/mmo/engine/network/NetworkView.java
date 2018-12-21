@@ -37,6 +37,9 @@ public class NetworkView implements SubSystem {
     protected AtomicBoolean rttMsgReceived = new AtomicBoolean(true);
     protected AtomicLong lastRttTime = new AtomicLong(0);
 
+    //list with all files to download before entering game world
+    protected List<String> filesToDownload = null;
+
     @Override
     public void onInit() {
         Log.i(LOG_TAG, "initialize network layer.");
@@ -177,6 +180,7 @@ public class NetworkView implements SubSystem {
         TypeLookup.register(EnterGameWorldRequest.class);
         TypeLookup.register(EnterGameWorldResponse.class);
         TypeLookup.register(LoadMapResponse.class);
+        TypeLookup.register(DownloadRegionFilesRequest.class);
 
         //register message listeners
         this.netClient.handlers().register(PublicKeyResponse.class, (MessageHandler<PublicKeyResponse, RemoteConnection>) (msg, conn) -> {
@@ -324,8 +328,12 @@ public class NetworkView implements SubSystem {
 
             //check required map files
             List<String> invalideFiles = FileChecker.validateFiles(msg.regionID, msg.instanceID, msg.listRequiredFiles());
+            this.filesToDownload = invalideFiles;
 
-            //TODO: request invalide files
+            //request invalide files to download
+            DownloadRegionFilesRequest request = Pools.get(DownloadRegionFilesRequest.class);
+            request.addFiles(invalideFiles);
+            conn.send(request);
         });
     }
 
