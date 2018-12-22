@@ -4,6 +4,7 @@ import com.jukusoft.mmo.engine.network.load.FileChecker;
 import com.jukusoft.mmo.engine.shared.client.events.init.*;
 import com.jukusoft.mmo.engine.shared.client.events.load.LoadMapEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.*;
+import com.jukusoft.mmo.engine.shared.config.Cache;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
 import com.jukusoft.mmo.engine.shared.logger.Log;
@@ -21,6 +22,7 @@ import com.jukusoft.vertx.serializer.exceptions.NetworkException;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -342,6 +344,36 @@ public class NetworkView implements SubSystem {
             DownloadRegionFilesRequest request = Pools.get(DownloadRegionFilesRequest.class);
             request.addFiles(invalideFiles);
             netClient.send(request);
+        });
+
+        this.netClient.handlers().register(DownloadRegionFileResponse.class, (MessageHandler<DownloadRegionFileResponse, RemoteConnection>) (msg, conn) -> {
+            String localPath = Cache.getInstance().getCacheFilePath("maps/region_" + msg.regionID + "_" + msg.instanceID + "/" + msg.filePath);
+            Log.v(LOG_TAG, "region cache file received: " + msg.filePath + ", save to file " + localPath + " (" + msg.content.length() + " bytes)");
+
+            //create directory if neccessary
+            File file = new File(localPath);
+
+            if (!file.getParentFile().exists()) {
+                Log.v(LOG_TAG, "create region cache directory: " + file.getParentFile().getAbsolutePath());
+                file.getParentFile().mkdirs();
+            }
+
+            //write buffer to file
+            ((TCPClient) netClient).getVertx().fileSystem().writeFile(localPath, msg.content, res -> {
+                if (res.succeeded()) {
+                    Log.d(LOG_TAG, "wrote received region file to cache: " + localPath);
+
+                    //remove file path from list
+                    filesToDownload.remove(msg.filePath);
+
+                    //check, if all files received
+                    if (filesToDownload.isEmpty()) {
+                        Log.i(LOG_TAG, "all required region files received.");
+                    }
+                } else {
+                    Log.w(LOG_TAG, "Coulnd't write region file to cache: " + localPath + ", cause: " + res.cause().getMessage());
+                }
+            });
         });
     }
 
