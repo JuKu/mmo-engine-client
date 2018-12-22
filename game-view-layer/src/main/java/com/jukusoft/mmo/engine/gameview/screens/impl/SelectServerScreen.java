@@ -129,6 +129,7 @@ public class SelectServerScreen implements IScreen {
 
                     button.setDisabled(true);
                     button.setText("Connecting...");
+                    Log.d("Connect", "SelectServerScreen tries to connect to proxy server...");
 
                     //add listener for connection established successful event
                     Events.addListener(Events.UI_THREAD, ClientEvents.CONNECTION_ESTABLISHED, eventData -> {
