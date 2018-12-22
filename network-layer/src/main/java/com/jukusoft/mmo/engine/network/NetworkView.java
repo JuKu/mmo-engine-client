@@ -14,6 +14,7 @@ import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.messages.*;
+import com.jukusoft.mmo.engine.shared.region.RegionCoordinates;
 import com.jukusoft.mmo.engine.shared.utils.EncryptionUtils;
 import com.jukusoft.mmo.engine.shared.version.Version;
 import com.jukusoft.vertx.connection.clientserver.*;
@@ -41,6 +42,8 @@ public class NetworkView implements SubSystem {
 
     //list with all files to download before entering game world
     protected List<String> filesToDownload = null;
+
+    protected RegionCoordinates currentRegion = new RegionCoordinates(0, 0);
 
     @Override
     public void onInit() {
@@ -321,6 +324,9 @@ public class NetworkView implements SubSystem {
         this.netClient.handlers().register(LoadMapResponse.class, (MessageHandler<LoadMapResponse, RemoteConnection>) (msg, conn) -> {
             Log.i(LOG_TAG, "received LoadMapResponse.");
 
+            //set current region coordinates
+            this.currentRegion.set(msg.regionID, msg.instanceID);
+
             //fire event
             LoadMapEvent event = Pools.get(LoadMapEvent.class);
             event.regionID = msg.regionID;
@@ -335,8 +341,9 @@ public class NetworkView implements SubSystem {
 
             if (filesToDownload.isEmpty()) {
                 Log.d(LOG_TAG, "all region files are up to date.");
-                //TODO: don't request any files, load region instead
-                return;
+
+                //don't request any files, load region instead
+                this.allRegionFilesReceived();
             }
 
             //request invalide files to download
@@ -369,6 +376,7 @@ public class NetworkView implements SubSystem {
                     //check, if all files received
                     if (filesToDownload.isEmpty()) {
                         Log.i(LOG_TAG, "all required region files received.");
+                        this.allRegionFilesReceived();
                     }
                 } else {
                     Log.w(LOG_TAG, "Coulnd't write region file to cache: " + localPath + ", cause: " + res.cause().getMessage());
@@ -403,6 +411,12 @@ public class NetworkView implements SubSystem {
     public void onGameloop() {
         //get events and execute listeners
         Events.update(Events.NETWORK_THREAD, 100);
+    }
+
+    protected void allRegionFilesReceived () {
+        Log.i(LOG_TAG, "all cached region files are available, start syncing current game state.");
+
+        //TODO: add code here
     }
 
     @Override

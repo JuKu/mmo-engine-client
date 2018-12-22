@@ -35,6 +35,10 @@ public class Pools {
     }
 
     public static <T> void free (T obj) {
+        if (obj instanceof Pool.Poolable) {
+            ((Pool.Poolable) obj).reset();
+        }
+
         Pool<T> pool = (Pool<T>) org.mini2Dx.gdx.utils.Pools.get(obj.getClass());
         pool.free(obj);
     }
