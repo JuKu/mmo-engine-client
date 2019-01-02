@@ -187,6 +187,7 @@ public class NetworkView implements SubSystem {
         TypeLookup.register(LoadMapResponse.class);
         TypeLookup.register(DownloadRegionFilesRequest.class);
         TypeLookup.register(DownloadRegionFileResponse.class);
+        TypeLookup.register(StartSyncGameStateResponse.class);
 
         //register message listeners
         this.netClient.handlers().register(PublicKeyResponse.class, (MessageHandler<PublicKeyResponse, RemoteConnection>) (msg, conn) -> {
@@ -383,6 +384,12 @@ public class NetworkView implements SubSystem {
                 }
             });
         });
+
+        this.netClient.handlers().register(StartSyncGameStateResponse.class, (MessageHandler<StartSyncGameStateResponse, RemoteConnection>) (msg, conn) -> {
+            Log.i(LOG_TAG, "received StartSyncGameStateResponse message, load map now.");
+
+            //TODO: throw event
+        });
     }
 
     /**
@@ -416,7 +423,9 @@ public class NetworkView implements SubSystem {
     protected void allRegionFilesReceived () {
         Log.i(LOG_TAG, "all cached region files are available, start syncing current game state.");
 
-        //TODO: add code here
+        //send start sync message to gameserver
+        StartSyncGameStateRequest request = Pools.get(StartSyncGameStateRequest.class);
+        this.netClient.send(request);
     }
 
     @Override
