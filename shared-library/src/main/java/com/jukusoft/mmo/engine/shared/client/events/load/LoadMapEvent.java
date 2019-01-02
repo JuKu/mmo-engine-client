@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
-* event which is fired if gameserver sends a LoadMapResponse message with region to load
+* event which is fired if gameserver sends a LoadMapResponse message with region to sync map files
 */
 public class LoadMapEvent extends EventData {
 

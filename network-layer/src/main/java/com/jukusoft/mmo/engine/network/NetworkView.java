@@ -3,6 +3,7 @@ package com.jukusoft.mmo.engine.network;
 import com.jukusoft.mmo.engine.network.load.FileChecker;
 import com.jukusoft.mmo.engine.shared.client.events.init.*;
 import com.jukusoft.mmo.engine.shared.client.events.load.LoadMapEvent;
+import com.jukusoft.mmo.engine.shared.client.events.load.ReceivedAllMapSpecificDataEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.*;
 import com.jukusoft.mmo.engine.shared.config.Cache;
 import com.jukusoft.mmo.engine.shared.config.Config;
@@ -42,6 +43,9 @@ public class NetworkView implements SubSystem {
 
     //list with all files to download before entering game world
     protected List<String> filesToDownload = null;
+
+    //directory of current cached region files
+    protected String localRegionPath = "";
 
     protected RegionCoordinates currentRegion = new RegionCoordinates(0, 0);
 
@@ -356,6 +360,7 @@ public class NetworkView implements SubSystem {
 
         this.netClient.handlers().register(DownloadRegionFileResponse.class, (MessageHandler<DownloadRegionFileResponse, RemoteConnection>) (msg, conn) -> {
             String localPath = Cache.getInstance().getCacheFilePath("maps/region_" + msg.regionID + "_" + msg.instanceID + "/" + msg.filePath);
+            this.localRegionPath = localPath;
             Log.v(LOG_TAG, "region cache file received: " + msg.filePath + ", save to file " + localPath + " (" + msg.content.length() + " bytes)");
 
             //create directory if neccessary
@@ -388,7 +393,29 @@ public class NetworkView implements SubSystem {
         this.netClient.handlers().register(StartSyncGameStateResponse.class, (MessageHandler<StartSyncGameStateResponse, RemoteConnection>) (msg, conn) -> {
             Log.i(LOG_TAG, "received StartSyncGameStateResponse message, load map now.");
 
-            //TODO: throw event
+            //throw event to load map on game logic and renderer system
+            ReceivedAllMapSpecificDataEvent event = Pools.get(ReceivedAllMapSpecificDataEvent.class);
+            event.regionDir = this.localRegionPath;
+
+            if (!new File(event.regionDir).exists()) {
+                Log.e(LOG_TAG, "cached region directory doesn't exists: " + event.regionDir);
+                throw new IllegalStateException("cached region directory doesn't exists: " + event.regionDir);
+            }
+
+            if (!new File(event.regionDir).isDirectory()) {
+                Log.e(LOG_TAG, "cached region path isn't a directory: " + event.regionDir);
+                throw new IllegalStateException("cached region path isn't a directory: " + event.regionDir);
+            }
+
+            event.posX = msg.posX;
+            event.posY = msg.posY;
+            event.posZ = msg.posZ;
+            event.currentServerTime = msg.currentServerTime;
+            event.staticObjects = msg.staticObjects;
+            event.currentGameWorldData = msg.currentGameWorldData;
+
+            //fire event
+            Events.queueEvent(event);
         });
     }
 

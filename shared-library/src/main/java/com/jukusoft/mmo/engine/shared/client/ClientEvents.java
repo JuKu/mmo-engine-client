@@ -20,7 +20,8 @@ public enum ClientEvents {
     ENTER_GAME_WORLD(16),
     ENTERED_GAME_WORLD(17),
     ALL_SUBSYSTEMS_READY(18),
-    LOAD_MAP(19);
+    LOAD_MAP(19),
+    ALL_MAP_SPECIFIC_DATA_RECEIVED(20);
 
     private final int id;
 
