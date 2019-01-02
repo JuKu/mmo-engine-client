@@ -340,6 +340,8 @@ public class NetworkView implements SubSystem {
             event.setRequiredMapFiles(msg.listRequiredFiles());
             Events.queueEvent(event);
 
+            long startTime = System.currentTimeMillis();
+
             //check required map files
             List<String> invalideFiles = FileChecker.validateFiles(msg.regionID, msg.instanceID, msg.listRequiredFiles());
             this.filesToDownload = invalideFiles;
@@ -350,6 +352,10 @@ public class NetworkView implements SubSystem {
                 //don't request any files, load region instead
                 this.allRegionFilesReceived();
             }
+
+            long endTime = System.currentTimeMillis();
+            long timeDiff = endTime - startTime;
+            Log.v(LOG_TAG, "validating of region files takes " + timeDiff + "ms");
 
             //request invalide files to download
             Log.d(LOG_TAG, "request " + invalideFiles.size() + " invalide files.");
