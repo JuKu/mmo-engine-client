@@ -360,7 +360,7 @@ public class NetworkView implements SubSystem {
 
         this.netClient.handlers().register(DownloadRegionFileResponse.class, (MessageHandler<DownloadRegionFileResponse, RemoteConnection>) (msg, conn) -> {
             String localPath = Cache.getInstance().getCacheFilePath("maps/region_" + msg.regionID + "_" + msg.instanceID + "/" + msg.filePath);
-            this.localRegionPath = localPath;
+            this.localRegionPath = Cache.getInstance().getCachePath("maps/region_" + msg.regionID + "_" + msg.instanceID);
             Log.v(LOG_TAG, "region cache file received: " + msg.filePath + ", save to file " + localPath + " (" + msg.content.length() + " bytes)");
 
             //create directory if neccessary
