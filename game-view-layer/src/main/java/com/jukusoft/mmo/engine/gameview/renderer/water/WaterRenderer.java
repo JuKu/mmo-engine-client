@@ -46,10 +46,6 @@ public class WaterRenderer implements IRenderer {
     //last frame
     protected TextureRegion lastFrame = null;
 
-    //position
-    protected float x = 0;
-    protected float y = 0;
-
     //dimension
     protected float width = 0;
     protected float height = 0;
