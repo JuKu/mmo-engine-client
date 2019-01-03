@@ -70,7 +70,7 @@ public class HashUtils {
         try {
             SHAHash = convertToHex(data);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            Log.w(LOG_TAG, "IOException while convert password byte array to hex: ", e);
             e.printStackTrace();
         }
 
@@ -92,19 +92,20 @@ public class HashUtils {
         {
             mdSha1 = MessageDigest.getInstance("SHA-512");
         } catch (NoSuchAlgorithmException e1) {
+            Log.e(LOG_TAG, "NoSuchAlgorithmException: ", e1);
             e1.printStackTrace();
         }
         try {
             mdSha1.update(password.getBytes("ASCII"));
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
+            Log.e(LOG_TAG, "UnsupportedEncodingException: ", e);
             e.printStackTrace();
         }
         byte[] data = mdSha1.digest();
         try {
             SHAHash = convertToHex(data);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            Log.w(LOG_TAG, "IOException while convert password byte array to hex: ", e);
             e.printStackTrace();
         }
 
@@ -136,9 +137,8 @@ public class HashUtils {
                 MD5Hash.append(h);
             }
 
-        }
-        catch (NoSuchAlgorithmException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(LOG_TAG, "NoSuchAlgorithmException: ", e);
             e.printStackTrace();
         }
 
