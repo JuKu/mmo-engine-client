@@ -20,8 +20,6 @@ import com.jukusoft.mmo.engine.shared.config.Cache;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 
-import java.io.File;
-
 public class LoadRegionScreen implements IScreen {
 
     protected Stage stage;
@@ -205,7 +203,7 @@ public class LoadRegionScreen implements IScreen {
 
     @Override
     public void update(ScreenManager<IScreen> screenManager) {
-
+        //
     }
 
     @Override

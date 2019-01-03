@@ -13,6 +13,8 @@ import java.util.Objects;
 
 public class Config {
 
+    protected static final String LOG_TAG = "Config";
+
     //configuration values
     protected static final ObjectObjectMap<String,String> values = new ObjectObjectHashMap<>();
 
@@ -29,7 +31,7 @@ public class Config {
     public static void load (File file, boolean skipExampleConfig) throws IOException {
         Objects.requireNonNull(file, "config file cannot be null.");
 
-        Log.i("Config", "Load Config: " + file.getAbsolutePath().replace("\\", "/"));
+        Log.i(LOG_TAG, "Load Config: " + file.getAbsolutePath().replace("\\", "/"));
 
         if (!file.exists()) {
             throw new IllegalStateException("config file '" + file.getAbsolutePath() + "' doesn't exists!");
@@ -41,7 +43,7 @@ public class Config {
 
         //skip files with ".example." and "travis" in filename
         if ((file.getName().contains(".example.") || file.getName().contains("travis")) && skipExampleConfig) {
-            Log.v("Config", "skip example config file: " + file.getAbsolutePath());
+            Log.v(LOG_TAG, "skip example config file: " + file.getAbsolutePath());
             return;
         }
 
@@ -79,7 +81,7 @@ public class Config {
             //check file ending
             if (!file.getName().endsWith(".cfg") && !file.getName().endsWith(".ini")) {
                 //its not a config file, so skip this file instance
-                Log.v("Config", "skip file: " + file.getAbsolutePath());
+                Log.v(LOG_TAG, "skip file: " + file.getAbsolutePath());
                 continue;
             }
 

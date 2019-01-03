@@ -2,12 +2,7 @@ package com.jukusoft.mmo.engine.shared.client.events.load;
 
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.events.EventData;
-import com.jukusoft.vertx.serializer.annotations.SInteger;
-import com.jukusoft.vertx.serializer.annotations.SJsonArray;
-import com.jukusoft.vertx.serializer.annotations.SString;
-import io.vertx.core.json.JsonArray;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 

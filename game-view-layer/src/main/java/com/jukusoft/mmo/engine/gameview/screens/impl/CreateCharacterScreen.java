@@ -17,7 +17,6 @@ import com.jukusoft.mmo.engine.gameview.screens.IScreen;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
 import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
-import com.jukusoft.mmo.engine.shared.client.events.init.CharacterListReceivedEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.CreateCharacterEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.CreateCharacterResponseEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
@@ -29,7 +28,6 @@ import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.messages.CreateCharacterResponse;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
-import com.jukusoft.mmo.engine.shared.utils.Platform;
 import com.jukusoft.mmo.engine.shared.version.Version;
 
 public class CreateCharacterScreen implements IScreen {
@@ -87,9 +85,7 @@ public class CreateCharacterScreen implements IScreen {
         this.stage = new Stage();
 
         //register event listener to update ping
-        Events.addListener(Events.UI_THREAD, ClientEvents.PING_CHANGED, (EventListener<PingChangedEvent>) event -> {
-            this.ping = event.ping;
-        });
+        Events.addListener(Events.UI_THREAD, ClientEvents.PING_CHANGED, (EventListener<PingChangedEvent>) event -> this.ping = event.ping);
 
         Events.addListener(Events.UI_THREAD, ClientEvents.CREATE_CHARACTER_RESPONSE, (EventListener<CreateCharacterResponseEvent>) event -> {
             CreateCharacterResponse.CREATE_CHARACTER_RESULT res = event.resultCode;
@@ -258,9 +254,6 @@ public class CreateCharacterScreen implements IScreen {
 
                 createButton.setText("Loading...");
                 createButton.setDisabled(true);
-
-                //reset loaded character slot list, because a new character will be added
-                //game.getCharacterSlots().reset();
 
                 CharacterSlot character = CharacterSlot.create(name, (maleCheckBox.isChecked() ? CharacterSlot.GENDER.MALE : CharacterSlot.GENDER.FEMALE), TEXT_DEFAULT, TEXT_DEFAULT, TEXT_DEFAULT, TEXT_DEFAULT);
 

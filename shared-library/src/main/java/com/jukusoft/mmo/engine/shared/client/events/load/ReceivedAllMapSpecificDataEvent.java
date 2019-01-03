@@ -2,11 +2,7 @@ package com.jukusoft.mmo.engine.shared.client.events.load;
 
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.events.EventData;
-import com.jukusoft.vertx.serializer.annotations.SFloat;
-import com.jukusoft.vertx.serializer.annotations.SJsonObject;
-import com.jukusoft.vertx.serializer.annotations.SLong;
 import io.vertx.core.json.JsonObject;
-import org.mini2Dx.gdx.utils.Pool;
 
 /**
 * event which is fired if map sync is ready to load map

@@ -16,24 +16,17 @@ import com.jukusoft.mmo.engine.gameview.screens.IScreen;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
 import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
-import com.jukusoft.mmo.engine.shared.client.events.init.CharacterListReceivedEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.LoginRequestEvent;
 import com.jukusoft.mmo.engine.shared.client.events.init.LoginResponseEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
-import com.jukusoft.mmo.engine.shared.events.EventData;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import com.jukusoft.mmo.engine.shared.version.Version;
-import org.ini4j.Ini;
 import org.ini4j.Profile;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class LoginScreen implements IScreen {
 
@@ -76,10 +69,6 @@ public class LoginScreen implements IScreen {
     public void onStart(ScreenManager<IScreen> screenManager) {
         this.screenManager = screenManager;
 
-        //read image paths from config
-        Profile.Section section = null;
-        Profile.Section skinSection = null;
-
         //get paths from config
         this.bgPath = FilePath.parse(Config.get(SECTION_NAME, "background"));
         this.logoPath = FilePath.parse(Config.get(SECTION_NAME, "logo"));
@@ -97,9 +86,7 @@ public class LoginScreen implements IScreen {
         this.stage = new Stage();
 
         //register event listener to update ping
-        Events.addListener(Events.UI_THREAD, ClientEvents.PING_CHANGED, (EventListener<PingChangedEvent>) event -> {
-            this.ping = event.ping;
-        });
+        Events.addListener(Events.UI_THREAD, ClientEvents.PING_CHANGED, (EventListener<PingChangedEvent>) event -> this.ping = event.ping);
     }
 
     @Override
@@ -267,16 +254,6 @@ public class LoginScreen implements IScreen {
                 screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
             }
         });
-
-        /*Events.addListener(Events.UI_THREAD, ClientEvents.CHARACTER_LIST_RECEIVED, (EventListener<CharacterListReceivedEvent>) event -> {
-            Log.i(LOG_TAG, "character list event received.");
-
-            //set slots in select character screen
-            ((SelectCharacterScreen) screenManager.getScreenByName(Screens.CHARACTER_SELECTION)).setSlots(event.slots);
-
-            //go to character selection screen
-            screenManager.leaveAllAndEnter(Screens.CHARACTER_SELECTION);
-        });*/
     }
 
     @Override
@@ -342,7 +319,6 @@ public class LoginScreen implements IScreen {
     @Override
     public void update(ScreenManager<IScreen> screenManager) {
         //set ping
-        //this.pingLabel.setText("Ping: " + game.getPing() + "");
         this.pingLabel.setText("Ping: " + this.ping + "");
 
         //set fps

@@ -12,7 +12,6 @@ import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.client.events.network.ConnectionReadyEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
-import com.jukusoft.mmo.engine.shared.events.EventData;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.network.ServerManager;
@@ -134,6 +133,7 @@ public class SelectServerScreen implements IScreen {
                     //add listener for connection established successful event
                     Events.addListener(Events.UI_THREAD, ClientEvents.CONNECTION_ESTABLISHED, eventData -> {
                         button.setText("Wait...");
+                        button.setVisible(true);
                     });
 
                     //add listener for connection failed event

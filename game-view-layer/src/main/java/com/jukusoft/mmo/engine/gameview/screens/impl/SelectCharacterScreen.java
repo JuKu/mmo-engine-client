@@ -25,7 +25,6 @@ import com.jukusoft.mmo.engine.shared.client.events.load.LoadMapEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.PingChangedEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
-import com.jukusoft.mmo.engine.shared.events.EventData;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
@@ -102,9 +101,7 @@ public class SelectCharacterScreen implements IScreen {
         this.stage = new Stage();
 
         //register event listener to update ping
-        Events.addListener(Events.UI_THREAD, ClientEvents.PING_CHANGED, (EventListener<PingChangedEvent>) event -> {
-            this.ping = event.ping;
-        });
+        Events.addListener(Events.UI_THREAD, ClientEvents.PING_CHANGED, (EventListener<PingChangedEvent>) event -> this.ping = event.ping);
 
         Events.addListener(Events.UI_THREAD, ClientEvents.CHARACTER_LIST_RECEIVED, (EventListener<CharacterListReceivedEvent>) event -> {
             Log.i(LOGIN_TAG, "character list event received.");
@@ -295,27 +292,27 @@ public class SelectCharacterScreen implements IScreen {
 
         for (int i = 0; i < MAX_CHARACTER_SLOTS; i++) {
             Drawable drawable = new TextureRegionDrawable(new TextureRegion(this.slotBG, this.slotBG.getWidth(), this.slotBG.getHeight()));
-            Drawable drawable_hover = new TextureRegionDrawable(new TextureRegion(this.slotBGHover, this.slotBG.getWidth(), this.slotBG.getHeight()));
+            Drawable drawableHover = new TextureRegionDrawable(new TextureRegion(this.slotBGHover, this.slotBG.getWidth(), this.slotBG.getHeight()));
 
             if (slots[i] == null) {
                 //slot is empty
                 drawable = new TextureRegionDrawable(new TextureRegion(this.newSlotBG, this.newSlotBG.getWidth(), this.newSlotBG.getHeight()));
-                drawable_hover = new TextureRegionDrawable(new TextureRegion(this.newSlotHoverBG, this.newSlotBG.getWidth(), this.newSlotBG.getHeight()));
+                drawableHover = new TextureRegionDrawable(new TextureRegion(this.newSlotHoverBG, this.newSlotBG.getWidth(), this.newSlotBG.getHeight()));
 
-                ImageButton btn = new ImageButton(drawable, drawable_hover, drawable_hover);
-                btn.getStyle().over = drawable_hover;
-                btn.getStyle().imageOver = drawable_hover;
-                btn.getStyle().checkedOver = drawable_hover;
-                btn.getStyle().imageCheckedOver = drawable_hover;
+                ImageButton btn = new ImageButton(drawable, drawableHover, drawableHover);
+                btn.getStyle().over = drawableHover;
+                btn.getStyle().imageOver = drawableHover;
+                btn.getStyle().checkedOver = drawableHover;
+                btn.getStyle().imageCheckedOver = drawableHover;
 
                 this.slots[i] = btn;
             } else {
                 TextButton btn = new TextButton(slots[i].getName(), this.skin);
                 btn.getStyle().up = drawable;
-                btn.getStyle().down = drawable_hover;
-                btn.getStyle().over = drawable_hover;
-                btn.getStyle().checked = drawable_hover;
-                btn.getStyle().checkedOver = drawable_hover;
+                btn.getStyle().down = drawableHover;
+                btn.getStyle().over = drawableHover;
+                btn.getStyle().checked = drawableHover;
+                btn.getStyle().checkedOver = drawableHover;
 
                 btn.setWidth(this.slotBG.getWidth());
                 btn.setHeight(this.slotBG.getHeight());
@@ -339,7 +336,7 @@ public class SelectCharacterScreen implements IScreen {
                 this.slots[i].addListener(new ClickListener() {
                     @Override
                     public void clicked (InputEvent event, float x, float y) {
-                        Log.v("SelectCharacter", "select character button clicked.");
+                        Log.v(SECTION_NAME, "select character button clicked.");
 
                         //disable button and set text
                         ((TextButton) SelectCharacterScreen.this.slots[slotID]).setText("Wait...");
@@ -356,36 +353,6 @@ public class SelectCharacterScreen implements IScreen {
                                 (SelectCharacterScreen.this.slots[i]).setVisible(false);
                             }
                         }
-
-                        //select character
-                        /*game.getCharacterSlots().selectCharacterSlot(slots[slotID], res -> {
-                            if (res) {
-                                LocalLogger.print("character selected successfully.");
-
-                                //go to loading region screen
-                                //Platform.runOnUIThread(() -> screenManager.leaveAllAndEnter(Screens.LOAD_REGION));
-
-                                Platform.runOnUIThread(() -> {
-                                    //hide all buttons, except selected region
-
-                                    for (int i = 0; i < SelectCharacterScreen.this.slots.length; i++) {
-                                        if (i != slotID) {
-                                            //hide button
-                                            SelectCharacterScreen.this.slots[i].setVisible(false);
-                                        }
-                                    }
-
-                                    SelectCharacterScreen.this.slots[slotID].setDisabled(true);
-
-                                    if (SelectCharacterScreen.this.slots[slotID] instanceof TextButton) {
-                                        TextButton btn1 = (TextButton) SelectCharacterScreen.this.slots[slotID];
-                                        btn1.setText("Loading...");
-                                    }
-                                });
-                            } else {
-                                LocalLogger.warn("Cannot select character slot " + slotID);
-                            }
-                        });*/
                     }
                 });
             }

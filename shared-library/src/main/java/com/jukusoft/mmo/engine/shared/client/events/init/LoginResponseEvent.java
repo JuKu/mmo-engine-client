@@ -28,8 +28,6 @@ public class LoginResponseEvent extends EventData {
 
     public LOGIN_RESPONSE loginResponse = null;
 
-    //public String username = "Guest";
-
     @Override
     public int getEventType() {
         return ClientEvents.LOGIN_RESPONSE.getID();
