@@ -234,7 +234,10 @@ public class Log extends ScriptableObject {
         logWriterThread.interrupt();
 
         try {
-            shutdownLatch.await(1000l, TimeUnit.MILLISECONDS);
+            if (!shutdownLatch.await(1000l, TimeUnit.MILLISECONDS)) {
+                System.err.println("[Log] Coulnd't wait for log shutdown, the latch waiting time elapsed before the count reached zero.");
+                throw new IllegalStateException("Coulnd't wait for log shutdown, the latch waiting time elapsed before the count reached zero.");
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
