@@ -67,6 +67,23 @@ mvn clean install
 
 Then you can find a ZIP Archiv in directory **desktop/target** with all files required for game.
 
+## Z-Level
+
+Finally a little not about the **z-level**. By default, 2D games have only two axes: x and y.\
+But maybe you also want to support a "render order" or even floors and underground tunnels.\
+Then you need a **render order** and a specific system of layers to hide or show.\
+I have introduced a z-level system as follows:\
+\
+**Every** tmx layer requires a **z-level**. Else the client cannot load them.\
+Additionally, you have to make the render order in tiled, so it's already right in tmx format.\
+Next all your layers get a z-level like this: **floor.renderOrder**\
+The player is rendered on z-level **1.5** by default.\
+\
+For **example**:\
+z-level "1.0" is the **ground floor** and "2.0" is the second floor.\
+If you want to introduce a layer with street lights whose lamps should hanging over the player, you need a z-level "1.6".\
+But **attention**! If the player is in second floor, the lamp will not be rendered!
+
 ## Special thanks
 
 Great thank you to **Christoph Engelbert** ([noctarius](https://blog.sourceprojects.org/)), **Daniel Ludwig** (code-disaster, [Pathway](http://pathway-game.com)) and **Mario Zechner** (badlogic) for many, many tips!
