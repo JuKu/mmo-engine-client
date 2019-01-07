@@ -104,6 +104,9 @@
 		<!-- javascript rhino engine -->
 		<js.rhino.version>1.7.10</js.rhino.version>
 
+		<!-- dom4j parser to parse .tmx tiled format -->
+		<dom4j.version>2.1.1</dom4j.version>
+
 		<!-- don't deploy all modules to maven central, only shared-commons-library -->
 		<!-- <maven.deploy.skip>true</maven.deploy.skip> -->
 		<maven.deploy.skip>false</maven.deploy.skip>
