@@ -59,6 +59,13 @@
 			<artifactId>rhino</artifactId>
 			<version>${js.rhino.version}</version>
 		</dependency>
+
+		<!-- dom4j xml parser to parse .tmx tiled format -->
+		<dependency>
+			<groupId>org.dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>${dom4j.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
