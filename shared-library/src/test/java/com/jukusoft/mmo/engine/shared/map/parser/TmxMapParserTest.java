@@ -5,6 +5,9 @@ import org.junit.Test;
 
 import java.io.File;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 public class TmxMapParserTest {
 
     @Test
@@ -33,8 +36,19 @@ public class TmxMapParserTest {
     }
 
     @Test
+    public void testIsSupportedVersion () {
+        assertEquals(false, TmxMapParser.isSupportedVersion("0"));
+        assertEquals(true, TmxMapParser.isSupportedVersion("1.0"));
+        assertEquals(true, TmxMapParser.isSupportedVersion("1.1"));
+        assertEquals(true, TmxMapParser.isSupportedVersion("1.2"));
+        assertEquals(false, TmxMapParser.isSupportedVersion("1.3"));
+        assertEquals(false, TmxMapParser.isSupportedVersion("10.0"));
+    }
+
+    @Test
     public void testParse () throws TiledParserException {
         TiledMap tiledMap = TmxMapParser.parse(new File("../data/junit/tmx-parser/testmap.tmx"));
+        assertNotNull(tiledMap);
     }
 
 }
