@@ -51,7 +51,7 @@ public class TmxMapParser {
 
         String tmxDir = tmxFile.getParent().replace("\\", "/") + "/";
 
-        return TmxParser.parse(rootElement, tmxDir);
+        return TmxParser.parse(doc, rootElement, tmxDir);
     }
 
     protected static Document getDoc(File file) throws DocumentException {
@@ -60,6 +60,8 @@ public class TmxMapParser {
     }
 
     protected static boolean isSupportedVersion (String version) {
+        Objects.requireNonNull(version);
+
         for (String supportedVersion : SUPPORTED_TMX_VERSIONS) {
             if (supportedVersion.equals(version)) {
                 return true;

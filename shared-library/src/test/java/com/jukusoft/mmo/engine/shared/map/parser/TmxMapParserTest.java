@@ -40,6 +40,11 @@ public class TmxMapParserTest {
         TmxMapParser.parse(new File("../data/junit/tmx-parser/testmap-unsupported-renderorder.tmx"));
     }
 
+    @Test (expected = IllegalArgumentException.class)
+    public void testParseMapWithoutTilesets () throws TiledParserException {
+        TmxMapParser.parse(new File("../data/junit/tmx-parser/testmap-without-tilesets.tmx"));
+    }
+
     @Test
     public void testIsSupportedVersion () {
         assertEquals(false, TmxMapParser.isSupportedVersion("0"));

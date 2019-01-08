@@ -66,6 +66,13 @@
 			<artifactId>dom4j</artifactId>
 			<version>${dom4j.version}</version>
 		</dependency>
+
+		<!-- jaxen, to avoid exception on dom4j -->
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>${jaxen.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
