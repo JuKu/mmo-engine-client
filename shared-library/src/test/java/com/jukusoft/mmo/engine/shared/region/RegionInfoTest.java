@@ -15,7 +15,7 @@ public class RegionInfoTest {
     @Test
     public void testLoad () throws IOException {
         RegionInfo regionInfo = new RegionInfo();
-        regionInfo.load(new File(""));
+        regionInfo.load(new File("../data/junit/regions/region.json"));
     }
 
 }
