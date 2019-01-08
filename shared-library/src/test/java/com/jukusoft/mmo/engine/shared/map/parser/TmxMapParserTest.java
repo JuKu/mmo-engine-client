@@ -35,6 +35,11 @@ public class TmxMapParserTest {
         TmxMapParser.parse(new File("../data/junit/tmx-parser/testmap-unsupported-version.tmx"));
     }
 
+    @Test (expected = UnsupportedOperationException.class)
+    public void testParseUnsupportedRenderOrder () throws TiledParserException {
+        TmxMapParser.parse(new File("../data/junit/tmx-parser/testmap-unsupported-renderorder.tmx"));
+    }
+
     @Test
     public void testIsSupportedVersion () {
         assertEquals(false, TmxMapParser.isSupportedVersion("0"));
