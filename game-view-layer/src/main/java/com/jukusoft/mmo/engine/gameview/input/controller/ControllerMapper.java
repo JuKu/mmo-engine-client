@@ -2,10 +2,10 @@ package com.jukusoft.mmo.engine.gameview.input.controller;
 
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.logger.Log;
+import com.jukusoft.mmo.engine.shared.utils.MathUtils;
 import com.jukusoft.mmo.engine.shared.utils.PlatformUtils;
 import org.ini4j.Ini;
 import org.ini4j.Profile;
@@ -126,14 +126,12 @@ public class ControllerMapper extends ControllerAdapter {
     @Override
     public boolean axisMoved (Controller controller, int axisIndex, float value) {
         //correct value, because controller doesn't return 0
-        if (Math.abs(MathUtils.roundPositive(value)) == 0) {
-            value = 0;
-        }
+        value = MathUtils.round3Digits(value);
 
         if (axisIndex == L_STICK_VERTICAL_AXIS) {
-            playerMoveDirection.x = value * this.invertLStickVerticalAxis;
+            playerMoveDirection.y = value * this.invertLStickVerticalAxis;
         } else if (axisIndex == L_STICK_HORIZONTAL_AXIS) {
-            playerMoveDirection.y = value * this.invertLStickHorizontalAxis;
+            playerMoveDirection.x = value * this.invertLStickHorizontalAxis;
         }
 
         return false;
