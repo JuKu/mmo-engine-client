@@ -1,6 +1,7 @@
 package com.jukusoft.mmo.engine.shared.map.parser;
 
 import com.jukusoft.mmo.engine.shared.map.Orientation;
+import com.jukusoft.mmo.engine.shared.map.TiledLayer;
 import com.jukusoft.mmo.engine.shared.map.TiledMap;
 import com.jukusoft.mmo.engine.shared.map.tileset.TextureTileset;
 import com.jukusoft.mmo.engine.shared.map.tileset.Tileset;
@@ -12,7 +13,11 @@ import org.dom4j.Node;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class TmxParser {
@@ -77,6 +82,16 @@ public class TmxParser {
         //parse tilesets
         List<Tileset> tilesets = parseTileSets(tilesetNodes, tmxDir);
         tiledMap.setTilesets(tilesets);
+
+        //get all layers
+        List<Node> layerNodes = doc.selectNodes("/map/layer");
+
+        if (layerNodes.isEmpty()) {
+            throw new IllegalArgumentException("no layer is defined in tmx map file!");
+        }
+
+        //parse layers
+        List<TiledLayer> layers = parseLayers(layerNodes);
 
         //TODO: add code here
 
@@ -158,6 +173,183 @@ public class TmxParser {
         }
 
         return list;
+    }
+
+    protected static List<TiledLayer> parseLayers (List<Node> layerNodes) throws TiledParserException {
+        List<TiledLayer> layers = new ArrayList<>();
+
+        for (Node layerNode : layerNodes) {
+            Element layerElement = (Element) layerNode;
+
+            //get name
+            String name = layerElement.attributeValue("name");
+
+            if (name == null) {
+                throw new TiledParserException("layer name is not set.");
+            }
+
+            if (name.isEmpty()) {
+                throw new TiledParserException("layer name cannot be empty.");
+            }
+
+            //get layer width & height in tiles
+            int layerWidth = Integer.parseInt(layerElement.attributeValue("width"));
+            int layerHeight = Integer.parseInt(layerElement.attributeValue("height"));
+
+            float opacity = Float.parseFloat(layerElement.attributeValue("opacity", "1"));
+            boolean visible = layerElement.attributeValue("visible", "1").equals("1");
+            float offsetx = Float.parseFloat(layerElement.attributeValue("offsetx", "0"));
+            float offsety = Float.parseFloat(layerElement.attributeValue("offsety", "0"));
+
+            //create new layer
+            TiledLayer layer = new TiledLayer(name, layerWidth, layerHeight, opacity, visible, offsetx, offsety);
+
+            //parse layer, get data element
+            Node dataNode = layerNode.selectSingleNode("data");
+
+            if (dataNode == null) {
+                throw new TiledParserException("One of layer elements doesnt have a data node.");
+            }
+
+            Element dataElement = (Element) dataNode;
+
+            //check encoding and compression
+            String encoding = dataElement.attributeValue("encoding");
+
+            //the compression used to compress the tile layer data. Tiled supports “gzip” and “zlib”.
+            String compression = dataElement.attributeValue("compression");
+
+            if (compression != null) {
+                throw new UnsupportedOperationException("tiled map compression isnt supported yet. Compression of map: " + compression);
+            }
+
+            int[] tileIDs = null;
+
+            if (encoding == null) {
+                //no encoding set, plain XML
+                tileIDs = parsePlainXMLLayer(dataElement);
+            } else if (encoding.equals("base64")) {
+                //base64 encoding
+                tileIDs = parseBase64Layer(dataElement);
+            } else {
+                throw new UnsupportedOperationException("TMX layer encoding '" + encoding + "' isnt supported yet, use plain xml or 'base64' instead.");
+            }
+
+            //set tile ids
+            layer.setTileIDs(tileIDs);
+
+            //parse properties
+            Node properties = layerElement.selectSingleNode("properties");
+
+            if (properties != null) {
+                //properties are specified
+
+                List<Node> propertyNodes = properties.selectNodes("property");
+
+                for (Node propertyNode : propertyNodes) {
+                    Element propertyElement = (Element) propertyNode;
+
+                    String key = propertyElement.attributeValue("name");
+                    String type = propertyElement.attributeValue("type", "string");
+
+                    if (key == null) {
+                        throw new TiledParserException("tiled map property doesnt contains a key.");
+                    }
+
+                    switch (type) {
+                        case "bool":
+                            layer.addBoolProperty(key, Boolean.parseBoolean(propertyElement.attributeValue("value")));
+                            break;
+
+                        case "int":
+                            layer.addIntProperty(key, Integer.parseInt(propertyElement.attributeValue("value")));
+                            break;
+
+                        case "float":
+                            layer.addFloatProperty(key, Float.parseFloat(propertyElement.attributeValue("value")));
+                            break;
+
+                        case "string":
+                            layer.addStringProperty(key, propertyElement.attributeValue("value"));
+                            break;
+
+                        default:
+                            throw new TiledParserException("Unknown property type: " + type);
+                    }
+                }
+            }
+
+            //add layer to list
+            layers.add(layer);
+        }
+
+        return layers;
+    }
+
+    /**
+     * parse data field
+     *
+     * @return int array with gid's (global tile IDs)
+     */
+    protected static int[] parsePlainXMLLayer (Element dataElement) {
+        List<Node> tileIDNodes = dataElement.selectNodes("tile");
+
+        int[] result = new int[tileIDNodes.size()];
+
+        //convert tile nodes to int array
+        for (int i = 0; i < tileIDNodes.size(); i++) {
+            Element tile = (Element) tileIDNodes.get(i);
+            result[i] = Integer.parseInt(tile.attributeValue("gid"));
+        }
+
+        return result;
+    }
+
+    /**
+     * parse data field with base64 encoding
+     *
+     * @return int array with gid's (global tile IDs)
+     */
+    protected static int[] parseBase64Layer (Element dataElement) {
+        /**
+         * from tmx map format specification:
+         *
+         * The base64-encoded and optionally compressed layer data is somewhat more complicated to parse.
+         * First you need to base64-decode it, then you may need to decompress it.
+         * Now you have an array of bytes, which should be interpreted as an array of unsigned 32-bit integers using little-endian byte ordering.
+         *
+         * @link http://docs.mapeditor.org/en/stable/reference/tmx-map-format/#tmx-data
+         */
+
+        //get byte array which should be interpreted as integers
+        byte[] decoded = Base64.getDecoder().decode(dataElement.getText());//.decodeBase64(dataElement.getText());
+
+        if (decoded.length % 4 != 0) {
+            throw new IllegalArgumentException("invalide length of base64 string.");
+        }
+
+        IntBuffer intBuffer = ByteBuffer.wrap(decoded)
+                .order(ByteOrder.LITTLE_ENDIAN)
+                .asIntBuffer();
+
+        int[] result = new int[decoded.length / 4];
+
+        /**
+         * Whatever format you choose for your layer data, you will always end up with so called “global tile IDs” (gids).
+         * They are global, since they may refer to a tile from any of the tilesets used by the map.
+         * In order to find out from which tileset the tile is you need to find the tileset with the highest firstgid
+         * that is still lower or equal than the gid. The tilesets are always stored with increasing firstgids.
+         *
+         * @link http://docs.mapeditor.org/en/stable/reference/tmx-map-format/#tmx-data
+         */
+        for (int i = 0; i < intBuffer.limit(); i++) {
+            int gid = intBuffer.get(i);
+
+            //convert int buffer to int array
+            result[i] = gid;
+        }
+
+        return result;
     }
 
 }
