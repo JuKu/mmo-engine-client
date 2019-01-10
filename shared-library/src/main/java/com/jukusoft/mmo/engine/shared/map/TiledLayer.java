@@ -1,5 +1,7 @@
 package com.jukusoft.mmo.engine.shared.map;
 
+import java.util.Objects;
+
 public class TiledLayer {
 
     protected String name = "";
@@ -21,6 +23,8 @@ public class TiledLayer {
      * @param height layer height in tiles
     */
     public TiledLayer(String name, int width, int height, float opacity, boolean visible, float offsetx, float offsety) {
+        Objects.requireNonNull(name);
+
         this.name = name;
         this.width = width;
         this.height = height;
