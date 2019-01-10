@@ -322,7 +322,7 @@ public class TmxParser {
          */
 
         //get byte array which should be interpreted as integers
-        byte[] decoded = Base64.getDecoder().decode(dataElement.getText());//.decodeBase64(dataElement.getText());
+        byte[] decoded = Base64.getDecoder().decode(dataElement.getText().trim());//.decodeBase64(dataElement.getText());
 
         if (decoded.length % 4 != 0) {
             throw new IllegalArgumentException("invalide length of base64 string.");
