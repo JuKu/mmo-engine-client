@@ -30,6 +30,17 @@ public class ConfigTest {
         assertEquals(1.2f, Config.getFloat("Logger", "testFloat"), 0.0001f);
     }
 
+    @Test (expected = IllegalStateException.class)
+    public void testLoadDirAsFile () throws IOException {
+        Config.load(new File("../config/"));
+    }
+
+    @Test
+    public void testLoadExampleConfig () throws IOException {
+        Config.load(new File("../data/junit/exampleconfig/test.example.cfg"), true);
+        Config.load(new File("../data/junit/exampleconfig/test.travis.cfg"), true);
+    }
+
     /*@Test
     public void testLoadFileHandle () throws IOException {
         Config.load(new FileHandle("../config/junit-logger.cfg"));
