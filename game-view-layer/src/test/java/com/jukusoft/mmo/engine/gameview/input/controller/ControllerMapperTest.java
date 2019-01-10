@@ -38,6 +38,8 @@ public class ControllerMapperTest {
 
     @Test
     public void testAxisMoved () throws IOException {
+        Config.load(new File("../data/config/controller.cfg"));
+
         Vector3 vec = new Vector3(0, 0, 0);
 
         ControllerMapper mapper = new ControllerMapper(vec, new File("../data/input/mappings/xbox_controller.ini"));
@@ -83,6 +85,64 @@ public class ControllerMapperTest {
         mapper.axisMoved(Mockito.mock(Controller.class), mapper.L_STICK_VERTICAL_AXIS, 0.00001f);
         assertEquals(0, vec.x, 0.000000001f);
         assertEquals(0, vec.y, 0.000000001f);
+
+        //move unknown axis
+        mapper.axisMoved(Mockito.mock(Controller.class), 200, 0.00001f);
+    }
+
+    @Test
+    public void testInvertedAxisMoved () throws IOException {
+        Config.load(new File("../data/junit/controller/controller.cfg"));
+
+        Vector3 vec = new Vector3(0, 0, 0);
+
+        ControllerMapper mapper = new ControllerMapper(vec, new File("../data/input/mappings/xbox_controller.ini"));
+        assertEquals(0, vec.x, 0.0001f);
+        assertEquals(0, vec.y, 0.0001f);
+
+        //move axis
+        mapper.axisMoved(Mockito.mock(Controller.class), mapper.L_STICK_HORIZONTAL_AXIS, 0.01f);
+        assertEquals(-0.01f, vec.x, 0.0001f);
+        assertEquals(0, vec.y, 0.0001f);
+
+        //move axis
+        mapper.axisMoved(Mockito.mock(Controller.class), mapper.L_STICK_HORIZONTAL_AXIS, -1f);
+        assertEquals(1, vec.x, 0.0001f);
+        assertEquals(0, vec.y, 0.0001f);
+
+        //move axis
+        mapper.axisMoved(Mockito.mock(Controller.class), mapper.L_STICK_HORIZONTAL_AXIS, 1f);
+        assertEquals(-1, vec.x, 0.0001f);
+        assertEquals(0, vec.y, 0.0001f);
+
+        //controller null value
+        mapper.axisMoved(Mockito.mock(Controller.class), mapper.L_STICK_HORIZONTAL_AXIS, 0.00001f);
+        assertEquals(0, vec.x, 0.000000001f);
+        assertEquals(0, vec.y, 0.000000001f);
+
+        //move axis (horizontal)
+        mapper.axisMoved(Mockito.mock(Controller.class), mapper.L_STICK_VERTICAL_AXIS, 0.01f);
+        assertEquals(0, vec.x, 0.0001f);
+        assertEquals(-0.01f, vec.y, 0.0001f);
+
+        //move axis
+        mapper.axisMoved(Mockito.mock(Controller.class), mapper.L_STICK_VERTICAL_AXIS, -1f);
+        assertEquals(0, vec.x, 0.0001f);
+        assertEquals(1, vec.y, 0.0001f);
+
+        //move axis
+        mapper.axisMoved(Mockito.mock(Controller.class), mapper.L_STICK_VERTICAL_AXIS, 1f);
+        assertEquals(0, vec.x, 0.0001f);
+        assertEquals(-1, vec.y, 0.0001f);
+
+        //controller null value
+        mapper.axisMoved(Mockito.mock(Controller.class), mapper.L_STICK_VERTICAL_AXIS, 0.00001f);
+        assertEquals(0, vec.x, 0.000000001f);
+        assertEquals(0, vec.y, 0.000000001f);
+
+        //move unknown axis
+        mapper.axisMoved(Mockito.mock(Controller.class), 200, 0.00001f);
+
     }
 
     @Test
