@@ -88,6 +88,8 @@ public class HashUtils {
         } catch (NoSuchAlgorithmException e1) {
             Log.e(LOG_TAG, "NoSuchAlgorithmException: ", e1);
             e1.printStackTrace();
+
+            throw new IllegalStateException("encryption algorithm isn't available: ", e1);
         }
 
         mdSha1.update(password.getBytes(StandardCharsets.US_ASCII));
