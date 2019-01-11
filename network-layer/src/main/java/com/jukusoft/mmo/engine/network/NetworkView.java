@@ -4,6 +4,8 @@ import com.jukusoft.mmo.engine.network.load.FileChecker;
 import com.jukusoft.mmo.engine.shared.client.events.init.*;
 import com.jukusoft.mmo.engine.shared.client.events.load.LoadMapEvent;
 import com.jukusoft.mmo.engine.shared.client.events.load.ReceivedAllMapSpecificDataEvent;
+import com.jukusoft.mmo.engine.shared.client.events.load.ready.GameLogicLayerReadyEvent;
+import com.jukusoft.mmo.engine.shared.client.events.load.ready.GameViewLayerReadyEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.*;
 import com.jukusoft.mmo.engine.shared.config.Cache;
 import com.jukusoft.mmo.engine.shared.config.Config;
@@ -49,6 +51,10 @@ public class NetworkView implements SubSystem {
     protected String localRegionPath = "";
 
     protected RegionCoordinates currentRegion = new RegionCoordinates(0, 0);
+
+    //ready states
+    protected boolean gameLogicLayerReady = false;
+    protected boolean gameViewLayerReady = false;
 
     @Override
     public void onInit() {
@@ -174,6 +180,26 @@ public class NetworkView implements SubSystem {
             EnterGameWorldRequest request = Pools.get(EnterGameWorldRequest.class);
             request.cid = event.cid;
             this.netClient.send(request);
+        });
+
+        Events.addListener(Events.NETWORK_THREAD, ClientEvents.GAME_LOGIC_LAYER_READY, (EventListener<GameLogicLayerReadyEvent>) eventData -> {
+            Log.i(LOG_TAG, "game logic layer is ready to play.");
+            this.gameLogicLayerReady = true;
+
+            //is game view layer also ready? Then wen can start playing
+            if (this.gameViewLayerReady) {
+                startPlay();
+            }
+        });
+
+        Events.addListener(Events.NETWORK_THREAD, ClientEvents.GAME_VIEW_LAYER_READY, (EventListener<GameViewLayerReadyEvent>) eventData -> {
+            Log.i(LOG_TAG, "game view layer is ready to play.");
+            this.gameViewLayerReady = true;
+
+            //is game logic layer also ready? Then wen can start playing
+            if (this.gameLogicLayerReady) {
+                startPlay();
+            }
         });
 
         //register message types first
@@ -460,6 +486,21 @@ public class NetworkView implements SubSystem {
         //send start sync message to gameserver
         StartSyncGameStateRequest request = Pools.get(StartSyncGameStateRequest.class);
         this.netClient.send(request);
+    }
+
+    /**
+    * all client assets & data are loaded, request server to start playing
+    */
+    protected void startPlay () {
+        Log.i(LOG_TAG, "all client subsystems are ready to play.");
+
+        Log.i(LOG_TAG, "request server to start playing...");
+
+        //TODO: add code here
+
+        //reset ready flags
+        this.gameLogicLayerReady = false;
+        this.gameViewLayerReady = false;
     }
 
     @Override

@@ -84,7 +84,7 @@ public class RegionInfo {
                 throw new FileNotFoundException("map file doesn't exists: " + dir + file);
             }
 
-            RegionMap map = new RegionMap(file, absX, absY, widthInTiles, heightInTiles);
+            RegionMap map = new RegionMap(file, absX, absY, widthInTiles, heightInTiles, this.tileWidth, this.tileHeight);
             this.maps.add(map);
         }
 
