@@ -26,7 +26,6 @@ import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 import com.jukusoft.mmo.engine.shared.version.Version;
-import org.ini4j.Profile;
 
 public class LoginScreen implements IScreen {
 

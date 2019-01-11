@@ -98,12 +98,6 @@ public abstract class BaseApp implements ApplicationListener, SubSystemManager {
             Utils.printSection("libGDX");
             Log.i("libGDX", "libGDX Version: " + com.badlogic.gdx.Version.VERSION);
 
-            //print netty & vert.x versions
-            /*Utils.printSection("Netty & Vert.x");
-            for (Map.Entry<String, io.netty.util.Version> entry : io.netty.util.Version.identify().entrySet()) {
-                Log.d("Netty", "version '" + entry.getKey() + "': " + entry.getValue().artifactVersion());
-            }*/
-
             //print java version
             Utils.printSection("Java Version");
             Log.i("Java", "Java Vendor: " + System.getProperty("java.vendor"));
