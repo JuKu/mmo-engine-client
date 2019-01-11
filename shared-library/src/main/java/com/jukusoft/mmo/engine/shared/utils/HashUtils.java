@@ -12,6 +12,7 @@ package com.jukusoft.mmo.engine.shared.utils;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -32,15 +33,15 @@ public class HashUtils {
     */
     private static String convertToHex(byte[] data) {
         //create new instance of string buffer
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder StringBuilder = new StringBuilder();
         String hex = "";
 
         //encode byte data with base64
         hex = Base64.getEncoder().encodeToString(data);
-        stringBuffer.append(hex);
+        StringBuilder.append(hex);
 
         //return string
-        return stringBuffer.toString();
+        return StringBuilder.toString();
     }
 
     /**
@@ -62,13 +63,7 @@ public class HashUtils {
             throw new IllegalStateException("Cannot find SHA-1 algorithm.", e1);
         }
 
-        try {
-            mdSha1.update(password.getBytes("ASCII"));
-        } catch (UnsupportedEncodingException e) {
-            Log.e(LOG_TAG, "UnsupportedEncodingException: ", e);
-            throw new IllegalStateException("Unsupported encoding: ", e);
-        }
-
+        mdSha1.update(password.getBytes(StandardCharsets.US_ASCII));
         byte[] data = mdSha1.digest();
 
         SHAHash = convertToHex(data);
@@ -94,12 +89,8 @@ public class HashUtils {
             Log.e(LOG_TAG, "NoSuchAlgorithmException: ", e1);
             e1.printStackTrace();
         }
-        try {
-            mdSha1.update(password.getBytes("ASCII"));
-        } catch (UnsupportedEncodingException e) {
-            Log.e(LOG_TAG, "UnsupportedEncodingException: ", e);
-            e.printStackTrace();
-        }
+
+        mdSha1.update(password.getBytes(StandardCharsets.US_ASCII));
         byte[] data = mdSha1.digest();
         SHAHash = convertToHex(data);
 
@@ -115,7 +106,7 @@ public class HashUtils {
      * @return hash
     */
     public static String computeMD5Hash(String password) {
-        StringBuffer MD5Hash = new StringBuffer();
+        StringBuilder md5Hash = new StringBuilder();
 
         try {
             // Create MD5 Hash
@@ -128,7 +119,7 @@ public class HashUtils {
                 String h = Integer.toHexString(0xFF & messageDigest[i]);
                 while (h.length() < 2)
                     h = "0" + h;
-                MD5Hash.append(h);
+                md5Hash.append(h);
             }
 
         } catch (NoSuchAlgorithmException e) {
@@ -136,7 +127,7 @@ public class HashUtils {
             e.printStackTrace();
         }
 
-        return MD5Hash.toString();
+        return md5Hash.toString();
     }
 
     /**
