@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class NetworkView implements SubSystem {
 
     protected static final String LOG_TAG = "Network";
+    protected static final String CONFIG_TAG = "Network";
     protected static final String LOGIN_TAG = "Login";
 
     protected Client netClient = null;
@@ -207,7 +208,7 @@ public class NetworkView implements SubSystem {
         });
 
         //get rtt interval
-        this.rttInterval = Config.getInt("Network", "rttInterval");
+        this.rttInterval = Config.getInt(CONFIG_TAG, "rttInterval");
 
         //register message listener for RTT (round trip time) to detect ping
         this.netClient.handlers().register(RTTResponse.class, (MessageHandler<RTTResponse, RemoteConnection>) (msg, conn) -> {
@@ -300,7 +301,7 @@ public class NetworkView implements SubSystem {
 
             if (msg.getResult() == CreateCharacterResponse.CREATE_CHARACTER_RESULT.SUCCESS) {
                 this.netClient.setTimer(50l, event1 -> {
-                    Log.v("Network", "request character list.");
+                    Log.v(LOG_TAG, "request character list.");
 
                     //request character list
                     CharacterListRequest req = Pools.get(CharacterListRequest.class);

@@ -2,7 +2,6 @@ package com.jukusoft.mmo.engine.shared.map;
 
 import com.jukusoft.mmo.engine.shared.map.tileset.Tileset;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TiledMap {

@@ -23,10 +23,14 @@ public class HashUtils {
 
     protected static final String LOG_TAG = "HashUtils";
 
+    protected HashUtils () {
+        //
+    }
+
     /**
     * convert byte data to hex
     */
-    private static String convertToHex(byte[] data) throws IOException {
+    private static String convertToHex(byte[] data) {
         //create new instance of string buffer
         StringBuffer stringBuffer = new StringBuffer();
         String hex = "";
@@ -67,12 +71,7 @@ public class HashUtils {
 
         byte[] data = mdSha1.digest();
 
-        try {
-            SHAHash = convertToHex(data);
-        } catch (IOException e) {
-            Log.w(LOG_TAG, "IOException while convert password byte array to hex: ", e);
-            e.printStackTrace();
-        }
+        SHAHash = convertToHex(data);
 
         return SHAHash;
     }
@@ -102,12 +101,7 @@ public class HashUtils {
             e.printStackTrace();
         }
         byte[] data = mdSha1.digest();
-        try {
-            SHAHash = convertToHex(data);
-        } catch (IOException e) {
-            Log.w(LOG_TAG, "IOException while convert password byte array to hex: ", e);
-            e.printStackTrace();
-        }
+        SHAHash = convertToHex(data);
 
         return SHAHash;
     }

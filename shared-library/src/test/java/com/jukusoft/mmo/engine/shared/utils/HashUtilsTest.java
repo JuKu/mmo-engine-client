@@ -12,6 +12,11 @@ import static org.junit.Assert.assertEquals;
 public class HashUtilsTest {
 
     @Test
+    public void testConstructor () {
+        new HashUtils();
+    }
+
+    @Test
     public void testComputeMD5Hash () {
         String text = "text";
 
