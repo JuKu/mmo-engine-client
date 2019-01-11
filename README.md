@@ -3,6 +3,7 @@
 Another try to build a mmo game client.
 
 [![Build Status](https://travis-ci.org/JuKu/mmo-engine-client.svg?branch=master)](https://travis-ci.org/JuKu/mmo-engine-client)
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/JuKu/mmo-engine-client.svg?columns=all)](https://waffle.io/JuKu/mmo-engine-client)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=com.jukusoft%3Ammo-engine-client&metric=ncloc)](https://sonarcloud.io/dashboard/index/com.jukusoft%3Ammo-engine-client) 
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.jukusoft%3Ammo-engine-client&metric=alert_status)](https://sonarcloud.io/dashboard/index/com.jukusoft%3Ammo-engine-client) 
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.jukusoft%3Ammo-engine-client&metric=coverage)](https://sonarcloud.io/dashboard/index/com.jukusoft%3Ammo-engine-client) 
