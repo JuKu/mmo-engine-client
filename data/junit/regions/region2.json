@@ -19,6 +19,13 @@
 			"abs_y": 0,
 			"width_in_tiles": 50,
 			"width_in_tiles": 50
+		},
+		{
+			"file": "maps/map_0_0.tmx",
+			"abs_x": 10,
+			"abs_y": 10,
+			"width_in_tiles": 50,
+			"width_in_tiles": 50
 		}
 	]
 }

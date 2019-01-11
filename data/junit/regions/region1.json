@@ -14,7 +14,7 @@
 	],
 	"maps": [
 		{
-			"file": "maps/map_0_0.tmx",
+			"file": "maps/map_0_1.tmx",
 			"abs_x": 0,
 			"abs_y": 0,
 			"width_in_tiles": 50,

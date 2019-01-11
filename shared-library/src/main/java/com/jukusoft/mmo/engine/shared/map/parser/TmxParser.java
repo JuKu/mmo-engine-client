@@ -321,6 +321,8 @@ public class TmxParser {
          * @link http://docs.mapeditor.org/en/stable/reference/tmx-map-format/#tmx-data
          */
 
+        //https://www.baeldung.com/java-base64-encode-and-decode
+
         //get byte array which should be interpreted as integers
         byte[] decoded = Base64.getDecoder().decode(dataElement.getText().trim());//.decodeBase64(dataElement.getText());
 

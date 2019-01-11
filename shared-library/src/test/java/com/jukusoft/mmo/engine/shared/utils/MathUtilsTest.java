@@ -21,4 +21,13 @@ public class MathUtilsTest {
         assertEquals(0.5f, MathUtils.round3Digits(0.500000f), 0.00000001f);
     }
 
+    @Test
+    public void testOverlapping () {
+        assertEquals(false, MathUtils.overlapping(1, 2, 3, 4));
+        assertEquals(true, MathUtils.overlapping(1, 2, 2, 4));
+        assertEquals(true, MathUtils.overlapping(1, 2, 1, 2));
+        assertEquals(true, MathUtils.overlapping(2, 4, 1, 2));
+        assertEquals(false, MathUtils.overlapping(1f, 1.9f, 2f, 4f));
+    }
+
 }

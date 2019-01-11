@@ -10,4 +10,8 @@ public class MathUtils {
         return (float) Math.floor(x * 1000.0f) / 1000.0f;
     }
 
+    public static boolean overlapping (float minA, float maxA, float minB, float maxB) {
+        return minB <= maxA && minA <= maxB;
+    }
+
 }
