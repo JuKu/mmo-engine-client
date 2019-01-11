@@ -112,7 +112,7 @@ public class HashUtils {
             // Create MD5 Hash
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(password.getBytes());
-            byte messageDigest[] = digest.digest();
+            byte[] messageDigest = digest.digest();
 
             for (int i = 0; i < messageDigest.length; i++)
             {
@@ -140,13 +140,13 @@ public class HashUtils {
     */
     public static String computeMD5FileHash (File file) throws Exception {
         byte[] b = createFileChecksum(file);
-        String result = "";
+        StringBuilder sb = new StringBuilder();
 
         for (int i=0; i < b.length; i++) {
-            result += Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
+            sb.append(Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 ));
         }
 
-        return result;
+        return sb.toString();
     }
 
     private static byte[] createFileChecksum(File file) throws Exception {
