@@ -489,7 +489,7 @@ public class NetworkView implements SubSystem {
     }
 
     /**
-    * all client assets & data are loaded, request server to start playing
+    * all client assets &amp; data are loaded, request server to start playing
     */
     protected void startPlay () {
         Log.i(LOG_TAG, "all client subsystems are ready to play.");

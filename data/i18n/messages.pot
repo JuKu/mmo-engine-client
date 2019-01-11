@@ -26,6 +26,7 @@ msgstr "Server Error!"
 #: file InputLayer.java line 155
 #: file Initializer.java line 192
 #: file InputLayer.java line 140
+#: file RegionLoaderImpl.java line 38
 #: file Initializer.java line 156
 msgid "Error!"
 msgstr "Error!"
@@ -54,10 +55,10 @@ msgstr "Unknown controller! There doesn't exists any mappings for this controlle
 msgid "Coulnd't load keyDownMapping for controller!"
 msgstr "Coulnd't load keyDownMapping for controller!"
 
-#: file LoginScreen.java line 173
+#: file LoginScreen.java line 172
 msgid "Login"
 msgstr "Login"
 
-#: file LoginScreen.java line 213
+#: file LoginScreen.java line 212
 msgid "Register"
 msgstr "Register"
