@@ -8,6 +8,7 @@ public class Screens {
     public static final String CHARACTER_SELECTION = "character_selection";
     public static final String CREATE_CHARACTER = "create_character";
     public static final String LOAD_REGION = "load_region";
+    public static final String PLAY = "game";
 
     protected Screens() {
         //

@@ -1,4 +1,4 @@
-package com.jukusoft.mmo.engine.gameview.region;
+package com.jukusoft.mmo.engine.shared.region;
 
 import com.jukusoft.mmo.engine.shared.client.events.load.ReceivedAllMapSpecificDataEvent;
 import com.jukusoft.mmo.engine.shared.events.EventListener;

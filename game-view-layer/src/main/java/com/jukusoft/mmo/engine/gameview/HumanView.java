@@ -4,11 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.jukusoft.mmo.engine.applayer.time.GameTime;
 import com.jukusoft.mmo.engine.applayer.utils.FPSManager;
-import com.jukusoft.mmo.engine.gameview.region.RegionLoader;
-import com.jukusoft.mmo.engine.gameview.region.impl.RegionLoaderImpl;
+import com.jukusoft.mmo.engine.gameview.camera.CameraHelper;
+import com.jukusoft.mmo.engine.gameview.camera.manager.CameraManager;
+import com.jukusoft.mmo.engine.gameview.camera.manager.DefaultCameraManager;
+import com.jukusoft.mmo.engine.gameview.region.RegionAssetManager;
 import com.jukusoft.mmo.engine.gameview.screens.impl.*;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
+import com.jukusoft.mmo.engine.shared.client.events.load.RegionInfoLoadedEvent;
+import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.applayer.subsystem.SubSystem;
@@ -19,7 +24,14 @@ import com.jukusoft.mmo.engine.gameview.screens.Screens;
 import com.jukusoft.mmo.engine.shared.process.ProcessManager;
 import com.jukusoft.mmo.engine.shared.process.impl.DefaultProcessManager;
 
+/**
+* game view layer
+ *
+ * @see com.jukusoft.mmo.engine.applayer.base.BaseApp
+*/
 public class HumanView implements SubSystem {
+
+    protected static final String LOG_TAG = "GameView";
 
     protected ScreenManager<IScreen> screenManager = null;
     protected ProcessManager processManager = null;
@@ -30,23 +42,32 @@ public class HumanView implements SubSystem {
     //SpriteBatch instance
     protected SpriteBatch spriteBatch = null;
 
+    //game camera
+    protected CameraManager cameraManager = null;
+
     //asset manager
     GameAssetManager assetManager = GameAssetManager.getInstance();
+
+    protected GameTime time = GameTime.getInstance();
 
     //fps manager
     protected final FPSManager fps = FPSManager.getInstance();
 
-    protected RegionLoader regionLoader = null;
+    //protected CameraManager cameraManager = null;
 
     @Override
     public void onInit() {
-        Log.i("GameView", "initialize game-view-layer.");
+        Log.i(LOG_TAG, "initialize game-view-layer.");
 
         //initialize screen manager
         screenManager = new DefaultScreenManager();
 
         //initialize process manager
         this.processManager = new DefaultProcessManager();
+
+        //initialize cameras
+        Log.d("Camera", "initialize cameras...");
+        this.cameraManager = new DefaultCameraManager(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         this.spriteBatch = new SpriteBatch();
 
@@ -56,15 +77,34 @@ public class HumanView implements SubSystem {
         this.screenManager.addScreen(Screens.CHARACTER_SELECTION, new SelectCharacterScreen());
         this.screenManager.addScreen(Screens.CREATE_CHARACTER, new CreateCharacterScreen());
         this.screenManager.addScreen(Screens.LOAD_REGION, new LoadRegionScreen());
+        this.screenManager.addScreen(Screens.PLAY, new PlayGameScreen());
 
         this.screenManager.leaveAllAndEnter(Screens.SELECT_SERVER_SCREEN);
 
-        this.regionLoader = new RegionLoaderImpl();
-
         //TODO: initialize audio engine
 
-        //add listener to receive events for loading regions
-        Events.addListener(Events.UI_THREAD, ClientEvents.ALL_MAP_SPECIFIC_DATA_RECEIVED, this.regionLoader);
+        Events.addListener(Events.UI_THREAD, ClientEvents.REGION_INFO_LOADED, (EventListener<RegionInfoLoadedEvent>) event -> {
+            //load region (maps and so on)
+            PlayGameScreen screen = (PlayGameScreen) this.screenManager.getScreenByName(Screens.PLAY);
+            screen.resetRegion();
+            screen.loadRegion(event, this.spriteBatch, this.cameraManager.getMainCamera());
+
+            new Thread(() -> {
+                Log.v(LOG_TAG, "wait while PlayGameScreen is ready to play...");
+                while (!screen.isReadyToPlay()) {
+                    try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                //TODO: inform network layer
+                Log.d(LOG_TAG, "PlayGameScreen is ready to play now.");
+            }).start();
+
+            //TODO: reset & load audio engine
+        });
     }
 
     @Override
@@ -87,6 +127,9 @@ public class HumanView implements SubSystem {
 
         //update game screens
         screenManager.update();
+
+        //update camera
+        this.cameraManager.update(this.time);
 
         //draw game screen
         screenManager.draw();

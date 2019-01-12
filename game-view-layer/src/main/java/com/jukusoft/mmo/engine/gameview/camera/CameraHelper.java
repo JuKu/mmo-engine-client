@@ -383,6 +383,14 @@ public class CameraHelper implements ModificationFinishedListener {
     }
 
     /**
+    * set target position to current position
+    */
+    public void forcePos () {
+        this.x = this.targetX;
+        this.y = this.targetY;
+    }
+
+    /**
     * set target position in middle of viewport
      *
      * @param targetX target x position in middle of viewport

@@ -13,9 +13,27 @@ public class RegionInfoLoadedEvent extends EventData {
 
     public RegionInfo regionInfo = null;
 
+    //directory where all cached region files like .tmx maps are stored, ends with "/"
+    public String regionDir = "";
+
+    //current character position
+    public float posX = 0;
+    public float posY = 0;
+    public float posZ = 0;
+
     @Override
     public int getEventType() {
         return ClientEvents.REGION_INFO_LOADED.getID();
     }
 
+    @Override
+    public String toString() {
+        return "RegionInfoLoadedEvent{" +
+                "regionInfo=" + regionInfo +
+                ", regionDir='" + regionDir + '\'' +
+                ", posX=" + posX +
+                ", posY=" + posY +
+                ", posZ=" + posZ +
+                '}';
+    }
 }

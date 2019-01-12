@@ -23,6 +23,8 @@ public class RegionInfo {
 
     protected List<RegionMap> maps = null;
 
+    protected String regionDir = null;
+
     public RegionInfo() {
         //
     }
@@ -41,6 +43,7 @@ public class RegionInfo {
     }
 
     protected void load (JsonObject json, String dir) throws IOException {
+        this.regionDir = dir;
         this.title = json.getString("title");
         this.maps = new ArrayList<>();
 
@@ -117,4 +120,9 @@ public class RegionInfo {
     public List<RegionMap> listMaps() {
         return maps;
     }
+
+    public String getRegionDir() {
+        return regionDir;
+    }
+
 }
