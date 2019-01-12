@@ -85,6 +85,13 @@ z-level "1.0" is the **ground floor** and "2.0" is the second floor.\
 If you want to introduce a layer with street lights whose lamps should hanging over the player, you need a z-level "1.6".\
 But **attention**! If the player is in second floor, the lamp will not be rendered!
 
+## License
+
+The source code is licensed under **Apache 2.0 license**.\
+But **assets in directory data/ can be licensed under different licenses**! Check LICENSE files in this directories!
+
 ## Special thanks
 
-Great thank you to **Christoph Engelbert** ([noctarius](https://blog.sourceprojects.org/)), **Daniel Ludwig** (code-disaster, [Pathway](http://pathway-game.com)) and **Mario Zechner** (badlogic) for many, many tips!
+Great thank you to **Christoph Engelbert** ([noctarius](https://blog.sourceprojects.org/)), **Daniel Ludwig** (code-disaster, [Pathway](http://pathway-game.com)) and **Mario Zechner** (badlogic) for many, many tips!\
+\
+Also thanks to [Reiner "Tiles" Prokein](https://www.reinerstilesets.de/de/) for that great work! We use his water animations.
