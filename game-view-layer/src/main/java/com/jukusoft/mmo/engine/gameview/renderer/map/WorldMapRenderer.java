@@ -8,6 +8,8 @@ import com.jukusoft.mmo.engine.gameview.renderer.IRenderer;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.region.RegionInfo;
+import com.jukusoft.mmo.engine.shared.region.RegionMap;
+import com.jukusoft.mmo.engine.shared.utils.MathUtils;
 
 public class WorldMapRenderer implements IRenderer {
 
@@ -16,6 +18,7 @@ public class WorldMapRenderer implements IRenderer {
     //constants
     protected static final String CONFIG_SECTION = "WorldMapRenderer";
     protected static final int CONFIG_UPDATE_VISIBLE_MAPS_EVERY_X_FRAMES = Config.getInt(CONFIG_SECTION, "update_visible_maps_every_x_frames");
+    protected static final int CONFIG_BORDER_PADDING = Config.getInt(CONFIG_SECTION, "update_visible_maps_camera_border_padding");
 
     //current player position
     protected float playerX = 0;
@@ -27,6 +30,8 @@ public class WorldMapRenderer implements IRenderer {
 
     //list with all renderable maps
     protected Array<MapRenderer> mapList = null;
+    protected Array<MapRenderer> visibleMaps = null;
+    protected Array<MapRenderer> tempList = null;
 
     //frame counter
     protected int frameCounter = 0;
@@ -52,10 +57,12 @@ public class WorldMapRenderer implements IRenderer {
 
         //create new map list
         this.mapList = new Array<>(false, regionInfo.listMaps().size());
+        this.visibleMaps = new Array<>(false, regionInfo.listMaps().size());
+        this.tempList = new Array<>(false, regionInfo.listMaps().size());
     }
 
     public void load () {
-        //
+        this.checkForNewVisibleMaps();
     }
 
     @Override
@@ -65,12 +72,22 @@ public class WorldMapRenderer implements IRenderer {
             this.checkForNewVisibleMaps();
         }
 
+        //update all visible maps
+        for (MapRenderer map : this.visibleMaps) {
+            if (map != null) {
+                map.update(time);
+            }
+        }
+
         frameCounter++;
     }
 
     @Override
     public void draw(GameTime time, CameraHelper camera, SpriteBatch batch) {
-        //
+        //draw all visible maps
+        for (MapRenderer map : visibleMaps) {
+            map.draw(time, camera, batch);
+        }
     }
 
     @Override
@@ -87,7 +104,36 @@ public class WorldMapRenderer implements IRenderer {
     }
 
     protected void checkForNewVisibleMaps () {
-        //
+        for (MapRenderer map : this.mapList) {
+            if (isMapVisible(map)) {
+                tempList.add(map);
+            }
+        }
+
+        //check, which maps aren't visible anymore and unload them
+        for (MapRenderer map : this.visibleMaps) {
+            if (!tempList.contains(map, false)) {
+                //map isn't visible anymore, so unload them
+                map.unload();
+            }
+        }
+
+        for (MapRenderer map : tempList) {
+            if (!visibleMaps.contains(map, false)) {
+                //map is new visible, so we need to load the map
+                map.load();
+            }
+        }
+
+        this.visibleMaps.clear();
+        this.visibleMaps.addAll(tempList);
+
+        this.tempList.clear();
+    }
+
+    protected boolean isMapVisible (MapRenderer map) {
+        return MathUtils.overlapping(camera.getX() - CONFIG_BORDER_PADDING, camera.getX() + camera.getViewportWidth() + CONFIG_BORDER_PADDING, map.getX(), map.getX() + map.getWidth()) &&
+                MathUtils.overlapping(camera.getY()- CONFIG_BORDER_PADDING, camera.getY() + camera.getViewportHeight() + CONFIG_BORDER_PADDING, map.getY(), map.getY() + map.getHeight());
     }
 
 }

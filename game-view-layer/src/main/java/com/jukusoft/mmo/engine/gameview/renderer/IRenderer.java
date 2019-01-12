@@ -11,14 +11,23 @@ public interface IRenderer {
 
     /**
      * update renderer
+     *
+     * @param time game time instance to get current game time
      */
     public void update(GameTime time);
 
     /**
      * draw renderer
+     *
+     * @param time game time instance to get current game time
+     * @param camera game camera
+     * @param batch sprite batch
      */
     public void draw(GameTime time, CameraHelper camera, SpriteBatch batch);
 
+    /**
+    * dispose renderer
+    */
     public void dispose();
 
 }

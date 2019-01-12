@@ -86,7 +86,7 @@ public class PlayGameScreen extends ScreenAdapter {
     }
 
     /**
-    * method which is called before screen is active (while loading region & maps)
+    * method which is called before screen is active (while loading region &amp; maps)
      *
      * @see com.jukusoft.mmo.engine.gameview.HumanView
     */
