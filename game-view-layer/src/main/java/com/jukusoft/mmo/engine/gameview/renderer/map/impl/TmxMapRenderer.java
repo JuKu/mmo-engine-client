@@ -39,6 +39,7 @@ public class TmxMapRenderer implements MapRenderer {
     protected final String filePath;
 
     //flag, if renderer is ready to render
+    protected boolean loading = false;
     protected boolean loaded = false;
 
     protected TiledMap map = null;
@@ -118,6 +119,7 @@ public class TmxMapRenderer implements MapRenderer {
         }
 
         this.loadedAssets = new Array<>(map.listTilesets().size());
+        this.loading = true;
 
         //load assets
         for (Tileset tileset : map.listTilesets()) {
@@ -156,6 +158,7 @@ public class TmxMapRenderer implements MapRenderer {
             assetManager.unload(filePath);
         }
 
+        this.loading = false;
         this.loaded = false;
 
         this.loadedAssets = null;
@@ -175,7 +178,27 @@ public class TmxMapRenderer implements MapRenderer {
 
     @Override
     public void update(GameTime time) {
-        //
+        if (!isLoaded() && loading) {
+            //check, if all assets are loaded
+            if (checkIfAllAssetsAreLoaded()) {
+                //all assets are loaded now
+                this.loading = false;
+                this.loaded = true;
+
+                Log.v(LOG_TAG, "all assets are loaded now.");
+            }
+        }
+    }
+
+    protected boolean checkIfAllAssetsAreLoaded () {
+        //check, if all assets are loaded
+        for (String filePath : loadedAssets) {
+            if (!assetManager.isLoaded(filePath)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
