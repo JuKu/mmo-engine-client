@@ -35,12 +35,19 @@ public interface MapRenderer extends IRenderer {
     /**
     * load map
     */
-    public void load ();
+    public void load () throws MapLoaderException;
 
     /**
     * unload map
     */
     public void unload ();
+
+    /**
+    * check, if map renderer is loaded (and ready to render)
+     *
+     * @return true, if map renderer is loaded
+    */
+    public boolean isLoaded ();
 
     /**
     * set floor

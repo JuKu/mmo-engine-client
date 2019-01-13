@@ -43,4 +43,10 @@ public class FileUtilsTest {
         assertEquals(true, relPaths.contains("dir1/dir2/dir2test.txt"));
     }
 
+    @Test
+    public void testRemoveDoubleDotInDir () {
+        assertEquals("/test/test2/", FileUtils.removeDoubleDotInDir("/test/test3/../test2/"));
+        assertEquals("C:/Users/test/testdir/.game/terrain.png", FileUtils.removeDoubleDotInDir("C:/Users/test/testdir/.game/cache/../terrain.png"));
+    }
+
 }

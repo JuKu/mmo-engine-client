@@ -213,7 +213,7 @@ public class FileUtils {
      *
      * @return string without ../ (resolved)
     */
-    protected static String removeDoubleDotInDir(String path) {
+    public static String removeDoubleDotInDir(String path) {
         if (path == null) {
             throw new NullPointerException(PATH_CANNOT_NULL);
         }
@@ -225,6 +225,8 @@ public class FileUtils {
         if (path.startsWith("../")) {
             throw new IllegalArgumentException("Cannot relativize paths starting with ../");
         }
+
+        boolean endsWithSlash = path.endsWith("/");
 
         path = path.replace("\\", "/");
 
@@ -249,7 +251,14 @@ public class FileUtils {
             }
         }
 
-        return sb.toString();
+        String res = sb.toString();
+
+        //remove last slash
+        if (res.endsWith("/") && !endsWithSlash) {
+            return res.substring(0, res.length() - 1);
+        }
+
+        return res;
     }
 
     /**

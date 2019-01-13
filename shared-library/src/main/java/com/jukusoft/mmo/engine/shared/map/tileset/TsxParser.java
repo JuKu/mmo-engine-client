@@ -1,6 +1,7 @@
 package com.jukusoft.mmo.engine.shared.map.tileset;
 
 import com.jukusoft.mmo.engine.shared.map.parser.TiledParserException;
+import com.jukusoft.mmo.engine.shared.utils.FileUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -72,7 +73,7 @@ public class TsxParser {
             int columns = (width / tileWidth);
 
             TextureTileset tileset = new TextureTileset(firstTileID, name, tileWidth, tileHeight, tileCount, columns);
-            tileset.addImage(tsxDir + source, width, height, firstTileID, tileWidth, tileHeight, tileCount, columns);
+            tileset.addImage(FileUtils.removeDoubleDotInDir(tsxDir + source), width, height, firstTileID, tileWidth, tileHeight, tileCount, columns);
 
             //add tileset to list
             this.tilesets.add(tileset);

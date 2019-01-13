@@ -3,6 +3,7 @@ package com.jukusoft.mmo.engine.gameview.renderer.map;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.jukusoft.mmo.engine.applayer.time.GameTime;
+import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
 import com.jukusoft.mmo.engine.gameview.camera.CameraHelper;
 import com.jukusoft.mmo.engine.gameview.renderer.IRenderer;
 import com.jukusoft.mmo.engine.gameview.renderer.map.impl.TmxMapRenderer;
@@ -40,6 +41,7 @@ public class WorldMapRenderer implements IRenderer {
     protected int frameCounter = 0;
 
     protected final CameraHelper camera;
+    protected GameAssetManager assetManager = GameAssetManager.getInstance();
 
     /**
     * default constructor
@@ -70,7 +72,7 @@ public class WorldMapRenderer implements IRenderer {
     public void load () {
         //create map renderer instances
         for (RegionMap map : regionInfo.listMaps()) {
-            MapRenderer mapRenderer = new TmxMapRenderer(map.absX, map.absY, map.widthInTiles, map.heightInTiles, regionInfo.getTileWidth(), regionInfo.getTileHeight());
+            MapRenderer mapRenderer = new TmxMapRenderer(assetManager, regionInfo.getRegionDir() + map.file, map.absX, map.absY, map.widthInTiles, map.heightInTiles, regionInfo.getTileWidth(), regionInfo.getTileHeight());
             this.mapList.addAll(mapRenderer);
         }
 
@@ -141,7 +143,15 @@ public class WorldMapRenderer implements IRenderer {
         for (MapRenderer map : tempList) {
             if (!visibleMaps.contains(map, false)) {
                 //map is new visible, so we need to load the map
-                map.load();
+                try {
+                    map.load();
+                } catch (MapLoaderException e) {
+                    Log.e(LOG_TAG, "MapLoadedException while loading map: " + map, e);
+
+                    //remove this map from all lists, because we cannot load them
+                    mapList.removeValue(map, false);
+                    tempList.removeValue(map, false);
+                }
             }
         }
 

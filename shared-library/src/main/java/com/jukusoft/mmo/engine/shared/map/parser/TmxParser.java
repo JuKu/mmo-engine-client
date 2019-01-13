@@ -7,6 +7,7 @@ import com.jukusoft.mmo.engine.shared.map.tileset.TextureTileset;
 import com.jukusoft.mmo.engine.shared.map.tileset.Tileset;
 import com.jukusoft.mmo.engine.shared.map.WritableTiledMap;
 import com.jukusoft.mmo.engine.shared.map.tileset.TsxParser;
+import com.jukusoft.mmo.engine.shared.utils.FileUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -117,7 +118,7 @@ public class TmxParser {
                 TsxParser tsxParser = new TsxParser();
 
                 try {
-                    tsxParser.load(new File(tmxDir + source), firstTileID);
+                    tsxParser.load(new File(FileUtils.removeDoubleDotInDir(tmxDir + source)), firstTileID);
                 } catch (IOException e) {
                     throw new TiledParserException("IOException while loading tsx file: " + tmxDir + source, e);
                 }
@@ -164,7 +165,7 @@ public class TmxParser {
                     int imageHeight = Integer.parseInt(imageElement.attributeValue("height"));
 
                     //add image to tileset
-                    tileset.addImage(tmxDir + source, imageWidth, imageHeight, firstTileID, tilesetTileWidth, tilesetTileHeight, tileCount, columns);
+                    tileset.addImage(FileUtils.removeDoubleDotInDir(tmxDir + source), imageWidth, imageHeight, firstTileID, tilesetTileWidth, tilesetTileHeight, tileCount, columns);
                 }
 
                 //add tileset to list
