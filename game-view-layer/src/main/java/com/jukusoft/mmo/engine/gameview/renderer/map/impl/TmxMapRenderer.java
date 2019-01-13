@@ -185,7 +185,7 @@ public class TmxMapRenderer implements MapRenderer {
                 this.loading = false;
                 this.loaded = true;
 
-                Log.v(LOG_TAG, "all assets are loaded now.");
+                Log.v(LOG_TAG, "all " + loadedAssets.size + " assets are loaded now.");
             }
         }
     }
