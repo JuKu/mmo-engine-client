@@ -24,7 +24,8 @@ public enum ClientEvents {
     ALL_MAP_SPECIFIC_DATA_RECEIVED(20),
     REGION_INFO_LOADED(21),
     GAME_LOGIC_LAYER_READY(22),
-    GAME_VIEW_LAYER_READY(23);
+    GAME_VIEW_LAYER_READY(23),
+    START_PLAYING(24);
 
     private final int id;
 

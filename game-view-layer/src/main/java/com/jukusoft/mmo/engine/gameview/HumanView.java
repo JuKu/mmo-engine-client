@@ -15,6 +15,7 @@ import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.client.events.load.RegionInfoLoadedEvent;
 import com.jukusoft.mmo.engine.shared.client.events.load.ready.GameLogicLayerReadyEvent;
 import com.jukusoft.mmo.engine.shared.client.events.load.ready.GameViewLayerReadyEvent;
+import com.jukusoft.mmo.engine.shared.client.events.play.StartPlayEvent;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
@@ -110,6 +111,11 @@ public class HumanView implements SubSystem {
             }).start();
 
             //TODO: reset & load audio engine
+        });
+
+        Events.addListener(Events.UI_THREAD, ClientEvents.START_PLAYING, (EventListener<StartPlayEvent>) eventData -> {
+            Log.i(LOG_TAG, "switch to PlayGameScreen, start playing now.");
+            screenManager.leaveAllAndEnter(Screens.PLAY);
         });
     }
 

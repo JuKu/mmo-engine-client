@@ -78,11 +78,17 @@ public class PlayGameScreen extends ScreenAdapter {
 
     @Override
     public void draw() {
+        //begin rendering process
+        this.batch.begin();
+
         //render water
         this.waterRenderer.draw(time, camera, batch);
 
         //render game world maps
         this.worldMapRenderer.draw(time, camera, batch);
+
+        //flush rendering
+        this.batch.end();
     }
 
     /**

@@ -7,6 +7,7 @@ import com.jukusoft.mmo.engine.shared.client.events.load.ReceivedAllMapSpecificD
 import com.jukusoft.mmo.engine.shared.client.events.load.ready.GameLogicLayerReadyEvent;
 import com.jukusoft.mmo.engine.shared.client.events.load.ready.GameViewLayerReadyEvent;
 import com.jukusoft.mmo.engine.shared.client.events.network.*;
+import com.jukusoft.mmo.engine.shared.client.events.play.StartPlayEvent;
 import com.jukusoft.mmo.engine.shared.config.Cache;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.data.CharacterSlot;
@@ -18,6 +19,7 @@ import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.messages.*;
 import com.jukusoft.mmo.engine.shared.messages.play.ClientReadyToPlayRequest;
+import com.jukusoft.mmo.engine.shared.messages.play.ClientReadyToPlayResponse;
 import com.jukusoft.mmo.engine.shared.region.RegionCoordinates;
 import com.jukusoft.mmo.engine.shared.utils.EncryptionUtils;
 import com.jukusoft.mmo.engine.shared.version.Version;
@@ -220,6 +222,7 @@ public class NetworkView implements SubSystem {
         TypeLookup.register(DownloadRegionFilesRequest.class);
         TypeLookup.register(DownloadRegionFileResponse.class);
         TypeLookup.register(StartSyncGameStateResponse.class);
+        TypeLookup.register(ClientReadyToPlayResponse.class);
 
         //register message listeners
         this.netClient.handlers().register(PublicKeyResponse.class, (MessageHandler<PublicKeyResponse, RemoteConnection>) (msg, conn) -> {
@@ -449,6 +452,12 @@ public class NetworkView implements SubSystem {
             event.currentGameWorldData = msg.currentGameWorldData;
 
             //fire event
+            Events.queueEvent(event);
+        });
+
+        this.netClient.handlers().register(ClientReadyToPlayResponse.class, (MessageHandler<ClientReadyToPlayResponse, RemoteConnection>) (msg, conn) -> {
+            //fire event so game view layer can switch to PlayGameScreen
+            StartPlayEvent event = Pools.get(StartPlayEvent.class);
             Events.queueEvent(event);
         });
     }
