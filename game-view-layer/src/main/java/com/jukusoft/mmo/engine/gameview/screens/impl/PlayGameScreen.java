@@ -113,6 +113,7 @@ public class PlayGameScreen extends ScreenAdapter {
 
         //create new world map renderer
         this.worldMapRenderer = new WorldMapRenderer(event.posX, event.posY, event.posZ, event.regionInfo, this.camera);
+        this.worldMapRenderer.setFloor(Math.round(event.posZ));
         this.worldMapRenderer.load();
 
         this.readyToPlay = true;

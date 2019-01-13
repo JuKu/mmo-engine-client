@@ -5,10 +5,14 @@ import com.badlogic.gdx.utils.Array;
 import com.jukusoft.mmo.engine.applayer.time.GameTime;
 import com.jukusoft.mmo.engine.gameview.camera.CameraHelper;
 import com.jukusoft.mmo.engine.gameview.renderer.IRenderer;
+import com.jukusoft.mmo.engine.gameview.renderer.map.impl.TmxMapRenderer;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.region.RegionInfo;
+import com.jukusoft.mmo.engine.shared.region.RegionMap;
 import com.jukusoft.mmo.engine.shared.utils.MathUtils;
+
+import java.util.Objects;
 
 public class WorldMapRenderer implements IRenderer {
 
@@ -46,6 +50,9 @@ public class WorldMapRenderer implements IRenderer {
      * @param regionInfo region information
     */
     public WorldMapRenderer (float playerX, float playerY, float playerZ, RegionInfo regionInfo, CameraHelper camera) {
+        Objects.requireNonNull(regionInfo);
+        Objects.requireNonNull(camera);
+
         //set player position
         this.playerX = playerX;
         this.playerY = playerY;
@@ -61,6 +68,12 @@ public class WorldMapRenderer implements IRenderer {
     }
 
     public void load () {
+        //create map renderer instances
+        for (RegionMap map : regionInfo.listMaps()) {
+            MapRenderer mapRenderer = new TmxMapRenderer(map.absX, map.absY, map.widthInTiles, map.heightInTiles, regionInfo.getTileWidth(), regionInfo.getTileHeight());
+            this.mapList.addAll(mapRenderer);
+        }
+
         this.checkForNewVisibleMaps();
     }
 
@@ -86,6 +99,14 @@ public class WorldMapRenderer implements IRenderer {
         //draw all visible maps
         for (MapRenderer map : visibleMaps) {
             map.draw(time, camera, batch);
+        }
+    }
+
+    public void setFloor (int floor) {
+        Log.v(LOG_TAG, "set floor: " + floor);
+
+        for (MapRenderer map : mapList) {
+            map.setFloor(floor);
         }
     }
 

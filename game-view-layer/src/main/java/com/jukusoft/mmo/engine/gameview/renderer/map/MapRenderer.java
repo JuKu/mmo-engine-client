@@ -42,4 +42,9 @@ public interface MapRenderer extends IRenderer {
     */
     public void unload ();
 
+    /**
+    * set floor
+    */
+    public void setFloor (int floor);
+
 }
