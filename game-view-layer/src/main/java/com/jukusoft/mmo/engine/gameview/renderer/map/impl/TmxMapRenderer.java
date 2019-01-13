@@ -185,7 +185,10 @@ public class TmxMapRenderer implements MapRenderer {
 
     @Override
     public void dispose() {
-
+        //unload all assets
+        if (isLoaded()) {
+            this.unload();
+        }
     }
 
 }

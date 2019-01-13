@@ -49,7 +49,7 @@ public class TmxMapParser {
             throw new TiledParserException("Unknown tmx format version '" + tmxFormatVersion + "': " + tmxFile.getAbsolutePath());
         }
 
-        String tmxDir = tmxFile.getParent().replace("\\", "/") + "/";
+        String tmxDir = tmxFile.getParentFile().getAbsolutePath().replace("\\", "/") + "/";
 
         return TmxParser.parse(doc, rootElement, tmxDir);
     }
