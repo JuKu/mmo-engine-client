@@ -234,8 +234,8 @@ public class WaterRenderer implements IRenderer {
             float startX = w1 * this.frame.getRegionWidth() - (camera.getX() % this.frame.getRegionWidth());
             float startY = h1 * this.frame.getRegionHeight() - (camera.getY() % this.frame.getRegionHeight());
 
-            int requiredPagesX = (camera.getViewportWidth() / this.currentPage.getWidth()) + 1;
-            int requiredPagesY = (camera.getViewportHeight() / this.currentPage.getHeight()) + 1;
+            int requiredPagesX = (camera.getViewportWidth() / this.currentPage.getWidth() + 1) + 2;
+            int requiredPagesY = (camera.getViewportHeight() / this.currentPage.getHeight() + 1) + 1;
 
             float offsetX = 0;
             float offsetY = 0;
