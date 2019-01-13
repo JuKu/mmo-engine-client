@@ -100,7 +100,9 @@ public class WorldMapRenderer implements IRenderer {
     public void draw(GameTime time, CameraHelper camera, SpriteBatch batch) {
         //draw all visible maps
         for (MapRenderer map : visibleMaps) {
-            map.draw(time, camera, batch);
+            if (map.isLoaded()) {
+                map.draw(time, camera, batch);
+            }
         }
     }
 
