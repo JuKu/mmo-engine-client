@@ -13,6 +13,8 @@ import com.jukusoft.mmo.engine.gameview.region.RegionAssetManager;
 import com.jukusoft.mmo.engine.gameview.screens.impl.*;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
 import com.jukusoft.mmo.engine.shared.client.events.load.RegionInfoLoadedEvent;
+import com.jukusoft.mmo.engine.shared.client.events.load.ready.GameLogicLayerReadyEvent;
+import com.jukusoft.mmo.engine.shared.client.events.load.ready.GameViewLayerReadyEvent;
 import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
@@ -21,6 +23,7 @@ import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
 import com.jukusoft.mmo.engine.gameview.screens.IScreen;
 import com.jukusoft.mmo.engine.gameview.screens.ScreenManager;
 import com.jukusoft.mmo.engine.gameview.screens.Screens;
+import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.process.ProcessManager;
 import com.jukusoft.mmo.engine.shared.process.impl.DefaultProcessManager;
 
@@ -99,8 +102,11 @@ public class HumanView implements SubSystem {
                     }
                 }
 
-                //TODO: inform network layer
                 Log.d(LOG_TAG, "PlayGameScreen is ready to play now.");
+
+                //inform network layer
+                GameViewLayerReadyEvent event1 = Pools.get(GameViewLayerReadyEvent.class);
+                Events.queueEvent(event1);
             }).start();
 
             //TODO: reset & load audio engine

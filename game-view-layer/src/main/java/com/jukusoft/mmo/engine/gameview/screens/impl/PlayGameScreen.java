@@ -127,8 +127,10 @@ public class PlayGameScreen extends ScreenAdapter {
     public void resetRegion () {
         this.readyToPlay = false;
 
-        this.worldMapRenderer.dispose();
-        this.worldMapRenderer = null;
+        if (this.worldMapRenderer != null) {
+            this.worldMapRenderer.dispose();
+            this.worldMapRenderer = null;
+        }
     }
 
 }

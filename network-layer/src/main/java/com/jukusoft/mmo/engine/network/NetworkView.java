@@ -17,6 +17,7 @@ import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
 import com.jukusoft.mmo.engine.shared.messages.*;
+import com.jukusoft.mmo.engine.shared.messages.play.ClientReadyToPlayRequest;
 import com.jukusoft.mmo.engine.shared.region.RegionCoordinates;
 import com.jukusoft.mmo.engine.shared.utils.EncryptionUtils;
 import com.jukusoft.mmo.engine.shared.version.Version;
@@ -496,7 +497,8 @@ public class NetworkView implements SubSystem {
 
         Log.i(LOG_TAG, "request server to start playing...");
 
-        //TODO: add code here
+        ClientReadyToPlayRequest request = Pools.get(ClientReadyToPlayRequest.class);
+        this.netClient.send(request);
 
         //reset ready flags
         this.gameLogicLayerReady = false;

@@ -8,7 +8,6 @@ import com.jukusoft.mmo.engine.gameview.renderer.IRenderer;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.region.RegionInfo;
-import com.jukusoft.mmo.engine.shared.region.RegionMap;
 import com.jukusoft.mmo.engine.shared.utils.MathUtils;
 
 public class WorldMapRenderer implements IRenderer {
