@@ -7,7 +7,8 @@
 		"max_y": 1600,
 		"floors": 1,
 		"enable_water_rendering": true,
-		"enable_lighting": true
+		"enable_lighting": true,
+		"always_draw_ground": false
 	},
 	"plugins": [
 		"water_renderer"

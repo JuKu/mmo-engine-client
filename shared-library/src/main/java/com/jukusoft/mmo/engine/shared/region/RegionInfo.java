@@ -15,6 +15,9 @@ import java.util.Objects;
 
 public class RegionInfo {
 
+    //constants
+    protected static final String OPT_ALWAYS_DRAW_GROUND = "always_draw_ground";
+
     protected String title = "";
 
     //tileset dimensions
@@ -24,6 +27,9 @@ public class RegionInfo {
     protected List<RegionMap> maps = null;
 
     protected String regionDir = null;
+
+    //flag, if first floor should always be drawed (e.q. for upper floors)
+    protected boolean drawGroundAlways = false;
 
     public RegionInfo() {
         //
@@ -53,6 +59,8 @@ public class RegionInfo {
 
         this.tileWidth = propJson.getInteger("tile_width");
         this.tileHeight = propJson.getInteger("tile_height");
+
+        this.drawGroundAlways = propJson.getBoolean(OPT_ALWAYS_DRAW_GROUND);
 
         if (this.tileWidth <= 0) {
             throw new IllegalStateException("tile width cannot <= 0 (current value: " + this.tileWidth + ")!");
@@ -123,6 +131,10 @@ public class RegionInfo {
 
     public String getRegionDir() {
         return regionDir;
+    }
+
+    public boolean isDrawGroundAlways() {
+        return drawGroundAlways;
     }
 
 }

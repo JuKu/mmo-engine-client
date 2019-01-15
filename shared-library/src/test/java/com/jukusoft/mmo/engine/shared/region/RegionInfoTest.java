@@ -24,6 +24,7 @@ public class RegionInfoTest {
         assertEquals(32, regionInfo.getTileWidth());
         assertEquals(32, regionInfo.getTileHeight());
         assertEquals(1, regionInfo.listMaps().size());
+        assertEquals(false, regionInfo.isDrawGroundAlways());
     }
 
     @Test (expected = FileNotFoundException.class)

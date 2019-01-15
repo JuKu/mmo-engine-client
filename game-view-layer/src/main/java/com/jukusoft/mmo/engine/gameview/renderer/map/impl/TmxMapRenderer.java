@@ -18,7 +18,6 @@ import com.jukusoft.mmo.engine.shared.map.tileset.Tileset;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Objects;
 
 public class TmxMapRenderer implements MapRenderer {
@@ -187,7 +186,11 @@ public class TmxMapRenderer implements MapRenderer {
 
                 Log.v(LOG_TAG, "all " + loadedAssets.size + " assets are loaded now.");
             }
+
+            return;
         }
+
+        //TODO: create pages or update them
     }
 
     protected boolean checkIfAllAssetsAreLoaded () {
@@ -203,7 +206,12 @@ public class TmxMapRenderer implements MapRenderer {
 
     @Override
     public void draw(GameTime time, CameraHelper camera, SpriteBatch batch) {
-        //
+        //draw current floor
+        this.drawFloor(this.floor);
+    }
+
+    protected void drawFloor (int floor) {
+        //TODO: add code here
     }
 
     @Override
