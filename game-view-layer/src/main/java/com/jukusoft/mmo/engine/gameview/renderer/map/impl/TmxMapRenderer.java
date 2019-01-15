@@ -15,6 +15,7 @@ import com.jukusoft.mmo.engine.shared.map.parser.TiledParserException;
 import com.jukusoft.mmo.engine.shared.map.parser.TmxMapParser;
 import com.jukusoft.mmo.engine.shared.map.tileset.TextureTileset;
 import com.jukusoft.mmo.engine.shared.map.tileset.Tileset;
+import com.jukusoft.mmo.engine.shared.region.RegionInfo;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 
 import java.io.File;
@@ -37,6 +38,8 @@ public class TmxMapRenderer implements MapRenderer {
     //tmx filepath
     protected final String filePath;
 
+    protected final RegionInfo regionInfo;
+
     //flag, if renderer is ready to render
     protected boolean loading = false;
     protected boolean loaded = false;
@@ -50,12 +53,14 @@ public class TmxMapRenderer implements MapRenderer {
 
     protected final GameAssetManager assetManager;
 
-    public TmxMapRenderer (GameAssetManager assetManager, String tmxFile, float absX, float absY, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight) {
+    public TmxMapRenderer (GameAssetManager assetManager, String tmxFile, RegionInfo regionInfo, float absX, float absY, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight) {
         Objects.requireNonNull(assetManager);
         Objects.requireNonNull(tmxFile);
+        Objects.requireNonNull(regionInfo);
 
         this.assetManager = assetManager;
         this.filePath = FilePath.parse(tmxFile);
+        this.regionInfo = regionInfo;
 
         //check, if file exists
         if (!new File(this.filePath).exists()) {
@@ -206,11 +211,16 @@ public class TmxMapRenderer implements MapRenderer {
 
     @Override
     public void draw(GameTime time, CameraHelper camera, SpriteBatch batch) {
+        if (this.floor != 1 && regionInfo.isDrawGroundAlways()) {
+            //player is in aother floor, but we should draw ground too (0 means water, 1 means ground)
+            this.drawFloor(time, camera, batch, 1);
+        }
+
         //draw current floor
-        this.drawFloor(this.floor);
+        this.drawFloor(time, camera, batch, this.floor);
     }
 
-    protected void drawFloor (int floor) {
+    protected void drawFloor (GameTime time, CameraHelper camera, SpriteBatch batch, int floor) {
         //TODO: add code here
     }
 
