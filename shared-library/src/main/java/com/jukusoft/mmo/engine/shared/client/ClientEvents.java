@@ -25,7 +25,11 @@ public enum ClientEvents {
     REGION_INFO_LOADED(21),
     GAME_LOGIC_LAYER_READY(22),
     GAME_VIEW_LAYER_READY(23),
-    START_PLAYING(24);
+    START_PLAYING(24),
+
+    //CLI - command line interface
+    CHANGE_CONFIG_VALUE(25),
+    RELOAD_CONFIG(26);
 
     private final int id;
 

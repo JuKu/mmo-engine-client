@@ -8,6 +8,8 @@ import org.ini4j.Profile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -19,6 +21,7 @@ public class Config {
     protected static final ObjectObjectMap<String,String> values = new ObjectObjectHashMap<>();
 
     public static boolean forceExit = true;
+    protected static List<String> loadedConfigFiles = new ArrayList<>();
 
     protected Config () {
         //
@@ -57,6 +60,10 @@ public class Config {
             for (Map.Entry<String, String> option : section.entrySet()) {
                 values.put(key + "." + option.getKey(),option.getValue());
             }
+        }
+
+        if (!loadedConfigFiles.contains(file.getAbsolutePath())) {
+            loadedConfigFiles.add(file.getAbsolutePath());
         }
     }
 
@@ -125,6 +132,15 @@ public class Config {
 
     public static void set (String section, String key, String value) {
         values.put(section + "." + key, value);
+    }
+
+    /**
+    * reload all loaded config files
+    */
+    public static void reload () throws IOException {
+        for (String filePath : loadedConfigFiles) {
+            load(new File(filePath));
+        }
     }
 
     /**

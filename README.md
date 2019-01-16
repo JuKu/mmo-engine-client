@@ -94,4 +94,5 @@ But **assets in directory data/ can be licensed under different licenses**! Chec
 
 Great thank you to **Christoph Engelbert** ([noctarius](https://blog.sourceprojects.org/)), **Daniel Ludwig** (code-disaster, [Pathway](http://pathway-game.com)) and **Mario Zechner** (badlogic) for many, many tips!\
 \
+Thank you also to 
 Also thanks to [Reiner "Tiles" Prokein](https://www.reinerstilesets.de/de/) for that great work! We use his water animations.

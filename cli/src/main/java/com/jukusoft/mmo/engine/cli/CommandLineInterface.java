@@ -97,6 +97,8 @@ public class CommandLineInterface implements Runnable {
         registerCommand("fireEvent", new FireEventCmd(this.eventTypes));
         registerCommand("takeScreenshot", new TakeScreenshotCmd());
         registerCommand("listLoadedAssets", new ListLoadedAssetsCmd());
+        registerCommand("changeConfig", new ChangeConfigCmd());
+        registerCommand("reloadConfig", new ReloadConfigCmd());
 
         //register events, which can be fired
         registerEvent(PlayerMoveEvent.class);

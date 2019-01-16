@@ -28,6 +28,9 @@ public class ConfigTest {
         assertEquals("VERBOSE", Config.get("Logger", "level"));
         assertEquals(10, Config.getInt("Logger", "testInt"));
         assertEquals(1.2f, Config.getFloat("Logger", "testFloat"), 0.0001f);
+
+        //test reload
+        Config.reload();
     }
 
     @Test (expected = IllegalStateException.class)
