@@ -19,6 +19,7 @@ import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 
 public class TmxParser {
@@ -202,8 +203,11 @@ public class TmxParser {
             float offsetx = Float.parseFloat(layerElement.attributeValue("offsetx", "0"));
             float offsety = Float.parseFloat(layerElement.attributeValue("offsety", "0"));
 
+            int floor = Integer.parseInt(layerElement.attributeValue("floor", "1"));
+            int renderOrder = Integer.parseInt(layerElement.attributeValue("renderOrder", "1"));
+
             //create new layer
-            TiledLayer layer = new TiledLayer(name, layerWidth, layerHeight, opacity, visible, offsetx, offsety);
+            TiledLayer layer = new TiledLayer(name, layerWidth, layerHeight, opacity, visible, offsetx, offsety, floor, renderOrder);
 
             //parse layer, get data element
             Node dataNode = layerNode.selectSingleNode("data");
@@ -283,6 +287,9 @@ public class TmxParser {
             //add layer to list
             layers.add(layer);
         }
+
+        //sort render order
+        Collections.sort(layers);
 
         return layers;
     }

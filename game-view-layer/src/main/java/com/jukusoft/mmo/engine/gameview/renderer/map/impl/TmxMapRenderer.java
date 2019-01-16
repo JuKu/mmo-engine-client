@@ -19,7 +19,9 @@ import com.jukusoft.mmo.engine.shared.region.RegionInfo;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class TmxMapRenderer implements MapRenderer {
 
@@ -52,6 +54,8 @@ public class TmxMapRenderer implements MapRenderer {
     protected Array<String> loadedAssets = null;
 
     protected final GameAssetManager assetManager;
+
+    protected Set<Integer> floors = new HashSet<>(10);
 
     public TmxMapRenderer (GameAssetManager assetManager, String tmxFile, RegionInfo regionInfo, float absX, float absY, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight) {
         Objects.requireNonNull(assetManager);

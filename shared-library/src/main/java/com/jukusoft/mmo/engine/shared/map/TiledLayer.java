@@ -2,7 +2,7 @@ package com.jukusoft.mmo.engine.shared.map;
 
 import java.util.Objects;
 
-public class TiledLayer {
+public class TiledLayer implements Comparable<TiledLayer> {
 
     protected String name = "";
     protected int width = 0;//layer width in tiles
@@ -15,6 +15,9 @@ public class TiledLayer {
 
     protected int[] tileIDs = null;
 
+    protected int floor = 1;
+    protected int renderOrder = 1;
+
     /**
     * default constructor
      *
@@ -22,7 +25,7 @@ public class TiledLayer {
      * @param width layer width in tiles
      * @param height layer height in tiles
     */
-    public TiledLayer(String name, int width, int height, float opacity, boolean visible, float offsetx, float offsety) {
+    public TiledLayer(String name, int width, int height, float opacity, boolean visible, float offsetx, float offsety, int floor, int renderOrder) {
         Objects.requireNonNull(name);
 
         this.name = name;
@@ -33,6 +36,9 @@ public class TiledLayer {
         this.visible = visible;
         this.offsetx = offsetx;
         this.offsety = offsety;
+
+        this.floor = floor;
+        this.renderOrder = renderOrder;
     }
 
     public void setTileIDs(int[] tileIDs) {
@@ -99,4 +105,19 @@ public class TiledLayer {
         return tileIDs;
     }
 
+    public int getFloor() {
+        return floor;
+    }
+
+    public int getRenderOrder() {
+        return renderOrder;
+    }
+
+    @Override
+    public int compareTo(TiledLayer o) {
+        int a = this.getRenderOrder();
+        int b = o.getRenderOrder();
+
+        return a > b ? +1 : a < b ? -1 : 0;
+    }
 }

@@ -1,5 +1,6 @@
 package com.jukusoft.mmo.engine.shared.map;
 
+import com.carrotsearch.hppc.ObjectArrayList;
 import com.jukusoft.mmo.engine.shared.map.tileset.Tileset;
 
 import java.util.List;
@@ -42,6 +43,10 @@ public class WritableTiledMap extends TiledMap {
 
     public void setTilesets (List<Tileset> tilesets) {
         this.tilesets = tilesets;
+    }
+
+    public void setLayers (ObjectArrayList<TiledLayer> layers) {
+        this.layers = layers;
     }
 
 }
