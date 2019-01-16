@@ -2,6 +2,7 @@ package com.jukusoft.mmo.engine.cli.impl;
 
 import com.jukusoft.mmo.engine.cli.CLICommand;
 import com.jukusoft.mmo.engine.shared.client.events.cli.ChangeConfigEvent;
+import com.jukusoft.mmo.engine.shared.client.events.cli.ReloadConfigEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.memory.Pools;
@@ -21,6 +22,9 @@ public class ChangeConfigCmd implements CLICommand {
         ChangeConfigEvent event = Pools.get(ChangeConfigEvent.class);
         event.set(args[0], args[1], args[2]);
         Events.queueEvent(event);
+
+        ReloadConfigEvent event1 = Pools.get(ReloadConfigEvent.class);
+        Events.queueEvent(event1);
 
         return "Config changed successfully!";
     }
