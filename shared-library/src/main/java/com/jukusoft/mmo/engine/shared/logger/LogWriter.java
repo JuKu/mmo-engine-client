@@ -30,9 +30,11 @@ public class LogWriter implements Runnable {
         printToConsole = Config.getBool("Logger", "printToConsole");
         writeToFile = Config.getBool("Logger", "writeToFile");
 
+        System.out.println("[LogWriter] try to create log file: " + file.getPath());
+
         if (!this.file.exists() && writeToFile) {
             try {
-                if (!this.file.createNewFile()) {
+                if (!this.file.getParentFile().mkdirs() && !this.file.createNewFile()) {
                     throw new IllegalStateException("Cannot create new log file '" + file.getAbsolutePath() + "'! Maybe wrong file permissions?");
                 }
             } catch (IOException | IllegalStateException e) {
