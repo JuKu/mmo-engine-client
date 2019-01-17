@@ -61,6 +61,7 @@ public class RegionInfo {
         this.tileHeight = propJson.getInteger("tile_height");
 
         this.drawGroundAlways = propJson.getBoolean(OPT_ALWAYS_DRAW_GROUND);
+        Objects.requireNonNull(this.drawGroundAlways, "property 'always_draw_ground' is not set in region.json file of map: " + dir);
 
         if (this.tileWidth <= 0) {
             throw new IllegalStateException("tile width cannot <= 0 (current value: " + this.tileWidth + ")!");

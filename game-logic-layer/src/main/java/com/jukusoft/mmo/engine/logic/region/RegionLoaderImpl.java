@@ -61,6 +61,8 @@ public class RegionLoaderImpl implements RegionLoader {
             throw new IllegalStateException("Something went wrong, player doesn't stands on any map!");
         }
 
+        Log.v(LOG_TAG, "fire event that game logic layer is ready.");
+
         //fire event for NetworkView that game logic layer is ready to go to GameScreen
         GameLogicLayerReadyEvent event2 = Pools.get(GameLogicLayerReadyEvent.class);
         Events.queueEvent(event2);
