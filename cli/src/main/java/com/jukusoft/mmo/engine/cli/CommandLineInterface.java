@@ -99,6 +99,7 @@ public class CommandLineInterface implements Runnable {
         registerCommand("listLoadedAssets", new ListLoadedAssetsCmd());
         registerCommand("changeConfig", new ChangeConfigCmd());
         registerCommand("reloadConfig", new ReloadConfigCmd());
+        registerCommand("loadConfigFile", new LoadConfigFileCmd());
 
         //register events, which can be fired
         registerEvent(PlayerMoveEvent.class);
