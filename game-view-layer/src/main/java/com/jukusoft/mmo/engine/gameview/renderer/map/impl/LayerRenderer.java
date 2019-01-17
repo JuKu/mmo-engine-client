@@ -66,7 +66,7 @@ public class LayerRenderer implements IRenderer {
         startXIndex = startXIndex > 0 ? startXIndex : 0;
         startYIndex = startYIndex > 0 ? startYIndex : 0;
 
-        //TODO: calculate last tiles to draw
+        //calculate last tiles to draw
         int endXIndex = startXIndex + ((int) (endX - startX + tileWidth) / tileWidth);
         int endYIndex = startYIndex + ((int) (endY - startY + tileHeight) / tileHeight);
 

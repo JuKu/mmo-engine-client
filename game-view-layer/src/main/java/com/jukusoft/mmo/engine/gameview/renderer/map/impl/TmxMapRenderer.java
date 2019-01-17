@@ -2,7 +2,9 @@ package com.jukusoft.mmo.engine.gameview.renderer.map.impl;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
 import com.carrotsearch.hppc.IntObjectHashMap;
 import com.carrotsearch.hppc.IntObjectMap;
 import com.carrotsearch.hppc.ObjectArrayList;
@@ -30,6 +32,12 @@ import java.util.function.Consumer;
 public class TmxMapRenderer implements MapRenderer {
 
     protected static final String LOG_TAG = "TmxMapRenderer";
+
+    //tmx format uses some flags for tileIDs to check flipping of tiles
+    protected static final int FLAG_FLIP_HORIZONTALLY = 0x80000000;
+    protected static final int FLAG_FLIP_VERTICALLY = 0x40000000;
+    protected static final int FLAG_FLIP_DIAGONALLY = 0x20000000;
+    protected static final int MASK_CLEAR = 0xE0000000;
 
     //absolute map position
     protected final float x;
@@ -60,6 +68,9 @@ public class TmxMapRenderer implements MapRenderer {
     protected final GameAssetManager assetManager;
 
     protected IntObjectMap<FloorRenderer> floorRenderers = new IntObjectHashMap<>(10);
+
+    //map with tileIDs - texture region
+    protected IntMap<TextureRegion> tiles = new IntMap<>();
 
     public TmxMapRenderer (GameAssetManager assetManager, String tmxFile, RegionInfo regionInfo, float absX, float absY, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight) {
         Objects.requireNonNull(assetManager);
@@ -164,6 +175,52 @@ public class TmxMapRenderer implements MapRenderer {
         if (map.listLayers().isEmpty()) {
             throw new IllegalStateException("map doesn't contaisn any layer!");
         }
+    }
+
+    protected void loadAfterAssetLoadingFinished () {
+        Log.d(LOG_TAG, "loadAfterAssetLoadingFinished().");
+
+        //check, required assets
+        map.listTilesets().iterator().forEachRemaining(tileset -> {
+            if (tileset instanceof TextureTileset) {
+                TextureTileset tileset1 = (TextureTileset) tileset;
+
+                //check, if images are loaded
+                tileset1.listTextures().iterator().forEachRemaining(texture -> {
+                    Log.v(LOG_TAG, "finish loading of asset: " + texture.value.source);
+                    assetManager.finishLoading(texture.value.source);
+
+                    int firstTileID = texture.value.firstTileID;
+
+                    //get texture
+                    Texture tex = assetManager.get(texture.value.source, Texture.class);
+                    Log.v(LOG_TAG, "texture: " + texture.value.source + ", width: " + tex.getWidth() + ", height: " + tex.getHeight());
+
+                    int cols = texture.value.width / texture.value.tilesetTileWidth;
+
+                    for (int y = 0; y < texture.value.height / texture.value.tilesetTileHeight; y++) {
+                        for (int x = 0; x < cols; x++) {
+                            //calculate tileID
+                            int tileID = y * cols + x + firstTileID;
+
+                            //clear flip mask
+                            tileID = tileID & ~MASK_CLEAR;
+
+                            int tileX = x * texture.value.tilesetTileWidth;
+                            int tileY = y * texture.value.tilesetTileHeight;
+
+                            //create texture region
+                            TextureRegion tileRegion = new TextureRegion(tex, tileX, tileY, texture.value.tilesetTileWidth, texture.value.tilesetTileHeight);
+
+                            //put id to map
+                            this.tiles.put(tileID, tileRegion);
+                        }
+                    }
+                });
+            } else {
+                throw new UnsupportedOperationException("tileset type '" + tileset.getClass().getSimpleName() + "' is not supported yet.");
+            }
+        });
 
         //group floors
         for (TiledLayer layer : map.listLayers()) {
@@ -174,7 +231,7 @@ public class TmxMapRenderer implements MapRenderer {
             //create new renderer if no floor renderer exists for this floor
             if (!this.floorRenderers.containsKey(floor)) {
                 Log.v(LOG_TAG, "create new floor: " + floor);
-                this.floorRenderers.put(floor, new FloorRenderer(widthInTiles, heightInTiles, x, y, tileWidth, tileHeight));
+                this.floorRenderers.put(floor, new FloorRenderer(widthInTiles, heightInTiles, x, y, tileWidth, tileHeight, this.tiles));
             }
 
             FloorRenderer floorRenderer = this.floorRenderers.get(floor);
@@ -218,9 +275,11 @@ public class TmxMapRenderer implements MapRenderer {
             if (checkIfAllAssetsAreLoaded()) {
                 //all assets are loaded now
                 this.loading = false;
-                this.loaded = true;
 
                 Log.v(LOG_TAG, "all " + loadedAssets.size + " assets are loaded now.");
+                this.loadAfterAssetLoadingFinished();
+
+                this.loaded = true;
             }
 
             return;

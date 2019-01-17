@@ -1,6 +1,8 @@
 package com.jukusoft.mmo.engine.gameview.renderer.map.impl;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.IntMap;
 import com.carrotsearch.hppc.ObjectArrayList;
 import com.jukusoft.mmo.engine.applayer.time.GameTime;
 import com.jukusoft.mmo.engine.gameview.camera.CameraHelper;
@@ -12,6 +14,8 @@ import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.map.TiledLayer;
+
+import java.util.Objects;
 
 public class FloorRenderer implements IRenderer {
 
@@ -48,16 +52,27 @@ public class FloorRenderer implements IRenderer {
     protected final int tileWidth;
     protected final int tileHeight;
 
+    //map with tileIDs - texture region
+    protected final IntMap<TextureRegion> tiles;
+
     /**
     * default constructor
     */
-    public FloorRenderer (int widthInTiles, int heightInTiles, float absX, float absY, int tileWidth, int tileHeight) {
+    public FloorRenderer (int widthInTiles, int heightInTiles, float absX, float absY, int tileWidth, int tileHeight, IntMap<TextureRegion> tiles) {
+        Objects.requireNonNull(tiles);
+
         this.widthInTiles = widthInTiles;
         this.heightInTiles = heightInTiles;
         this.absX = absX;
         this.absY = absY;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
+
+        if (tiles.size <= 0) {
+            throw new IllegalArgumentException("tiles map is empty!");
+        }
+
+        this.tiles = tiles;
 
         this.pagingEnabled = Config.getBool(CONFIG_SECTION, OPTION_PAGING_ENABLED);
         this.pageWidth = Config.getInt(CONFIG_SECTION, OPTION_PAGING_WIDTH);
@@ -98,7 +113,43 @@ public class FloorRenderer implements IRenderer {
         this.layerList.add(layer);
 
         LayerRenderer layerRenderer = new LayerRenderer(widthInTiles, heightInTiles, absX, absY, tileWidth, tileHeight);
+
+        //set texture regions (this means set cells)
+        prepareLayer(layer, layerRenderer);
+
         this.layerRendererList.add(layerRenderer);
+    }
+
+    protected void prepareLayer (TiledLayer layer, LayerRenderer renderer) {
+        //set cells of layers
+        int[] tileIDs = layer.getTileIDs();
+
+        for (int y = 0; y < layer.getHeight(); y++) {
+            for (int x = 0; x < layer.getWidth(); x++) {
+                //calculate index
+                int index = y * layer.getWidth() + x;
+
+                //get id of tile to draw
+                int tileID = tileIDs[index];
+
+                if (tileID == 0) {
+                    //we dont have to set transparent cells without tiles
+                    continue;
+                }
+
+                //get texture region of tile
+                TextureRegion region = this.tiles.get(tileID);
+
+                if (region != null) {
+                    renderer.setCell(x, y, new TextureRegion(region.getTexture(), region.getRegionX(), region.getRegionY(), region.getRegionWidth(), region.getRegionHeight()));
+                } else {
+                    Log.w(LOG_TAG, "Cannot found tileID on tilesets: " + tileID);
+                }
+            }
+        }
+
+        //set visible flag
+        renderer.setVisible(layer.isVisible());
     }
 
     /**
@@ -109,6 +160,7 @@ public class FloorRenderer implements IRenderer {
     protected void prepare () {
         this.layers = new LayerRenderer[this.layerRendererList.size()];
 
+        //convert list to array for better performance at runtime
         for (int i = 0; i < this.layerRendererList.size(); i++) {
             this.layers[i] = this.layerRendererList.get(i);
         }
