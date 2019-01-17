@@ -16,21 +16,21 @@ public class LayerRenderer implements IRenderer {
     protected float yPos = 0;
 
     //width & height in tiles
-    protected final int width;
-    protected final int height;
+    protected final int widthInTiles;
+    protected final int heightInTiles;
 
     //width & height of tiles in pixel
     protected final int tileWidth;
     protected final int tileHeight;
 
-    protected LayerRenderer(int widthInTiles, int heightInTiles, float x, float y, int width, int height, int tileWidth, int tileHeight) {
+    protected LayerRenderer(int widthInTiles, int heightInTiles, float x, float y, int tileWidth, int tileHeight) {
         this.cells = new TextureRegion[widthInTiles][heightInTiles];
 
         this.xPos = x;
         this.yPos = y;
 
-        this.width = width;
-        this.height = height;
+        this.widthInTiles = widthInTiles;
+        this.heightInTiles = heightInTiles;
 
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
@@ -55,10 +55,10 @@ public class LayerRenderer implements IRenderer {
         startXIndex = startXIndex > 0 ? startXIndex : 0;
         startYIndex = startYIndex > 0 ? startYIndex : 0;
 
-        for (int y = startYIndex; y < this.height; y++) {
-            for (int x = startXIndex; x < this.width; x++) {
+        for (int y = startYIndex; y < this.heightInTiles; y++) {
+            for (int x = startXIndex; x < this.widthInTiles; x++) {
                 //get cell
-                TextureRegion region = getCell(x, this.height - y - 1);
+                TextureRegion region = getCell(x, this.heightInTiles - y - 1);
 
                 if (region == null) {
                     //transparent cell without tile

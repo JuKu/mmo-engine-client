@@ -3,13 +3,17 @@ package com.jukusoft.mmo.engine.gameview.renderer.map.impl;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.carrotsearch.hppc.IntObjectHashMap;
+import com.carrotsearch.hppc.IntObjectMap;
 import com.carrotsearch.hppc.ObjectArrayList;
+import com.carrotsearch.hppc.cursors.ObjectCursor;
 import com.jukusoft.mmo.engine.applayer.time.GameTime;
 import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
 import com.jukusoft.mmo.engine.gameview.camera.CameraHelper;
 import com.jukusoft.mmo.engine.gameview.renderer.map.MapLoaderException;
 import com.jukusoft.mmo.engine.gameview.renderer.map.MapRenderer;
 import com.jukusoft.mmo.engine.shared.logger.Log;
+import com.jukusoft.mmo.engine.shared.map.TiledLayer;
 import com.jukusoft.mmo.engine.shared.map.TiledMap;
 import com.jukusoft.mmo.engine.shared.map.parser.TiledParserException;
 import com.jukusoft.mmo.engine.shared.map.parser.TmxMapParser;
@@ -19,9 +23,7 @@ import com.jukusoft.mmo.engine.shared.region.RegionInfo;
 import com.jukusoft.mmo.engine.shared.utils.FilePath;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class TmxMapRenderer implements MapRenderer {
 
@@ -55,7 +57,7 @@ public class TmxMapRenderer implements MapRenderer {
 
     protected final GameAssetManager assetManager;
 
-    protected Set<Integer> floors = new HashSet<>(10);
+    protected IntObjectMap<FloorRenderer> floorRenderers = new IntObjectHashMap<>(10);
 
     public TmxMapRenderer (GameAssetManager assetManager, String tmxFile, RegionInfo regionInfo, float absX, float absY, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight) {
         Objects.requireNonNull(assetManager);
@@ -156,6 +158,21 @@ public class TmxMapRenderer implements MapRenderer {
                 throw new UnsupportedOperationException("tileset type " + tileset.getClass().getSimpleName() + " isnt supported yet.");
             }
         }
+
+        //group floors
+        for (ObjectCursor<TiledLayer> cursor : map.listLayers()) {
+            TiledLayer layer = cursor.value;
+            int floor = layer.getFloor();
+
+            //create new renderer if no floor renderer exists for this floor
+            if (!this.floorRenderers.containsKey(floor)) {
+                Log.v(LOG_TAG, "create new floor: " + floor);
+                this.floorRenderers.put(floor, new FloorRenderer(widthInTiles, heightInTiles, x, y, tileWidth, tileHeight));
+            }
+
+            FloorRenderer floorRenderer = this.floorRenderers.get(floor);
+            floorRenderer.addLayer(layer);
+        }
     }
 
     @Override
@@ -225,7 +242,13 @@ public class TmxMapRenderer implements MapRenderer {
     }
 
     protected void drawFloor (GameTime time, CameraHelper camera, SpriteBatch batch, int floor) {
-        //TODO: add code here
+        FloorRenderer renderer = this.floorRenderers.get(floor);
+
+        if (renderer == null) {
+            Log.w(LOG_TAG, "floor renderer not found for floor '" + floor + "'!");
+        } else {
+            renderer.draw(time, camera, batch);
+        }
     }
 
     @Override
