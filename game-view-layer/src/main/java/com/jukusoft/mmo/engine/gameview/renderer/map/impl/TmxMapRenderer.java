@@ -161,6 +161,10 @@ public class TmxMapRenderer implements MapRenderer {
             }
         }
 
+        if (map.listLayers().isEmpty()) {
+            throw new IllegalStateException("map doesn't contaisn any layer!");
+        }
+
         //group floors
         for (TiledLayer layer : map.listLayers()) {
             int floor = layer.getFloor();
