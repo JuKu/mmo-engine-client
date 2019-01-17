@@ -48,15 +48,34 @@ public class LayerRenderer implements IRenderer {
             return;
         }
 
-        int startXIndex = (int) (camera.getX() - this.xPos) / this.tileWidth;
-        int startYIndex = (int) (camera.getY() - this.yPos) / this.tileHeight;
+        //draw a clipping
+        drawPartly(time, camera, batch, camera.getX(), camera.getY(), camera.getX() + camera.getViewportWidth(), camera.getY() + camera.getViewportHeight());
+    }
+
+    public void drawPartly (GameTime time, CameraHelper camera, SpriteBatch batch, float startX, float startY, float endX, float endY) {
+        //we dont need to draw invisible layers
+        if (!this.visible) {
+            return;
+        }
+
+        //calculate first tiles to draw
+        int startXIndex = (int) (startX - this.xPos) / this.tileWidth;
+        int startYIndex = (int) (startY - this.yPos) / this.tileHeight;
 
         //max(startX, 0)
         startXIndex = startXIndex > 0 ? startXIndex : 0;
         startYIndex = startYIndex > 0 ? startYIndex : 0;
 
-        for (int y = startYIndex; y < this.heightInTiles; y++) {
-            for (int x = startXIndex; x < this.widthInTiles; x++) {
+        //TODO: calculate last tiles to draw
+        int endXIndex = startXIndex + ((int) (endX - startX + 1) / tileWidth);
+        int endYIndex = startYIndex + ((int) (endY - startY + 1) / tileHeight);
+
+        //max(endXIndex, widthInTiles)
+        endXIndex = endXIndex > this.widthInTiles ? this.widthInTiles : endXIndex;
+        endYIndex = endYIndex > this.heightInTiles ? this.heightInTiles : endYIndex;
+
+        for (int y = startYIndex; y < endYIndex; y++) {
+            for (int x = startXIndex; x < endXIndex; x++) {
                 //get cell
                 TextureRegion region = getCell(x, this.heightInTiles - y - 1);
 
