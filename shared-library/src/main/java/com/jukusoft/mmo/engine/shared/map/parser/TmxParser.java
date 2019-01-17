@@ -93,9 +93,7 @@ public class TmxParser {
         }
 
         //parse layers
-        List<TiledLayer> layers = parseLayers(layerNodes);
-
-        //TODO: add code here
+        tiledMap.setLayers(parseLayers(layerNodes));
 
         return tiledMap;
     }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.carrotsearch.hppc.IntObjectHashMap;
 import com.carrotsearch.hppc.IntObjectMap;
 import com.carrotsearch.hppc.ObjectArrayList;
+import com.carrotsearch.hppc.cursors.IntObjectCursor;
 import com.carrotsearch.hppc.cursors.ObjectCursor;
 import com.jukusoft.mmo.engine.applayer.time.GameTime;
 import com.jukusoft.mmo.engine.gameview.assetmanager.GameAssetManager;
@@ -24,6 +25,7 @@ import com.jukusoft.mmo.engine.shared.utils.FilePath;
 
 import java.io.File;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class TmxMapRenderer implements MapRenderer {
 
@@ -160,9 +162,10 @@ public class TmxMapRenderer implements MapRenderer {
         }
 
         //group floors
-        for (ObjectCursor<TiledLayer> cursor : map.listLayers()) {
-            TiledLayer layer = cursor.value;
+        for (TiledLayer layer : map.listLayers()) {
             int floor = layer.getFloor();
+
+            Log.v(LOG_TAG, "found layer '" + layer.getName() + "' on floor '" + floor + "'");
 
             //create new renderer if no floor renderer exists for this floor
             if (!this.floorRenderers.containsKey(floor)) {
@@ -173,6 +176,9 @@ public class TmxMapRenderer implements MapRenderer {
             FloorRenderer floorRenderer = this.floorRenderers.get(floor);
             floorRenderer.addLayer(layer);
         }
+
+        //prepare renderers
+        floorRenderers.forEach((Consumer<IntObjectCursor<FloorRenderer>>) cursor -> cursor.value.prepare());
     }
 
     @Override

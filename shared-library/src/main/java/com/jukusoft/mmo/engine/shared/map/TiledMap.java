@@ -3,6 +3,7 @@ package com.jukusoft.mmo.engine.shared.map;
 import com.carrotsearch.hppc.ObjectArrayList;
 import com.jukusoft.mmo.engine.shared.map.tileset.Tileset;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TiledMap {
@@ -42,7 +43,7 @@ public class TiledMap {
     protected int nextObjectID = 0;
 
     protected List<Tileset> tilesets = null;
-    protected ObjectArrayList<TiledLayer> layers = new ObjectArrayList<>(10);
+    protected List<TiledLayer> layers = new ArrayList<>(10);
 
     protected TiledMap() {
         //
@@ -84,7 +85,7 @@ public class TiledMap {
         return tilesets;
     }
 
-    public ObjectArrayList<TiledLayer> listLayers() {
+    public List<TiledLayer> listLayers() {
         return layers;
     }
 }
