@@ -7,6 +7,12 @@
 			"description": "local self-hosted server"
 		},
 		{
+			"ip": "192.168.0.102",
+			"port": 2222,
+			"title": "Raspberry Pi",
+			"description": "Raspberry Pi (Test)"
+		},
+		{
 			"ip": "127.0.0.1",
 			"port": 2223,
 			"title": "Test Server",
