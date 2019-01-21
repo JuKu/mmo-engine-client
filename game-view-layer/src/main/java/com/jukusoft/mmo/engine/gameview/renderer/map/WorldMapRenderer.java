@@ -72,7 +72,7 @@ public class WorldMapRenderer implements IRenderer {
     public void load () {
         //create map renderer instances
         for (RegionMap map : regionInfo.listMaps()) {
-            MapRenderer mapRenderer = new TmxMapRenderer(assetManager, regionInfo.getRegionDir() + map.file, this.regionInfo, map.absX, map.absY, map.widthInTiles, map.heightInTiles, regionInfo.getTileWidth(), regionInfo.getTileHeight());
+            MapRenderer mapRenderer = new TmxMapRenderer(assetManager, this.camera, regionInfo.getRegionDir() + map.file, this.regionInfo, map.absX, map.absY, map.widthInTiles, map.heightInTiles, regionInfo.getTileWidth(), regionInfo.getTileHeight());
             this.mapList.addAll(mapRenderer);
         }
 

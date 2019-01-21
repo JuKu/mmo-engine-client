@@ -25,6 +25,19 @@ public class DesktopLauncher {
         try {
             start();
         } catch (Exception e) {
+            System.out.println("Exception occurred, exit application now.");
+            Log.e("DesktopLauncher", "Exception while startup proxy server: ", e);
+
+            //try to shutdown logs first
+            Log.shutdown();
+
+            try {
+                //wait while logs are written to file
+                Thread.sleep(2000);
+            } catch (InterruptedException e1) {
+                //don't do anything here
+            }
+
             e.printStackTrace();
             System.exit(0);
         }

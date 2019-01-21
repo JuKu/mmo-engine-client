@@ -1,19 +1,21 @@
 package com.jukusoft.mmo.engine.gameview.renderer.map.impl;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.carrotsearch.hppc.ObjectArrayList;
 import com.jukusoft.mmo.engine.applayer.time.GameTime;
 import com.jukusoft.mmo.engine.gameview.camera.CameraHelper;
 import com.jukusoft.mmo.engine.gameview.renderer.IRenderer;
+import com.jukusoft.mmo.engine.gameview.renderer.map.impl.cache.CachedRenderPage;
 import com.jukusoft.mmo.engine.shared.client.ClientEvents;
-import com.jukusoft.mmo.engine.shared.client.events.cli.ChangeConfigEvent;
 import com.jukusoft.mmo.engine.shared.config.Config;
-import com.jukusoft.mmo.engine.shared.events.EventListener;
 import com.jukusoft.mmo.engine.shared.events.Events;
 import com.jukusoft.mmo.engine.shared.logger.Log;
 import com.jukusoft.mmo.engine.shared.map.TiledLayer;
+import com.jukusoft.mmo.engine.shared.utils.MathUtils;
 
 import java.util.Objects;
 
@@ -25,6 +27,8 @@ public class FloorRenderer implements IRenderer {
     protected static final String OPTION_PAGING_ENABLED = "paging_enabled";
     protected static final String OPTION_PAGING_WIDTH = "page_width";
     protected static final String OPTION_PAGING_HEIGHT = "page_height";
+    protected static final int CONFIG_UPDATE_VISIBLE_PAGES_EVERY_X_FRAMES = Config.getInt(CONFIG_SECTION, "update_visible_pages_every_x_frames");
+    protected static final int CONFIG_BORDER_PADDING = Config.getInt(CONFIG_SECTION, "update_visible_pages_camera_border_padding");
 
     //list with all layers
     protected ObjectArrayList<LayerRenderer> layerRendererList = new ObjectArrayList<>();
@@ -55,10 +59,19 @@ public class FloorRenderer implements IRenderer {
     //map with tileIDs - texture region
     protected final IntMap<TextureRegion> tiles;
 
+    protected final Array<CachedRenderPage> visiblePages = new Array<>(10);
+    protected final Array<CachedRenderPage> allPages = new Array<>(20);
+    protected final Array<CachedRenderPage> tempList = new Array<>(20);
+
+    //frame counter
+    protected int frameCounter = 0;
+
+    protected final CameraHelper camera;
+
     /**
     * default constructor
     */
-    public FloorRenderer (int widthInTiles, int heightInTiles, float absX, float absY, int tileWidth, int tileHeight, IntMap<TextureRegion> tiles) {
+    public FloorRenderer (int widthInTiles, int heightInTiles, float absX, float absY, int tileWidth, int tileHeight, CameraHelper camera, IntMap<TextureRegion> tiles) {
         Objects.requireNonNull(tiles);
 
         this.widthInTiles = widthInTiles;
@@ -72,6 +85,7 @@ public class FloorRenderer implements IRenderer {
             throw new IllegalArgumentException("tiles map is empty!");
         }
 
+        this.camera = camera;
         this.tiles = tiles;
 
         this.pagingEnabled = Config.getBool(CONFIG_SECTION, OPTION_PAGING_ENABLED);
@@ -82,17 +96,45 @@ public class FloorRenderer implements IRenderer {
         Events.addListener(Events.UI_THREAD, ClientEvents.RELOAD_CONFIG, event -> this.pagingEnabled = Config.getBool(CONFIG_SECTION, OPTION_PAGING_ENABLED));
         Events.addListener(Events.UI_THREAD, ClientEvents.RELOAD_CONFIG, event -> this.pageWidth = Config.getInt(CONFIG_SECTION, OPTION_PAGING_WIDTH));
         Events.addListener(Events.UI_THREAD, ClientEvents.RELOAD_CONFIG, event -> this.pageHeight = Config.getInt(CONFIG_SECTION, OPTION_PAGING_HEIGHT));
+
+        Log.d(LOG_TAG, "paging is " + (this.pagingEnabled ? "enabled" : "disabled") + ".");
     }
 
     @Override
     public void update(GameTime time) {
-        //
+        if (this.pagingEnabled) {
+            if (frameCounter % CONFIG_UPDATE_VISIBLE_PAGES_EVERY_X_FRAMES == 0) {
+                //check, which maps are visible
+                this.checkForNewVisiblePages(this.camera);
+            }
+        }
+
+        //increment frame counter
+        frameCounter = (frameCounter + 1) % CONFIG_UPDATE_VISIBLE_PAGES_EVERY_X_FRAMES;
     }
 
     @Override
     public void draw(GameTime time, CameraHelper camera, SpriteBatch batch) {
         if (layers.length == 0) {
             throw new IllegalStateException("no layer is registered. Maybe you haven't called addLayer() and prepare() before first render call?");
+        }
+
+        if (this.pagingEnabled) {
+            float cameraX = camera.getX();
+            float cameraY = camera.getY();
+            float cameraXEnd = camera.getX() + camera.getViewportWidth();
+            float cameraYEnd = camera.getY() + camera.getViewportHeight();
+
+            //only draw cached pages
+            for (CachedRenderPage page : this.visiblePages) {
+                //check, if page is visible
+                if (MathUtils.overlapping(cameraX, cameraXEnd, page.getX(), page.getX() + pageWidth) && MathUtils.overlapping(cameraY, cameraYEnd, page.getY(), page.getY() + pageHeight)) {
+                    System.err.println("page is visible.");
+                    page.drawCached(batch);
+                }
+            }
+
+            return;
         }
 
         //draw layers
@@ -153,7 +195,7 @@ public class FloorRenderer implements IRenderer {
     }
 
     /**
-    * prepare renderer
+    * prepare renderer and create pages, if neccessary
      *
      * this method should be called after all layers was added
     */
@@ -164,6 +206,86 @@ public class FloorRenderer implements IRenderer {
         for (int i = 0; i < this.layerRendererList.size(); i++) {
             this.layers[i] = this.layerRendererList.get(i);
         }
+
+        //create pages, if neccessary
+        this.recreatePages();
+    }
+
+    protected void recreatePages () {
+        //first, delete old pages
+        this.unloadAllPages();
+
+        //check, how many pages are required
+        float tmpX = Gdx.graphics.getWidth() / this.pageWidth;
+        float tmpY = Gdx.graphics.getHeight() / this.pageHeight;
+
+        int cols = ((int) tmpX) + (Gdx.graphics.getWidth() % this.pageWidth != 0 ? 1 : 0);
+        int rows = ((int) tmpY) + (Gdx.graphics.getHeight() % this.pageHeight != 0 ? 1 : 0);
+        Log.v(LOG_TAG, "" + rows + " rows and " + cols + " cols (pages) required for " + Gdx.graphics.getWidth() + "x" + Gdx.graphics.getHeight() + " pixels.");
+
+        //create pages
+        for (int x = 0; x < cols; x++) {
+            for (int y = 0; y < rows; y++) {
+                CachedRenderPage page = new CachedRenderPage(this.absX + (x * this.pageWidth), this.absY + (y * this.pageHeight), this.pageWidth, this.pageHeight);
+                this.allPages.add(page);
+            }
+        }
+
+        this.frameCounter = 0;
+    }
+
+    protected void unloadAllPages () {
+        this.visiblePages.clear();
+
+        for (CachedRenderPage page : this.allPages) {
+            page.dispose();
+        }
+
+        this.allPages.clear();
+    }
+
+    protected void checkForNewVisiblePages (CameraHelper camera) {
+        for (CachedRenderPage page : this.allPages) {
+            if (isPageVisible(page)) {
+                tempList.add(page);
+            }
+        }
+
+        //check, which pages aren't visible anymore and unload them
+        for (CachedRenderPage page : this.visiblePages) {
+            if (!tempList.contains(page, false)) {
+                //page isn't visible anymore, so unload them
+
+                //TODO: dispose page later
+                page.dispose();
+            }
+        }
+
+        for (CachedRenderPage page : tempList) {
+            if (!visiblePages.contains(page, false)) {
+                //map is new visible, so we need to load the map
+                if (!page.isLoaded()) {
+                    //load page
+                    this.loadPage(page);
+                }
+            }
+        }
+
+        this.visiblePages.clear();
+        this.visiblePages.addAll(tempList);
+
+        this.tempList.clear();
+    }
+
+    protected void loadPage (CachedRenderPage page) {
+        Log.v(LOG_TAG, "load page: " + page.getX() + ", " + page.getY());
+
+        //TODO: add code here
+    }
+
+    protected boolean isPageVisible (CachedRenderPage page) {
+        return MathUtils.overlapping(camera.getX() - CONFIG_BORDER_PADDING, camera.getX() + camera.getViewportWidth() + CONFIG_BORDER_PADDING, page.getX(), page.getX() + this.pageWidth) &&
+                MathUtils.overlapping(camera.getY()- CONFIG_BORDER_PADDING, camera.getY() + camera.getViewportHeight() + CONFIG_BORDER_PADDING, page.getY(), page.getY() + this.pageHeight);
     }
 
     @Override
@@ -176,6 +298,8 @@ public class FloorRenderer implements IRenderer {
             layer.value.dispose();
         });
         this.layerRendererList = null;
+
+        this.unloadAllPages();
     }
 
 }

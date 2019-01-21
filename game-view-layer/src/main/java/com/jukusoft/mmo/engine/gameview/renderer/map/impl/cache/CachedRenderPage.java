@@ -1,5 +1,7 @@
 package com.jukusoft.mmo.engine.gameview.renderer.map.impl.cache;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,7 +24,13 @@ public class CachedRenderPage implements Disposable {
     //flag, if cache was written before
     protected boolean cached = false;
 
-    public CachedRenderPage (int pageWidth, int pageHeight) {
+    //position
+    protected final float absX;
+    protected final float absY;
+
+    public CachedRenderPage (float absX, float absY, int pageWidth, int pageHeight) {
+        this.absX = absX;
+        this.absY = absY;
         this.pageWidth = pageWidth;
         this.pageHeight = pageHeight;
     }
@@ -31,6 +39,9 @@ public class CachedRenderPage implements Disposable {
         //create new frame buffer
         this.fbo = new FrameBuffer(Pixmap.Format.RGBA8888, this.pageWidth, this.pageHeight, false);
         this.fbo.begin();
+
+        //clear framebuffer
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     public void end () {
@@ -41,19 +52,35 @@ public class CachedRenderPage implements Disposable {
 
         //dispose old framebuffer, because we don't need it anymore
         this.fbo.dispose();
+        this.fbo = null;
 
         this.cached = true;
+
+        //we have to clear buffer, else it will also drawn to actual buffer instad only to framebuffer
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     /**
     * draw page from cache
     */
-    public void drawCached (GameTime time, CameraHelper camera, SpriteBatch batch, float xPos, float yPos) {
+    public void drawCached (SpriteBatch batch) {
         if (!this.cached) {
             throw new IllegalStateException("Cannot draw cached page, because page wasn't drawn into cache before. Call begin() and end() first to create cached page.");
         }
 
-        batch.draw(this.cachedPage, xPos, yPos);
+        batch.draw(this.cachedPage, this.absX, this.absY, this.pageWidth, this.pageHeight);
+    }
+
+    public boolean isLoaded () {
+        return this.cached;
+    }
+
+    public float getX() {
+        return absX;
+    }
+
+    public float getY() {
+        return absY;
     }
 
     @Override
@@ -62,6 +89,8 @@ public class CachedRenderPage implements Disposable {
             this.cachedPage.dispose();
             this.cachedPage = null;
         }
+
+        this.cached = false;
     }
 
 }

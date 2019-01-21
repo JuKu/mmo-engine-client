@@ -71,13 +71,16 @@ public class TmxMapRenderer implements MapRenderer {
 
     //map with tileIDs - texture region
     protected IntMap<TextureRegion> tiles = new IntMap<>();
+    protected final CameraHelper camera;
 
-    public TmxMapRenderer (GameAssetManager assetManager, String tmxFile, RegionInfo regionInfo, float absX, float absY, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight) {
+    public TmxMapRenderer (GameAssetManager assetManager, CameraHelper camera, String tmxFile, RegionInfo regionInfo, float absX, float absY, int widthInTiles, int heightInTiles, int tileWidth, int tileHeight) {
         Objects.requireNonNull(assetManager);
+        Objects.requireNonNull(camera);
         Objects.requireNonNull(tmxFile);
         Objects.requireNonNull(regionInfo);
 
         this.assetManager = assetManager;
+        this.camera = camera;
         this.filePath = FilePath.parse(tmxFile);
         this.regionInfo = regionInfo;
 
@@ -231,7 +234,7 @@ public class TmxMapRenderer implements MapRenderer {
             //create new renderer if no floor renderer exists for this floor
             if (!this.floorRenderers.containsKey(floor)) {
                 Log.v(LOG_TAG, "create new floor: " + floor);
-                this.floorRenderers.put(floor, new FloorRenderer(widthInTiles, heightInTiles, x, y, tileWidth, tileHeight, this.tiles));
+                this.floorRenderers.put(floor, new FloorRenderer(widthInTiles, heightInTiles, x, y, tileWidth, tileHeight, this.camera, this.tiles));
             }
 
             FloorRenderer floorRenderer = this.floorRenderers.get(floor);
@@ -284,8 +287,6 @@ public class TmxMapRenderer implements MapRenderer {
 
             return;
         }
-
-        //TODO: create pages or update them
     }
 
     protected boolean checkIfAllAssetsAreLoaded () {
@@ -316,6 +317,7 @@ public class TmxMapRenderer implements MapRenderer {
         if (renderer == null) {
             Log.w(LOG_TAG, "floor renderer not found for floor '" + floor + "'!");
         } else {
+            renderer.update(time);
             renderer.draw(time, camera, batch);
         }
     }
