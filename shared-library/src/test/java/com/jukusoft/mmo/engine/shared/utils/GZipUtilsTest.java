@@ -27,6 +27,15 @@ public class GZipUtilsTest {
         assertEquals(true, compressedData.length > 0);
     }
 
+    @Test (expected = IllegalStateException.class)
+    public void testDecompressInvalideData () {
+        byte[] compressedData = new byte[]{
+                0x00, 0x01, 0x02, 0x03
+        };
+
+        byte[] uncompressedData = GZipUtils.decompress(compressedData);
+    }
+
     @Test
     public void testDecompress () {
         byte[] data = new byte[4096];
