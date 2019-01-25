@@ -229,11 +229,11 @@ public class FloorRenderer implements IRenderer {
         int mapHeight = heightInTiles * tileHeight;
 
         //check, how many pages are required
-        float tmpX = mapWidth / this.pageWidth;
-        float tmpY = mapHeight / this.pageHeight;
+        int tmpX = mapWidth / this.pageWidth;
+        int tmpY = mapHeight / this.pageHeight;
 
-        int cols = ((int) tmpX) + (mapWidth % this.pageWidth != 0 ? 1 : 0);
-        int rows = ((int) tmpY) + (mapHeight % this.pageHeight != 0 ? 1 : 0);
+        int cols = tmpX + (mapWidth % this.pageWidth != 0 ? 1 : 0);
+        int rows = tmpY + (mapHeight % this.pageHeight != 0 ? 1 : 0);
         Log.v(LOG_TAG, "" + rows + " rows and " + cols + " cols (pages) required for " + mapWidth + "x" + mapHeight + " pixels.");
 
         int pageCounter = 0;
