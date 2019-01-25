@@ -41,7 +41,9 @@ public class CachedRenderPage implements Disposable {
         this.fbo.begin();
 
         //clear framebuffer
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //Important! Patrick said we don't should clear framebuffer, else we remove transparency
+        //Gdx.gl.glClearColor(0, 0, 0, 0);
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     public void end () {

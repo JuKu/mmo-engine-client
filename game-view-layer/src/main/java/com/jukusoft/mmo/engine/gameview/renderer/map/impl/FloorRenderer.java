@@ -67,6 +67,11 @@ public class FloorRenderer implements IRenderer {
     protected int frameCounter = 0;
 
     protected final CameraHelper camera;
+    protected GameTime time = GameTime.getInstance();
+
+    //temp spritebatch for fbo's
+    protected SpriteBatch tmpBatch = new SpriteBatch();
+    protected CameraHelper tmpCamera = null;
 
     /**
     * default constructor
@@ -98,6 +103,12 @@ public class FloorRenderer implements IRenderer {
         Events.addListener(Events.UI_THREAD, ClientEvents.RELOAD_CONFIG, event -> this.pageHeight = Config.getInt(CONFIG_SECTION, OPTION_PAGING_HEIGHT));
 
         Log.d(LOG_TAG, "paging is " + (this.pagingEnabled ? "enabled" : "disabled") + ".");
+
+        //create camera for framebuffer objects (paging)
+        this.tmpCamera = new CameraHelper(pageWidth, pageHeight);
+        this.tmpCamera.forcePos();
+        this.tmpCamera.update(GameTime.getInstance());
+        this.tmpBatch.setProjectionMatrix(this.tmpCamera.getCombined());
     }
 
     @Override
@@ -129,7 +140,6 @@ public class FloorRenderer implements IRenderer {
             for (CachedRenderPage page : this.visiblePages) {
                 //check, if page is visible
                 if (MathUtils.overlapping(cameraX, cameraXEnd, page.getX(), page.getX() + pageWidth) && MathUtils.overlapping(cameraY, cameraYEnd, page.getY(), page.getY() + pageHeight)) {
-                    System.err.println("page is visible.");
                     page.drawCached(batch);
                 }
             }
@@ -215,21 +225,30 @@ public class FloorRenderer implements IRenderer {
         //first, delete old pages
         this.unloadAllPages();
 
-        //check, how many pages are required
-        float tmpX = Gdx.graphics.getWidth() / this.pageWidth;
-        float tmpY = Gdx.graphics.getHeight() / this.pageHeight;
+        int mapWidth = widthInTiles * tileWidth;
+        int mapHeight = heightInTiles * tileHeight;
 
-        int cols = ((int) tmpX) + (Gdx.graphics.getWidth() % this.pageWidth != 0 ? 1 : 0);
-        int rows = ((int) tmpY) + (Gdx.graphics.getHeight() % this.pageHeight != 0 ? 1 : 0);
-        Log.v(LOG_TAG, "" + rows + " rows and " + cols + " cols (pages) required for " + Gdx.graphics.getWidth() + "x" + Gdx.graphics.getHeight() + " pixels.");
+        //check, how many pages are required
+        float tmpX = mapWidth / this.pageWidth;
+        float tmpY = mapHeight / this.pageHeight;
+
+        int cols = ((int) tmpX) + (mapWidth % this.pageWidth != 0 ? 1 : 0);
+        int rows = ((int) tmpY) + (mapHeight % this.pageHeight != 0 ? 1 : 0);
+        Log.v(LOG_TAG, "" + rows + " rows and " + cols + " cols (pages) required for " + mapWidth + "x" + mapHeight + " pixels.");
+
+        int pageCounter = 0;
 
         //create pages
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
                 CachedRenderPage page = new CachedRenderPage(this.absX + (x * this.pageWidth), this.absY + (y * this.pageHeight), this.pageWidth, this.pageHeight);
                 this.allPages.add(page);
+
+                pageCounter++;
             }
         }
+
+        Log.d(LOG_TAG, "" + pageCounter + " pages created.");
 
         this.frameCounter = 0;
     }
@@ -256,7 +275,6 @@ public class FloorRenderer implements IRenderer {
             if (!tempList.contains(page, false)) {
                 //page isn't visible anymore, so unload them
 
-                //TODO: dispose page later
                 page.dispose();
             }
         }
@@ -274,13 +292,27 @@ public class FloorRenderer implements IRenderer {
         this.visiblePages.clear();
         this.visiblePages.addAll(tempList);
 
+        Log.v(LOG_TAG, "" + visiblePages.size + " pages visible.");
+
         this.tempList.clear();
     }
 
     protected void loadPage (CachedRenderPage page) {
         Log.v(LOG_TAG, "load page: " + page.getX() + ", " + page.getY());
 
-        //TODO: add code here
+        page.begin();
+        tmpBatch.begin();
+
+        tmpBatch.setBlendFunction(-1, -1);
+        Gdx.gl20.glBlendFuncSeparate(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA, Gdx.gl.GL_ONE, Gdx.gl.GL_ONE);
+
+        //draw layers
+        for (int i = 0; i < this.layers.length; i++) {
+            layers[i].draw(time, camera, this.tmpBatch);
+        }
+
+        tmpBatch.end();
+        page.end();
     }
 
     protected boolean isPageVisible (CachedRenderPage page) {
